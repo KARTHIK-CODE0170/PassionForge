@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passion Forge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+
+<header class="navbar" id="navbar">
+  <div class="nav-logo">
+    <div class="logo-circle">PF</div>
+    <span class="logo-text">Passion <strong>Forge</strong></span>
+  </div>
+  <div class="search-wrapper">
+    <span class="search-icon">&#9906;</span>
+    <input type="text" id="searchInput" class="search-bar" placeholder="Search Passion Forge..." autocomplete="off" />
+    <span class="search-clear" id="searchClear" title="Clear">&#x2715;</span>
+  </div>
+  <div class="nav-btns">
+    <button class="btn-login" onclick="handleLogin()">Login</button>
+    <button class="btn-signup" onclick="handleSignup()">Sign Up</button>
+  </div>
+</header>
+
+<div class="main-wrapper">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar sidebar-left">
+    <div class="sidebar-card">
+      <div class="s-header" onclick="toggleSection('interestsMenu', this)">
+        <span>&#9670; My Interests</span><span class="chevron">&#9662;</span>
+      </div>
+      <ul class="s-menu" id="interestsMenu">
+        <li class="s-item active" onclick="filterFeed('music', this)" id="filter-music"><span>&#9834;</span> Music <span class="badge">12</span></li>
+        <li class="s-item" onclick="filterFeed('painting', this)" id="filter-painting"><span>&#10000;</span> Painting <span class="badge">8</span></li>
+        <li class="s-item" onclick="filterFeed('writing', this)" id="filter-writing"><span>&#9998;</span> Writing <span class="badge">15</span></li>
+        <li class="s-item" onclick="filterFeed('dance', this)" id="filter-dance"><span>&#9836;</span> Dance <span class="badge">6</span></li>
+        <li class="s-item" onclick="filterFeed('photography', this)" id="filter-photography"><span>&#9685;</span> Photography <span class="badge">10</span></li>
+        <li class="s-item" onclick="filterFeed('all', this)" id="filter-all"><span>&#9702;</span> All Posts</li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <div class="s-header" onclick="toggleSection('commMenu', this)">
+        <span>&#9737; Communities</span><span class="chevron">&#9662;</span>
+      </div>
+      <ul class="s-menu" id="commMenu">
+        <li class="s-item" onclick="joinCommunity(this,'Guitar Circle')"><span>&#9834;</span> Guitar Circle <span class="join-tag">Join</span></li>
+        <li class="s-item" onclick="joinCommunity(this,'Sketch Lab')"><span>&#9998;</span> Sketch Lab <span class="join-tag">Join</span></li>
+        <li class="s-item" onclick="joinCommunity(this,'Pixel Poets')"><span>&#9997;</span> Pixel Poets <span class="join-tag">Join</span></li>
+        <li class="s-item" onclick="joinCommunity(this,'Lens &amp; Light')"><span>&#9685;</span> Lens &amp; Light <span class="join-tag">Join</span></li>
+      </ul>
+    </div>
+    <div class="sidebar-card create-card">
+      <p>Start your own creative community!</p>
+      <button class="btn-create" onclick="showToast('Coming soon!')">+ Create Community</button>
+    </div>
+  </aside>
+
+  <!-- CENTER FEED -->
+  <main class="feed" id="centerFeed">
+    <div class="feed-header">
+      <div class="feed-tabs">
+        <button class="tab-btn active" onclick="switchTab('hot',this)">&#9733; Hot</button>
+        <button class="tab-btn" onclick="switchTab('new',this)">&#9670; New</button>
+        <button class="tab-btn" onclick="switchTab('top',this)">&#9651; Top</button>
+        <button class="tab-btn" onclick="switchTab('rising',this)">&#8593; Rising</button>
+      </div>
+      <button class="btn-create-post" onclick="showToast('Coming soon!')">+ Create Post</button>
+    </div>
+
+    <!-- Post 1 -->
+    <article class="post-card" data-category="music" id="post-1">
+      <div class="post-vote">
+        <button class="vote-btn up" onclick="appreciatePost('post-1',this)">&#9650;</button>
+        <span class="vote-count" id="count-post-1">247</span>
+        <button class="vote-btn down" onclick="downPost('post-1',this)">&#9660;</button>
+      </div>
+      <div class="post-body">
+        <div class="post-meta">
+          <div class="avatar" style="background:linear-gradient(135deg,#f97316,#fb923c)">AM</div>
+          <span class="username">u/aria_melody</span>
+          <span class="dot">&middot;</span>
+          <span class="cat-tag music-tag">&#9834; Music</span>
+          <span class="dot">&middot;</span>
+          <span class="post-time">2 hours ago</span>
+          <span class="credits">&#9733; 320 credits</span>
+        </div>
+        <h2 class="post-title">Finally nailed the F chord after 3 weeks of practice</h2>
+        <p class="post-preview">It's been a painful journey — my fingertips are calloused and my neighbors probably hate me — but I finally played a full G–C–F–G progression cleanly. If you're struggling with the F chord, here's the tip that changed everything for me...</p>
+        <div class="post-actions">
+          <button class="action-btn" onclick="toggleComment('post-1')">&#9656; 84 Comments</button>
+          <button class="action-btn" onclick="sharePost('F chord breakthrough')">&#8599; Share</button>
+          <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+        </div>
+        <div class="comment-box hidden" id="comment-post-1">
+          <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
+          <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Post 2 -->
+    <article class="post-card" data-category="painting" id="post-2">
+      <div class="post-vote">
+        <button class="vote-btn up" onclick="appreciatePost('post-2',this)">&#9650;</button>
+        <span class="vote-count" id="count-post-2">189</span>
+        <button class="vote-btn down" onclick="downPost('post-2',this)">&#9660;</button>
+      </div>
+      <div class="post-body">
+        <div class="post-meta">
+          <div class="avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">LS</div>
+          <span class="username">u/luna_sketches</span>
+          <span class="dot">&middot;</span>
+          <span class="cat-tag painting-tag">&#10000; Painting</span>
+          <span class="dot">&middot;</span>
+          <span class="post-time">5 hours ago</span>
+          <span class="credits">&#9733; 210 credits</span>
+        </div>
+        <h2 class="post-title">My first watercolor landscape – 30-day challenge complete</h2>
+        <p class="post-preview">Started the 30-day watercolor challenge knowing absolutely nothing about wet-on-wet technique. Today I finished my final piece: a misty mountain landscape. The progress from day 1 to day 30 is unreal. Sharing my journey here for anyone who needs motivation...</p>
+        <div class="post-actions">
+          <button class="action-btn" onclick="toggleComment('post-2')">&#9656; 62 Comments</button>
+          <button class="action-btn" onclick="sharePost('Watercolor Challenge')">&#8599; Share</button>
+          <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+        </div>
+        <div class="comment-box hidden" id="comment-post-2">
+          <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
+          <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Post 3 -->
+    <article class="post-card" data-category="writing" id="post-3">
+      <div class="post-vote">
+        <button class="vote-btn up" onclick="appreciatePost('post-3',this)">&#9650;</button>
+        <span class="vote-count" id="count-post-3">312</span>
+        <button class="vote-btn down" onclick="downPost('post-3',this)">&#9660;</button>
+      </div>
+      <div class="post-body">
+        <div class="post-meta">
+          <div class="avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">RW</div>
+          <span class="username">u/ravi_writes</span>
+          <span class="dot">&middot;</span>
+          <span class="cat-tag writing-tag">&#9998; Writing</span>
+          <span class="dot">&middot;</span>
+          <span class="post-time">1 day ago</span>
+          <span class="credits">&#9733; 450 credits</span>
+        </div>
+        <h2 class="post-title">I wrote 1,000 words every day for 60 days — here's what changed</h2>
+        <p class="post-preview">Before this challenge, I'd write a few sentences and quit. After 60 days of consistent daily writing, I've finished two short stories and started a novella. The biggest lesson? Quantity before quality. You can't edit a blank page. Here's how I structured each session...</p>
+        <div class="post-actions">
+          <button class="action-btn" onclick="toggleComment('post-3')">&#9656; 128 Comments</button>
+          <button class="action-btn" onclick="sharePost('60-day Writing Challenge')">&#8599; Share</button>
+          <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+        </div>
+        <div class="comment-box hidden" id="comment-post-3">
+          <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
+          <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Post 4 -->
+    <article class="post-card" data-category="dance" id="post-4">
+      <div class="post-vote">
+        <button class="vote-btn up" onclick="appreciatePost('post-4',this)">&#9650;</button>
+        <span class="vote-count" id="count-post-4">156</span>
+        <button class="vote-btn down" onclick="downPost('post-4',this)">&#9660;</button>
+      </div>
+      <div class="post-body">
+        <div class="post-meta">
+          <div class="avatar" style="background:linear-gradient(135deg,#ec4899,#f472b6)">DQ</div>
+          <span class="username">u/dance_queen_priya</span>
+          <span class="dot">&middot;</span>
+          <span class="cat-tag dance-tag">&#9836; Dance</span>
+          <span class="dot">&middot;</span>
+          <span class="post-time">3 hours ago</span>
+          <span class="credits">&#9733; 185 credits</span>
+        </div>
+        <h2 class="post-title">Learnt my first Bharatanatyam piece in 3 months – video inside</h2>
+        <p class="post-preview">Three months ago I couldn't even hold the Araimandi posture for 10 seconds. Today I performed a full Alarippu piece at my academy recital. My knees hurt, my ankles complained, but my heart is full. For anyone starting classical dance late — it is never too late.</p>
+        <div class="post-actions">
+          <button class="action-btn" onclick="toggleComment('post-4')">&#9656; 47 Comments</button>
+          <button class="action-btn" onclick="sharePost('Bharatanatyam Journey')">&#8599; Share</button>
+          <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+        </div>
+        <div class="comment-box hidden" id="comment-post-4">
+          <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
+          <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Post 5 -->
+    <article class="post-card" data-category="photography" id="post-5">
+      <div class="post-vote">
+        <button class="vote-btn up" onclick="appreciatePost('post-5',this)">&#9650;</button>
+        <span class="vote-count" id="count-post-5">278</span>
+        <button class="vote-btn down" onclick="downPost('post-5',this)">&#9660;</button>
+      </div>
+      <div class="post-body">
+        <div class="post-meta">
+          <div class="avatar" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)">KL</div>
+          <span class="username">u/kiran_lens</span>
+          <span class="dot">&middot;</span>
+          <span class="cat-tag photography-tag">&#9685; Photography</span>
+          <span class="dot">&middot;</span>
+          <span class="post-time">6 hours ago</span>
+          <span class="credits">&#9733; 390 credits</span>
+        </div>
+        <h2 class="post-title">Mastering the golden hour: my tips after 200+ sunrise shoots</h2>
+        <p class="post-preview">Waking up at 4:30 AM is never glamorous, but catching that golden wash of light across misty fields makes it worth every yawn. After over 200 sunrise shoots across Tamil Nadu, I've developed a workflow that lets me nail the shot every single time. Here's my full guide...</p>
+        <div class="post-actions">
+          <button class="action-btn" onclick="toggleComment('post-5')">&#9656; 93 Comments</button>
+          <button class="action-btn" onclick="sharePost('Golden Hour Guide')">&#8599; Share</button>
+          <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+        </div>
+        <div class="comment-box hidden" id="comment-post-5">
+          <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
+          <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
+        </div>
+      </div>
+    </article>
+
+    <div class="load-more-wrap">
+      <button class="btn-load-more" onclick="loadMore()">Load More Posts</button>
+    </div>
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar sidebar-right">
+
+    <div class="sidebar-card">
+      <div class="s-card-title">&#9733; Trending Creators</div>
+      <ul class="creators-list">
+        <li class="creator-item">
+          <div class="creator-avatar" style="background:linear-gradient(135deg,#f97316,#fb923c)">AM</div>
+          <div class="creator-info"><span class="creator-name">aria_melody</span><span class="creator-hobby">&#9834; Music &middot; 1.2k followers</span></div>
+          <button class="btn-follow" onclick="followCreator(this)">Follow</button>
+        </li>
+        <li class="creator-item">
+          <div class="creator-avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">LS</div>
+          <div class="creator-info"><span class="creator-name">luna_sketches</span><span class="creator-hobby">&#10000; Painting &middot; 876 followers</span></div>
+          <button class="btn-follow" onclick="followCreator(this)">Follow</button>
+        </li>
+        <li class="creator-item">
+          <div class="creator-avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">RW</div>
+          <div class="creator-info"><span class="creator-name">ravi_writes</span><span class="creator-hobby">&#9998; Writing &middot; 2.1k followers</span></div>
+          <button class="btn-follow" onclick="followCreator(this)">Follow</button>
+        </li>
+        <li class="creator-item">
+          <div class="creator-avatar" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)">KL</div>
+          <div class="creator-info"><span class="creator-name">kiran_lens</span><span class="creator-hobby">&#9685; Photography &middot; 960 followers</span></div>
+          <button class="btn-follow" onclick="followCreator(this)">Follow</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-card challenge-card">
+      <div class="s-card-title">&#9670; Daily Practice Challenge</div>
+      <div class="challenge-body">
+        <div class="challenge-icon">&#9670;</div>
+        <p class="challenge-title">Practice for 20 minutes today</p>
+        <p class="challenge-desc">Complete today's challenge to earn <strong>50 credits</strong> and keep your streak alive!</p>
+        <div class="streak-bar"><div class="streak-fill" id="streakFill" style="width:60%"></div></div>
+        <p class="streak-label">&#9733; 6-day streak — keep it going!</p>
+        <button class="btn-challenge" onclick="completeChallenge()">Mark as Complete</button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="s-card-title">&#9656; Upcoming Opportunities</div>
+      <div class="opp-group"><div class="opp-label">&#9632; Workshops</div>
+        <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9834;</span><div><div class="opp-title">Piano Basics – Free Workshop</div><div class="opp-date">Mar 22 &middot; Online</div></div></div>
+        <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9998;</span><div><div class="opp-title">Watercolor Techniques</div><div class="opp-date">Mar 29 &middot; Chennai</div></div></div>
+      </div>
+      <div class="opp-group"><div class="opp-label">&#9632; Competitions</div>
+        <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9997;</span><div><div class="opp-title">Short Story Sprint</div><div class="opp-date">Apr 5 &middot; &#8377;5000 prize</div></div></div>
+        <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9685;</span><div><div class="opp-title">Landscape Photography Cup</div><div class="opp-date">Apr 12 &middot; National</div></div></div>
+      </div>
+      <div class="opp-group"><div class="opp-label">&#9632; Auditions</div>
+        <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9836;</span><div><div class="opp-title">Dance Reality Show Open Call</div><div class="opp-date">Apr 18 &middot; Mumbai</div></div></div>
+        <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9834;</span><div><div class="opp-title">Singer Spotlight Season 3</div><div class="opp-date">Apr 25 &middot; Online</div></div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-footer"><p>&copy; 2026 Passion Forge</p><p>Made with &#9825; for creators</p></div>
+  </aside>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="../javascript/script.js"></script>
+</body>
+</html>
