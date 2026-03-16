@@ -140,6 +140,36 @@ function loadMore() {
 function handleLogin()  { window.location.href = 'landing.html'; }
 function handleSignup() { window.location.href = 'landing.html'; }
 
+/* PROFILE POPUP */
+function toggleProfileMenu(e) {
+  e.stopPropagation();
+  var popup = document.getElementById('profilePopup');
+  popup.classList.toggle('open');
+}
+
+function toggleRewardsMenu() {
+  var sub = document.getElementById('rewardsSubmenu');
+  var chevron = document.getElementById('rewardsChevron');
+  sub.classList.toggle('open');
+  chevron.classList.toggle('rotated');
+}
+
+function handleLogout() {
+  document.getElementById('profilePopup').classList.remove('open');
+  showToast('Logging out...');
+  setTimeout(function() { window.location.href = 'landing.html'; }, 900);
+}
+
+document.addEventListener('click', function(e) {
+  var popup = document.getElementById('profilePopup');
+  var avatar = document.getElementById('profileAvatar');
+  if (popup && popup.classList.contains('open')) {
+    if (!popup.contains(e.target) && e.target !== avatar) {
+      popup.classList.remove('open');
+    }
+  }
+});
+
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');

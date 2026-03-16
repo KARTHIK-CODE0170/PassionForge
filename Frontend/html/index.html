@@ -26,7 +26,7 @@
       <span style="position: absolute; top: 8px; right: 8px; background: #fbbf24; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid rgb(28, 28, 36);"></span>
     </div>
     <!-- Profile Avatar -->
-    <div class="avatar" style="background: linear-gradient(135deg, #F97316, #FB923C); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; cursor: pointer;" title="Profile">SR</div>
+    <div class="avatar" id="profileAvatar" style="background: linear-gradient(135deg, #F97316, #FB923C); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; cursor: pointer;" title="Profile" onclick="toggleProfileMenu(event)">SR</div>
   </div>
 </header>
 
@@ -295,6 +295,54 @@
 
     <div class="sidebar-footer"><p>&copy; 2026 Passion Forge</p><p>Made with &#9825; for creators</p></div>
   </aside>
+</div>
+
+<!-- Profile Popup Menu -->
+<div class="profile-popup" id="profilePopup">
+  <div class="profile-popup-header">
+    <div class="profile-popup-avatar">SR</div>
+    <div class="profile-popup-info">
+      <span class="profile-popup-name">Siddharth R.</span>
+      <span class="profile-popup-handle">u/siddharth_r</span>
+    </div>
+  </div>
+  <div class="profile-popup-divider"></div>
+
+  <!-- Rewards Section -->
+  <div class="profile-popup-section-label">&#9670; Rewards</div>
+  <div class="profile-popup-item rewards-item" onclick="toggleRewardsMenu()" id="rewardsToggle">
+    <span class="popup-item-icon">&#9733;</span>
+    <span class="popup-item-text">Rewards</span>
+    <span class="popup-item-chevron" id="rewardsChevron">&#9662;</span>
+  </div>
+  <div class="rewards-submenu" id="rewardsSubmenu">
+    <div class="profile-popup-subitem" onclick="showToast('Credits: 1,240 &#9733;')">
+      <span class="subitem-icon">&#9733;</span>
+      <span>Credits</span>
+      <span class="subitem-badge">1,240</span>
+    </div>
+    <div class="profile-popup-subitem" onclick="showToast('You have 5 badges!')">
+      <span class="subitem-icon">&#127942;</span>
+      <span>Badges</span>
+      <span class="subitem-badge">5</span>
+    </div>
+  </div>
+
+  <div class="profile-popup-divider"></div>
+
+  <!-- Account Settings -->
+  <div class="profile-popup-item" onclick="showToast('Account Settings coming soon!')">
+    <span class="popup-item-icon">&#9881;</span>
+    <span class="popup-item-text">Account Settings</span>
+  </div>
+
+  <div class="profile-popup-divider"></div>
+
+  <!-- Log Out -->
+  <div class="profile-popup-item logout-item" onclick="handleLogout()">
+    <span class="popup-item-icon">&#8592;</span>
+    <span class="popup-item-text">Log Out</span>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
