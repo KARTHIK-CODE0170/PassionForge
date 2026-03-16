@@ -6,8 +6,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: whitesmoke;
-  color: #1F2937;
+  background: rgb(43, 43, 56);
+  color: #f3f4f6;
 }
 
 /* NAVBAR */
@@ -18,8 +18,8 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: white;
-  border-bottom: 1px solid gainsboro;
+  background: rgb(28, 28, 36);
+  border-bottom: 1px solid #1c1c24;
   padding: 0 1.5rem;
   height: 56px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
@@ -49,6 +49,7 @@ body {
 .logo-text {
   font-size: 17px;
   font-weight: 500;
+  font-style: italic;
 }
 
 .logo-text strong {
@@ -76,31 +77,31 @@ body {
   width: 100%;
   height: 40px;
   padding: 0 38px 0 40px;
-  border: 1.5px solid gainsboro;
+  border: 1.5px solid #3d3d4a;
   border-radius: 24px;
-  background: whitesmoke;
+  background: rgb(43, 43, 56);
   font-size: 14px;
   font-family: inherit;
-  color: #1F2937;
+  color: #f3f4f6;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .search-bar:focus {
   border-color: #F97316;
-  background: white;
+  background: rgb(28, 28, 36);
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
 }
 
 .search-bar::placeholder {
-  color: darkgray;
+  color: #9ca3af;
 }
 
 .search-clear {
   position: absolute;
   right: 12px;
   font-size: 12px;
-  color: darkgray;
+  color: #9ca3af;
   cursor: pointer;
   display: none;
 }
@@ -171,8 +172,8 @@ body {
 }
 
 .sidebar-card {
-  background: white;
-  border: 1px solid gainsboro;
+  background: rgb(28, 28, 36);
+  border: 1px solid #1c1c24;
   border-radius: 14px;
   padding: 14px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
@@ -184,7 +185,7 @@ body {
   align-items: center;
   font-size: 13px;
   font-weight: 700;
-  color: #374151;
+  color: #f3f4f6;
   cursor: pointer;
   padding-bottom: 10px;
   border-bottom: 1px solid whitesmoke;
@@ -226,7 +227,7 @@ body {
   border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: #f3f4f6;
   cursor: pointer;
   position: relative;
   transition: background 0.15s, color 0.15s;
@@ -308,7 +309,7 @@ body {
 .s-card-title {
   font-size: 13px;
   font-weight: 800;
-  color: #111827;
+  color: white;
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px solid whitesmoke;
@@ -358,11 +359,13 @@ body {
 
 .creator-hobby {
   font-size: 10px;
-  color: darkgray;
+  color: #9ca3af;
 }
 
 .btn-follow {
-  padding: 4px 10px;
+  width: 76px;
+  padding: 4px 0;
+  text-align: center;
   background: #FFF7ED;
   border: 1.5px solid #FDBA74;
   border-radius: 20px;
@@ -390,6 +393,17 @@ body {
 .challenge-card {
   background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
   border-color: #FDBA74;
+}
+
+.challenge-card .s-card-title,
+.challenge-card .challenge-title,
+.challenge-card .challenge-icon {
+  color: #92400E;
+}
+
+.challenge-card .challenge-desc,
+.challenge-card .challenge-desc strong {
+  color: #c2410c;
 }
 
 .challenge-body {
@@ -468,7 +482,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: darkgray;
+  color: #9ca3af;
   margin-bottom: 6px;
 }
 
@@ -483,7 +497,7 @@ body {
 }
 
 .opp-item:hover {
-  background: whitesmoke;
+  background: rgb(43, 43, 56);
 }
 
 .opp-icon {
@@ -499,14 +513,14 @@ body {
 
 .opp-date {
   font-size: 11px;
-  color: darkgray;
+  color: #9ca3af;
   margin-top: 2px;
 }
 
 .sidebar-footer {
   padding: 10px 4px;
   font-size: 11px;
-  color: darkgray;
+  color: #9ca3af;
   text-align: center;
   line-height: 1.7;
 }
@@ -524,8 +538,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: white;
-  border: 1px solid gainsboro;
+  background: rgb(28, 28, 36);
+  border: 1px solid #1c1c24;
   border-radius: 14px;
   padding: 10px 14px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
@@ -552,7 +566,7 @@ body {
 }
 
 .tab-btn:hover {
-  background: whitesmoke;
+  background: rgb(43, 43, 56);
 }
 
 .tab-btn.active {
@@ -578,8 +592,8 @@ body {
 /* POST CARDS */
 .post-card {
   display: flex;
-  background: white;
-  border: 1px solid gainsboro;
+  background: rgb(28, 28, 36);
+  border: 1px solid #1c1c24;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
@@ -591,7 +605,7 @@ body {
   align-items: center;
   gap: 4px;
   padding: 14px 10px;
-  background: whitesmoke;
+  background: rgb(43, 43, 56);
   border-right: 1px solid whitesmoke;
   min-width: 46px;
 }
@@ -600,7 +614,7 @@ body {
   background: none;
   border: none;
   font-size: 14px;
-  color: darkgray;
+  color: #9ca3af;
   cursor: pointer;
   padding: 3px 6px;
   border-radius: 4px;
@@ -624,7 +638,7 @@ body {
 .vote-count {
   font-size: 13px;
   font-weight: 700;
-  color: #374151;
+  color: #f3f4f6;
 }
 
 .post-body {
@@ -657,7 +671,7 @@ body {
 .username {
   font-size: 12px;
   font-weight: 700;
-  color: #374151;
+  color: #f3f4f6;
 }
 
 .dot {
@@ -667,7 +681,7 @@ body {
 
 .post-time {
   font-size: 12px;
-  color: darkgray;
+  color: #9ca3af;
 }
 
 .cat-tag {
@@ -698,7 +712,7 @@ body {
 .post-title {
   font-size: 16px;
   font-weight: 700;
-  color: #111827;
+  color: white;
   margin-bottom: 6px;
   line-height: 1.35;
 }
@@ -726,7 +740,7 @@ body {
   align-items: center;
   gap: 5px;
   padding: 6px 12px;
-  background: whitesmoke;
+  background: rgb(43, 43, 56);
   border: 1px solid transparent;
   border-radius: 20px;
   font-size: 12px;
@@ -755,20 +769,20 @@ body {
 .comment-input {
   width: 100%;
   padding: 10px 14px;
-  border: 1.5px solid gainsboro;
+  border: 1.5px solid #3d3d4a;
   border-radius: 10px;
   font-size: 13px;
   font-family: inherit;
-  color: #1F2937;
+  color: #f3f4f6;
   resize: none;
   outline: none;
-  background: whitesmoke;
+  background: rgb(43, 43, 56);
   transition: border-color 0.2s;
 }
 
 .comment-input:focus {
   border-color: #F97316;
-  background: white;
+  background: rgb(28, 28, 36);
 }
 
 .btn-comment-submit {
@@ -791,12 +805,12 @@ body {
 
 .btn-load-more {
   padding: 10px 32px;
-  background: white;
-  border: 1.5px solid gainsboro;
+  background: rgb(28, 28, 36);
+  border: 1.5px solid #3d3d4a;
   border-radius: 24px;
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: #f3f4f6;
   cursor: pointer;
   font-family: inherit;
   transition: all 0.2s;
