@@ -180,36 +180,9 @@ function sendMessage() {
     messageInput.value = '';
     messageInput.focus();
     scrollToBottom();
-
-    // Simulate a reply after a short delay (fun demo behaviour)
-    simulateReply();
 }
 
-// ─── Simulate incoming reply ───────────────────────────────
-function simulateReply() {
-    const replies = [
-        "haha fr though 😂",
-        "GG! 🔥",
-        "lol no way 💀",
-        "bro same 😤",
-        "let's GOOO 🚀",
-        "wait what?? 👀",
-        "100% agree 💯",
-        "insane play dude ⚡",
-    ];
 
-    setTimeout(() => {
-        const userData = USER_DATA[currentUser];
-        if (!userData) return;
-
-        const randomReply = replies[Math.floor(Math.random() * replies.length)];
-        const now = new Date();
-        const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-        appendBubble('recv', randomReply, time, userData);
-        scrollToBottom();
-    }, 900 + Math.random() * 600);
-}
 
 // ─── Auto-scroll to bottom ─────────────────────────────────
 function scrollToBottom() {
