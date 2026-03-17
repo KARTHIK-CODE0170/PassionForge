@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passion Forge - Chat</title>
+    <!-- We will link to the new chat.css file -->
+    <link rel="stylesheet" href="../css/chat.css">
+    <!-- Using Google Fonts matching modern design, like Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for simple icons without huge dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="chat-app">
+        <!-- Sidebar Menu (Far Left) -->
+        <nav class="sidebar-menu">
+            <div class="menu-top">
+                <div class="profile-avatar" onclick="window.location.href='landing.html'" title="Logout">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="menu-icon search-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+
+            <div class="menu-nav">
+                <div class="menu-icon active" title="Chats">
+                    <i class="fa-solid fa-message"></i>
+                </div>
+                <!-- Adding an indicator to the active chat icon based on the reference -->
+                <div class="menu-icon" title="Friends">
+                    <i class="fa-solid fa-user-group"></i>
+                </div>
+                <div class="menu-icon" title="Groups/Gaming">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div class="menu-icon" title="Monitor">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contacts Sidebar -->
+        <aside class="contacts-sidebar">
+            <div class="search-bar-container">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-prefix-icon"></i>
+                    <input type="text" placeholder="Search" class="search-input" />
+                    <i class="fa-solid fa-microphone mic-icon"></i>
+                </div>
+            </div>
+
+            <div class="contacts-list" id="contactsList">
+                <!-- Active Contact -->
+                <div class="contact-item active" onclick="selectContact(this, 'user_01')">
+                    <div class="contact-avatar user1-bg"><i class="fa-solid fa-user"></i></div>
+                    <div class="contact-details">
+                        <div class="contact-header">
+                            <span class="contact-name">user_01</span>
+                            <span class="contact-time">6:45 PM</span>
+                        </div>
+                        <div class="contact-last-msg">
+                            <p class="preview-text">See you at 5!</p>
+                            <span class="badge">1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact 2 -->
+                <div class="contact-item" onclick="selectContact(this, 'dev_girl')">
+                    <div class="contact-avatar user2-bg"><i class="fa-solid fa-user-ninja"></i></div>
+                    <div class="contact-details">
+                        <div class="contact-header">
+                            <span class="contact-name">dev_girl</span>
+                            <span class="contact-time">5:10 PM</span>
+                        </div>
+                        <div class="contact-last-msg">
+                            <p class="preview-text">What's up? <span class="emoji">🥺</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact 3 -->
+                <div class="contact-item" onclick="selectContact(this, 'coderX')">
+                    <div class="contact-avatar user3-bg"><i class="fa-solid fa-user-astronaut"></i></div>
+                    <div class="contact-details">
+                        <div class="contact-header">
+                            <span class="contact-name">coderX</span>
+                            <span class="contact-time">4:30 PM</span>
+                        </div>
+                        <div class="contact-last-msg">
+                            <p class="preview-text">Sure thing! <span class="emoji">👍</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact 4 -->
+                <div class="contact-item" onclick="selectContact(this, 'guest123')">
+                    <div class="contact-avatar user4-bg"><i class="fa-solid fa-user-secret"></i></div>
+                    <div class="contact-details">
+                        <div class="contact-header">
+                            <span class="contact-name">guest123</span>
+                            <span class="contact-time">2:20 PM</span>
+                        </div>
+                        <div class="contact-last-msg">
+                            <p class="preview-text">Are you free now? <span class="emoji">😉</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact 5 -->
+                <div class="contact-item" onclick="selectContact(this, 'Techie007')">
+                    <div class="contact-avatar user5-bg"><i class="fa-solid fa-user-tie"></i></div>
+                    <div class="contact-details">
+                        <div class="contact-header">
+                            <span class="contact-name">Techie007</span>
+                            <span class="contact-time">1:05 PM</span>
+                        </div>
+                        <div class="contact-last-msg">
+                            <p class="preview-text">Let's catch up soon!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact 6 -->
+                <div class="contact-item" onclick="selectContact(this, 'gamer_lad')">
+                    <div class="contact-avatar user6-bg"><i class="fa-solid fa-headset"></i></div>
+                    <div class="contact-details">
+                        <div class="contact-header">
+                            <span class="contact-name">gamer_lad</span>
+                            <span class="contact-time">1:05 PM</span>
+                        </div>
+                        <div class="contact-last-msg">
+                            <p class="preview-text">Awesome! <span class="emoji">😎</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                 <!-- Contact 7 -->
+                <div class="contact-item" onclick="selectContact(this, 'debug_master')">
+                    <div class="contact-avatar user7-bg"><i class="fa-solid fa-bug"></i></div>
+                    <div class="contact-details">
+                        <div class="contact-header">
+                            <span class="contact-name">debug_master</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main" id="chatMain">
+            <header class="chat-header">
+                <div class="current-chat-info">
+                    <div class="contact-avatar user1-bg"><i class="fa-solid fa-user"></i></div>
+                    <div class="user-status-info">
+                        <div class="user-name">user_01</div>
+                        <div class="user-status">
+                            <span class="status-dot"></span> online
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="icon-btn"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+            </header>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be injected here. Pre-populating some static ones based on design -->
+                <div class="message-row received">
+                    <div class="message bubble">
+                        <p>Hey! How's it going?</p>
+                        <span class="message-time">6:21 PM</span>
+                    </div>
+                </div>
+
+                <div class="message-row received">
+                    <div class="message bubble">
+                        <p>Hi! <span class="emoji">😘</span><br> I'm good, how about you?</p>
+                        <span class="message-time">6:23 PM</span>
+                    </div>
+                </div>
+
+                <div class="message-row sent">
+                    <div class="message bubble accent-bg">
+                        <p>Doing well, want to grab a coffee later?</p>
+                        <span class="message-time">6:24 PM <i class="fa-solid fa-check-double"></i></span>
+                    </div>
+                    <!-- Using badge in message as per the image design over the edge -->
+                    <div class="floating-badge">1</div>
+                </div>
+
+                <div class="message-row received">
+                    <div class="message bubble">
+                        <p>See you at 5!</p>
+                        <span class="message-time">6:45 PM</span>
+                    </div>
+                </div>
+
+                <div class="message-row sent">
+                    <div class="message bubble accent-bg">
+                        <p>Doing well, want to grab a coffee later?</p>
+                        <span class="message-time">6:24 PM <i class="fa-solid fa-check-double"></i></span>
+                    </div>
+                </div>
+
+                <div class="message-row received">
+                    <div class="message bubble">
+                        <p>Perfect! See you there. <span class="emoji">👋</span></p>
+                        <span class="message-time">6:45 PM <i class="fa-solid fa-check-double"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="chat-input-area">
+                <div class="input-actions-left">
+                    <button class="icon-btn action-icon"><i class="fa-regular fa-face-smile text-orange"></i></button>
+                    <button class="icon-btn action-icon"><i class="fa-solid fa-paperclip"></i></button>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off" />
+                </div>
+                <div class="input-actions-right">
+                    <button class="icon-btn action-icon"><i class="fa-solid fa-microphone"></i></button>
+                    <button class="icon-btn action-icon"><i class="fa-regular fa-paper-plane"></i></button>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()"><i class="fa-solid fa-microphone"></i></button>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="../javascript/chat.js"></script>
+</body>
+</html>
