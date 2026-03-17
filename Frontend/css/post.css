@@ -484,18 +484,20 @@
   gap: 10px;
 }
 .cp-btn-preview {
-  padding: 9px 20px;
-  border-radius: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   border: 1.5px solid #3d3d4a;
   background: transparent;
   color: #9ca3af;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: inherit;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.18s;
 }
-.cp-btn-preview:hover { border-color: #F97316; color: #F97316; }
+.cp-btn-preview:hover { border-color: #F97316; color: #F97316; background: rgba(249, 115, 22, 0.05); }
 
 .cp-btn-cancel {
   padding: 9px 20px;

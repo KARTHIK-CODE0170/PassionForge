@@ -61,8 +61,8 @@ function loadMore() {
   var feed = document.getElementById('centerFeed');
   var wrap = feed.querySelector('.load-more-wrap');
   var posts = [
-    { id:'post-6', cat:'music', ini:'SP', bg:'linear-gradient(135deg,#F59E0B,#FCD34D)', user:'u/sitar_pro', tag:'music-tag', label:'&#9834; Music', time:'8 hours ago', cr:'275 credits', title:'Raga Yaman practice session #45 \u2014 breakthroughs and struggles', preview:'Eight months into learning Sitar and I just managed to hold a steady alaap in Raga Yaman for 12 minutes. My guru says my meend is finally starting to sound natural...', comments:39 },
-    { id:'post-7', cat:'photography', ini:'NJ', bg:'linear-gradient(135deg,#EF4444,#F87171)', user:'u/nisha_journeys', tag:'photography-tag', label:'&#9685; Photography', time:'1 day ago', cr:'310 credits', title:'Street photography ethics \u2014 a guide for beginners', preview:'Before you point your lens at a stranger, there\'s a whole conversation about ethics, consent, and cultural sensitivity. Street photography is one of the most powerful art forms...', comments:71 }
+    { id:'post-6', cat:'music', ini:'SP', bg:'linear-gradient(135deg,#F59E0B,#FCD34D)', user:'u/sitar_pro', tag:'music-tag', label:'🎵 Music', time:'8 hours ago', cr:'275 credits', title:'Raga Yaman practice session #45 \u2014 breakthroughs and struggles', preview:'Eight months into learning Sitar and I just managed to hold a steady alaap in Raga Yaman for 12 minutes. My guru says my meend is finally starting to sound natural...', comments:39 },
+    { id:'post-7', cat:'photography', ini:'NJ', bg:'linear-gradient(135deg,#EF4444,#F87171)', user:'u/nisha_journeys', tag:'photography-tag', label:'📷 Photography', time:'1 day ago', cr:'310 credits', title:'Street photography ethics \u2014 a guide for beginners', preview:'Before you point your lens at a stranger, there\'s a whole conversation about ethics, consent, and cultural sensitivity. Street photography is one of the most powerful art forms...', comments:71 }
   ];
   posts.forEach(function(d) {
     var a = document.createElement('article');
@@ -295,12 +295,12 @@ function createPost(fromPreview) {
 // ── Build Post HTML ─────────────────────────────────────────────
 function buildPostHTML(p) {
   var tagMap = {
-    music:'<span class="cat-tag music-tag">&#9834; Music</span>',
-    singing:'<span class="cat-tag singing-tag">&#127908; Singing</span>',
-    dance:'<span class="cat-tag dance-tag">&#9836; Dance</span>',
-    painting:'<span class="cat-tag painting-tag">&#10000; Painting</span>',
-    writing:'<span class="cat-tag writing-tag">&#9998; Writing</span>',
-    photography:'<span class="cat-tag photography-tag">&#9685; Photography</span>'
+    music:'<span class="cat-tag music-tag">🎵 Music</span>',
+    singing:'<span class="cat-tag singing-tag">🎤 Singing</span>',
+    dance:'<span class="cat-tag dance-tag">💃 Dance</span>',
+    painting:'<span class="cat-tag painting-tag">🎨 Painting</span>',
+    writing:'<span class="cat-tag writing-tag">✍️ Writing</span>',
+    photography:'<span class="cat-tag photography-tag">📷 Photography</span>'
   };
   var primary  = p.hobbies && p.hobbies.length ? p.hobbies[0] : null;
   var catTag   = (primary && tagMap[primary]) ? tagMap[primary]

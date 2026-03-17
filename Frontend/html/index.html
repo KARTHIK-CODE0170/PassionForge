@@ -53,17 +53,17 @@
           <span>&#9670; My Interests</span><span class="chevron">&#9662;</span>
         </div>
         <ul class="s-menu" id="interestsMenu">
-          <li class="s-item active" onclick="filterFeed('music', this)" id="filter-music"><span>&#9834;</span> Music
+          <li class="s-item active" onclick="filterFeed('music', this)" id="filter-music"><span>🎵</span> Music
             <span class="badge">12</span></li>
-          <li class="s-item" onclick="filterFeed('painting', this)" id="filter-painting"><span>&#10000;</span> Painting
+          <li class="s-item" onclick="filterFeed('painting', this)" id="filter-painting"><span>🎨</span> Painting
             <span class="badge">8</span></li>
-          <li class="s-item" onclick="filterFeed('writing', this)" id="filter-writing"><span>&#9998;</span> Writing
+          <li class="s-item" onclick="filterFeed('writing', this)" id="filter-writing"><span>✍️</span> Writing
             <span class="badge">15</span></li>
-          <li class="s-item" onclick="filterFeed('dance', this)" id="filter-dance"><span>&#9836;</span> Dance <span
+          <li class="s-item" onclick="filterFeed('dance', this)" id="filter-dance"><span>💃</span> Dance <span
               class="badge">6</span></li>
-          <li class="s-item" onclick="filterFeed('photography', this)" id="filter-photography"><span>&#9685;</span>
+          <li class="s-item" onclick="filterFeed('photography', this)" id="filter-photography"><span>📷</span>
             Photography <span class="badge">10</span></li>
-          <li class="s-item" onclick="filterFeed('all', this)" id="filter-all"><span>&#9702;</span> All Posts</li>
+          <li class="s-item" onclick="filterFeed('all', this)" id="filter-all"><span>🌐</span> All Posts</li>
         </ul>
       </div>
       <div class="sidebar-card">
@@ -71,13 +71,13 @@
           <span>&#9737; Communities</span><span class="chevron">&#9662;</span>
         </div>
         <ul class="s-menu" id="commMenu">
-          <li class="s-item" onclick="joinCommunity(this,'Guitar Circle')"><span>&#9834;</span> Guitar Circle <span
+          <li class="s-item" onclick="joinCommunity(this,'Guitar Circle')"><span>🎵</span> Guitar Circle <span
               class="join-tag">Join</span></li>
-          <li class="s-item" onclick="joinCommunity(this,'Sketch Lab')"><span>&#9998;</span> Sketch Lab <span
+          <li class="s-item" onclick="joinCommunity(this,'Sketch Lab')"><span>🎨</span> Sketch Lab <span
               class="join-tag">Join</span></li>
-          <li class="s-item" onclick="joinCommunity(this,'Pixel Poets')"><span>&#9997;</span> Pixel Poets <span
+          <li class="s-item" onclick="joinCommunity(this,'Pixel Poets')"><span>✍️</span> Pixel Poets <span
               class="join-tag">Join</span></li>
-          <li class="s-item" onclick="joinCommunity(this,'Lens &amp; Light')"><span>&#9685;</span> Lens &amp; Light
+          <li class="s-item" onclick="joinCommunity(this,'Lens &amp; Light')"><span>📷</span> Lens &amp; Light
             <span class="join-tag">Join</span></li>
         </ul>
       </div>
@@ -91,10 +91,10 @@
     <main class="feed" id="centerFeed">
       <div class="feed-header">
         <div class="feed-tabs">
-          <button class="tab-btn active" onclick="switchTab('hot',this)">&#9733; Hot</button>
-          <button class="tab-btn" onclick="switchTab('new',this)">&#9670; New</button>
-          <button class="tab-btn" onclick="switchTab('top',this)">&#9651; Top</button>
-          <button class="tab-btn" onclick="switchTab('rising',this)">&#8593; Rising</button>
+          <button class="tab-btn active" onclick="switchTab('hot',this)">🔥 Hot</button>
+          <button class="tab-btn" onclick="switchTab('new',this)">✨ New</button>
+          <button class="tab-btn" onclick="switchTab('top',this)">🏆 Top</button>
+          <button class="tab-btn" onclick="switchTab('rising',this)">📈 Rising</button>
         </div>
         <button class="btn-create-post" onclick="openCreatePost()">+ Create Post</button>
       </div>
@@ -111,10 +111,10 @@
             <div class="avatar" style="background:linear-gradient(135deg,#f97316,#fb923c)">AM</div>
             <span class="username">u/aria_melody</span>
             <span class="dot">&middot;</span>
-            <span class="cat-tag music-tag">&#9834; Music</span>
+            <span class="cat-tag music-tag">🎵 Music</span>
             <span class="dot">&middot;</span>
             <span class="post-time">2 hours ago</span>
-            <span class="credits">&#9733; 320 credits</span>
+            <span class="credits">⭐ 320 credits</span>
           </div>
           <h2 class="post-title">Finally nailed the F chord after 3 weeks of practice</h2>
           <p class="post-preview">It's been a painful journey — my fingertips are calloused and my neighbors probably
@@ -123,7 +123,7 @@
           <div class="post-actions">
             <button class="action-btn" onclick="toggleComment('post-1')">&#9656; 84 Comments</button>
             <button class="action-btn" onclick="sharePost('F chord breakthrough')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
           </div>
           <div class="comment-box hidden" id="comment-post-1">
             <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
@@ -144,10 +144,10 @@
             <div class="avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">LS</div>
             <span class="username">u/luna_sketches</span>
             <span class="dot">&middot;</span>
-            <span class="cat-tag painting-tag">&#10000; Painting</span>
+            <span class="cat-tag painting-tag">🎨 Painting</span>
             <span class="dot">&middot;</span>
             <span class="post-time">5 hours ago</span>
-            <span class="credits">&#9733; 210 credits</span>
+            <span class="credits">⭐ 210 credits</span>
           </div>
           <h2 class="post-title">My first watercolor landscape – 30-day challenge complete</h2>
           <p class="post-preview">Started the 30-day watercolor challenge knowing absolutely nothing about wet-on-wet
@@ -156,7 +156,7 @@
           <div class="post-actions">
             <button class="action-btn" onclick="toggleComment('post-2')">&#9656; 62 Comments</button>
             <button class="action-btn" onclick="sharePost('Watercolor Challenge')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
           </div>
           <div class="comment-box hidden" id="comment-post-2">
             <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
@@ -177,10 +177,10 @@
             <div class="avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">RW</div>
             <span class="username">u/ravi_writes</span>
             <span class="dot">&middot;</span>
-            <span class="cat-tag writing-tag">&#9998; Writing</span>
+            <span class="cat-tag writing-tag">✍️ Writing</span>
             <span class="dot">&middot;</span>
             <span class="post-time">1 day ago</span>
-            <span class="credits">&#9733; 450 credits</span>
+            <span class="credits">⭐ 450 credits</span>
           </div>
           <h2 class="post-title">I wrote 1,000 words every day for 60 days — here's what changed</h2>
           <p class="post-preview">Before this challenge, I'd write a few sentences and quit. After 60 days of consistent
@@ -189,7 +189,7 @@
           <div class="post-actions">
             <button class="action-btn" onclick="toggleComment('post-3')">&#9656; 128 Comments</button>
             <button class="action-btn" onclick="sharePost('60-day Writing Challenge')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
           </div>
           <div class="comment-box hidden" id="comment-post-3">
             <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
@@ -210,10 +210,10 @@
             <div class="avatar" style="background:linear-gradient(135deg,#ec4899,#f472b6)">DQ</div>
             <span class="username">u/dance_queen_priya</span>
             <span class="dot">&middot;</span>
-            <span class="cat-tag dance-tag">&#9836; Dance</span>
+            <span class="cat-tag dance-tag">💃 Dance</span>
             <span class="dot">&middot;</span>
             <span class="post-time">3 hours ago</span>
-            <span class="credits">&#9733; 185 credits</span>
+            <span class="credits">⭐ 185 credits</span>
           </div>
           <h2 class="post-title">Learnt my first Bharatanatyam piece in 3 months – video inside</h2>
           <p class="post-preview">Three months ago I couldn't even hold the Araimandi posture for 10 seconds. Today I
@@ -222,7 +222,7 @@
           <div class="post-actions">
             <button class="action-btn" onclick="toggleComment('post-4')">&#9656; 47 Comments</button>
             <button class="action-btn" onclick="sharePost('Bharatanatyam Journey')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
           </div>
           <div class="comment-box hidden" id="comment-post-4">
             <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
@@ -243,10 +243,10 @@
             <div class="avatar" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)">KL</div>
             <span class="username">u/kiran_lens</span>
             <span class="dot">&middot;</span>
-            <span class="cat-tag photography-tag">&#9685; Photography</span>
+            <span class="cat-tag photography-tag">📷 Photography</span>
             <span class="dot">&middot;</span>
             <span class="post-time">6 hours ago</span>
-            <span class="credits">&#9733; 390 credits</span>
+            <span class="credits">⭐ 390 credits</span>
           </div>
           <h2 class="post-title">Mastering the golden hour: my tips after 200+ sunrise shoots</h2>
           <p class="post-preview">Waking up at 4:30 AM is never glamorous, but catching that golden wash of light across
@@ -255,7 +255,7 @@
           <div class="post-actions">
             <button class="action-btn" onclick="toggleComment('post-5')">&#9656; 93 Comments</button>
             <button class="action-btn" onclick="sharePost('Golden Hour Guide')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">&#9734; Save</button>
+            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
           </div>
           <div class="comment-box hidden" id="comment-post-5">
             <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
@@ -273,29 +273,29 @@
     <aside class="sidebar sidebar-right">
 
       <div class="sidebar-card">
-        <div class="s-card-title">&#9733; Trending Creators</div>
+        <div class="s-card-title">⭐ Trending Creators</div>
         <ul class="creators-list">
           <li class="creator-item">
             <div class="creator-avatar" style="background:linear-gradient(135deg,#f97316,#fb923c)">AM</div>
-            <div class="creator-info"><span class="creator-name">aria_melody</span><span class="creator-hobby">&#9834;
+            <div class="creator-info"><span class="creator-name">aria_melody</span><span class="creator-hobby">🎵
                 Music &middot; 1.2k followers</span></div>
             <button class="btn-follow" onclick="followCreator(this)">Follow</button>
           </li>
           <li class="creator-item">
             <div class="creator-avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">LS</div>
             <div class="creator-info"><span class="creator-name">luna_sketches</span><span
-                class="creator-hobby">&#10000; Painting &middot; 876 followers</span></div>
+                class="creator-hobby">🎨 Painting &middot; 876 followers</span></div>
             <button class="btn-follow" onclick="followCreator(this)">Follow</button>
           </li>
           <li class="creator-item">
             <div class="creator-avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">RW</div>
-            <div class="creator-info"><span class="creator-name">ravi_writes</span><span class="creator-hobby">&#9998;
+            <div class="creator-info"><span class="creator-name">ravi_writes</span><span class="creator-hobby">✍️
                 Writing &middot; 2.1k followers</span></div>
             <button class="btn-follow" onclick="followCreator(this)">Follow</button>
           </li>
           <li class="creator-item">
             <div class="creator-avatar" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)">KL</div>
-            <div class="creator-info"><span class="creator-name">kiran_lens</span><span class="creator-hobby">&#9685;
+            <div class="creator-info"><span class="creator-name">kiran_lens</span><span class="creator-hobby">📷
                 Photography &middot; 960 followers</span></div>
             <button class="btn-follow" onclick="followCreator(this)">Follow</button>
           </li>
@@ -303,31 +303,31 @@
       </div>
 
       <div class="sidebar-card challenge-card">
-        <div class="s-card-title">&#9670; Daily Practice Challenge</div>
+        <div class="s-card-title">🎯 Daily Practice Challenge</div>
         <div class="challenge-body">
-          <div class="challenge-icon">&#9670;</div>
+          <div class="challenge-icon">🎯</div>
           <p class="challenge-title">Practice for 20 minutes today</p>
           <p class="challenge-desc">Complete today's challenge to earn <strong>50 credits</strong> and keep your streak
             alive!</p>
           <div class="streak-bar">
             <div class="streak-fill" id="streakFill" style="width:60%"></div>
           </div>
-          <p class="streak-label">&#9733; 6-day streak — keep it going!</p>
+          <p class="streak-label">🔥 6-day streak — keep it going!</p>
           <button class="btn-challenge" onclick="completeChallenge()">Mark as Complete</button>
         </div>
       </div>
 
       <div class="sidebar-card">
-        <div class="s-card-title">&#9656; Upcoming Opportunities</div>
+        <div class="s-card-title">📅 Upcoming Opportunities</div>
         <div class="opp-group">
-          <div class="opp-label">&#9632; Workshops</div>
-          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9834;</span>
+          <div class="opp-label">📺 Workshops</div>
+          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">🎵</span>
             <div>
               <div class="opp-title">Piano Basics – Free Workshop</div>
               <div class="opp-date">Mar 22 &middot; Online</div>
             </div>
           </div>
-          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9998;</span>
+          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">🎨</span>
             <div>
               <div class="opp-title">Watercolor Techniques</div>
               <div class="opp-date">Mar 29 &middot; Chennai</div>
@@ -335,14 +335,14 @@
           </div>
         </div>
         <div class="opp-group">
-          <div class="opp-label">&#9632; Competitions</div>
-          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9997;</span>
+          <div class="opp-label">📺 Competitions</div>
+          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">✍️</span>
             <div>
               <div class="opp-title">Short Story Sprint</div>
               <div class="opp-date">Apr 5 &middot; &#8377;5000 prize</div>
             </div>
           </div>
-          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9685;</span>
+          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">📷</span>
             <div>
               <div class="opp-title">Landscape Photography Cup</div>
               <div class="opp-date">Apr 12 &middot; National</div>
@@ -350,14 +350,14 @@
           </div>
         </div>
         <div class="opp-group">
-          <div class="opp-label">&#9632; Auditions</div>
-          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9836;</span>
+          <div class="opp-label">📺 Auditions</div>
+          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">💃</span>
             <div>
               <div class="opp-title">Dance Reality Show Open Call</div>
               <div class="opp-date">Apr 18 &middot; Mumbai</div>
             </div>
           </div>
-          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">&#9834;</span>
+          <div class="opp-item" onclick="showToast('Redirecting...')"><span class="opp-icon">🎤</span>
             <div>
               <div class="opp-title">Singer Spotlight Season 3</div>
               <div class="opp-date">Apr 25 &middot; Online</div>
@@ -385,20 +385,20 @@
     <div class="profile-popup-divider"></div>
 
     <!-- Rewards Section -->
-    <div class="profile-popup-section-label">&#9670; Rewards</div>
+    <div class="profile-popup-section-label">💎 Rewards</div>
     <div class="profile-popup-item rewards-item" onclick="toggleRewardsMenu()" id="rewardsToggle">
-      <span class="popup-item-icon">&#9733;</span>
+      <span class="popup-item-icon">⭐</span>
       <span class="popup-item-text">Rewards</span>
-      <span class="popup-item-chevron" id="rewardsChevron">&#9662;</span>
+      <span class="popup-item-chevron" id="rewardsChevron">🔽</span>
     </div>
     <div class="rewards-submenu" id="rewardsSubmenu">
-      <div class="profile-popup-subitem" onclick="showToast('Credits: 1,240 &#9733;')">
-        <span class="subitem-icon">&#9733;</span>
+      <div class="profile-popup-subitem" onclick="showToast('Credits: 1,240 ⭐')">
+        <span class="subitem-icon">⭐</span>
         <span>Credits</span>
         <span class="subitem-badge">1,240</span>
       </div>
       <div class="profile-popup-subitem" onclick="showToast('You have 5 badges!')">
-        <span class="subitem-icon">&#127942;</span>
+        <span class="subitem-icon">🏆</span>
         <span>Badges</span>
         <span class="subitem-badge">5</span>
       </div>
@@ -408,7 +408,7 @@
 
     <!-- Account Settings -->
     <div class="profile-popup-item" onclick="showToast('Account Settings coming soon!')">
-      <span class="popup-item-icon">&#9881;</span>
+      <span class="popup-item-icon">⚙️</span>
       <span class="popup-item-text">Account Settings</span>
     </div>
 
@@ -442,10 +442,10 @@
 
       <!-- Post Type Selector -->
       <div class="cp-type-row">
-        <button class="cp-type-btn active" onclick="selectType('text',this)" title="Text post">&#9997; Text</button>
-        <button class="cp-type-btn" onclick="selectType('image',this)" title="Image post">&#128247; Image</button>
-        <button class="cp-type-btn" onclick="selectType('video',this)" title="Video post">&#127916; Video</button>
-        <button class="cp-type-btn" onclick="selectType('reel',this)" title="Reel post">&#127910; Reel</button>
+        <button class="cp-type-btn active" onclick="selectType('text',this)" title="Text post">✍️ Text</button>
+        <button class="cp-type-btn" onclick="selectType('image',this)" title="Image post">📷 Image</button>
+        <button class="cp-type-btn" onclick="selectType('video',this)" title="Video post">🎬 Video</button>
+        <button class="cp-type-btn" onclick="selectType('reel',this)" title="Reel post">🎦 Reel</button>
       </div>
 
       <!-- Caption -->
@@ -460,7 +460,7 @@
         <input type="file" id="cpFileInput" accept="image/*,video/*" onchange="handleMediaUpload(event)"
           style="display:none">
         <div class="cp-upload-inner" onclick="document.getElementById('cpFileInput').click()" id="cpUploadInner">
-          <div class="cp-upload-icon">&#128247;</div>
+          <div class="cp-upload-icon">📷</div>
           <div class="cp-upload-label">Click to upload a photo or video</div>
           <div class="cp-upload-hint">JPG, PNG, GIF, MP4 &middot; Max 50 MB</div>
         </div>
@@ -473,14 +473,14 @@
 
       <!-- Hobby Tags -->
       <div class="cp-section">
-        <div class="cp-label">&#9670; Hobby Tags <span class="cp-optional">(select all that apply)</span></div>
+        <div class="cp-label">🏷️ Hobby Tags <span class="cp-optional">(select all that apply)</span></div>
         <div class="cp-hobbies" id="cpHobbies">
-          <button class="cp-hobby-tag" onclick="toggleHobby(this,'music')">&#9834; Music</button>
-          <button class="cp-hobby-tag" onclick="toggleHobby(this,'singing')">&#127908; Singing</button>
-          <button class="cp-hobby-tag" onclick="toggleHobby(this,'dance')">&#9836; Dance</button>
-          <button class="cp-hobby-tag" onclick="toggleHobby(this,'painting')">&#10000; Painting</button>
-          <button class="cp-hobby-tag" onclick="toggleHobby(this,'writing')">&#9998; Writing</button>
-          <button class="cp-hobby-tag" onclick="toggleHobby(this,'photography')">&#9685; Photography</button>
+          <button class="cp-hobby-tag" onclick="toggleHobby(this,'music')">🎵 Music</button>
+          <button class="cp-hobby-tag" onclick="toggleHobby(this,'singing')">🎤 Singing</button>
+          <button class="cp-hobby-tag" onclick="toggleHobby(this,'dance')">💃 Dance</button>
+          <button class="cp-hobby-tag" onclick="toggleHobby(this,'painting')">🎨 Painting</button>
+          <button class="cp-hobby-tag" onclick="toggleHobby(this,'writing')">✍️ Writing</button>
+          <button class="cp-hobby-tag" onclick="toggleHobby(this,'photography')">📷 Photography</button>
         </div>
       </div>
 
@@ -495,10 +495,12 @@
 
       <!-- Action Buttons -->
       <div class="cp-actions">
-        <button class="cp-btn-preview" onclick="previewPost()">&#128065; Preview</button>
+        <button class="cp-btn-preview" onclick="previewPost()">
+          <span class="preview-icon">👁️</span>
+        </button>
         <div style="display:flex;gap:10px;">
           <button class="cp-btn-cancel" onclick="closeCreatePost()">Cancel</button>
-          <button class="cp-btn-post" onclick="createPost()">&#9654; Post</button>
+          <button class="cp-btn-post" onclick="createPost()">🚀 Post</button>
         </div>
       </div>
     </div>
@@ -508,13 +510,15 @@
   <div class="cp-overlay" id="cpPreviewOverlay" onclick="closePreview(event)">
     <div class="cp-modal cp-preview-modal" id="cpPreviewModal">
       <div class="cp-header">
-        <span style="font-weight:700;font-size:15px;">&#128065; Post Preview</span>
+        <span style="font-weight:700;font-size:15px;">👁️ Post Preview</span>
         <button class="cp-close" onclick="closePreview()">&times;</button>
       </div>
       <div id="cpPreviewContent" class="cp-preview-content"></div>
       <div class="cp-actions" style="border-top:1px solid #3d3d4a;padding-top:14px;margin-top:0;">
-        <button class="cp-btn-preview" onclick="closePreview()">&#9664; Edit</button>
-        <button class="cp-btn-post" onclick="closePreview();createPost(true)">&#9654; Publish Now</button>
+        <button class="cp-btn-preview" onclick="closePreview()">
+          <span class="preview-icon">✏️</span>
+        </button>
+        <button class="cp-btn-post" onclick="closePreview();createPost(true)">🚀 Publish Now</button>
       </div>
     </div>
   </div>
