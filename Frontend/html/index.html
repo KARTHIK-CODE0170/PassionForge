@@ -495,7 +495,7 @@
 
       <!-- Action Buttons -->
       <div class="cp-actions">
-        <button class="cp-btn-preview" onclick="previewPost()">
+        <button class="cp-btn-preview" onclick="previewPost()" title="Preview">
           <span class="preview-icon">👁️</span>
         </button>
         <div style="display:flex;gap:10px;">
@@ -515,7 +515,7 @@
       </div>
       <div id="cpPreviewContent" class="cp-preview-content"></div>
       <div class="cp-actions" style="border-top:1px solid #3d3d4a;padding-top:14px;margin-top:0;">
-        <button class="cp-btn-preview" onclick="closePreview()">
+        <button class="cp-btn-preview" onclick="closePreview()" title="Edit">
           <span class="preview-icon">✏️</span>
         </button>
         <button class="cp-btn-post" onclick="closePreview();createPost(true)">🚀 Publish Now</button>
