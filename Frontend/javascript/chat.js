@@ -248,6 +248,50 @@ document.querySelectorAll('.nav-icon').forEach(icon => {
     });
 });
 
+// ─── Chat Options Menu ─────────────────────────────────────
+const chatOptionsMenu = document.getElementById('chatOptionsMenu');
+
+function toggleChatMenu() {
+    chatOptionsMenu.classList.toggle('visible');
+}
+
+// Close options menu when clicking outside
+document.addEventListener('click', e => {
+    if (
+        chatOptionsMenu && 
+        chatOptionsMenu.classList.contains('visible') &&
+        !chatOptionsMenu.contains(e.target) &&
+        !e.target.closest('button[onclick="toggleChatMenu()"]')
+    ) {
+        chatOptionsMenu.classList.remove('visible');
+    }
+});
+
+function clearCurrentChat() {
+    if (confirm(`Are you sure you want to clear chat history with ${currentUser}?`)) {
+        messagesArea.innerHTML = `
+            <div class="date-divider"><span>Today</span></div>
+        `;
+        toggleChatMenu();
+    }
+}
+
+function viewUserProfile() {
+    alert(`Viewing profile for: ${currentUser}`);
+    toggleChatMenu();
+}
+
+function deleteCurrentChat() {
+    if (confirm(`Permanently delete chat conversation with ${currentUser}?`)) {
+        messagesArea.innerHTML = `
+            <div style="text-align: center; color: var(--text-muted); margin-top: 50px; font-size: 13px;">
+                Conversation deleted.
+            </div>
+        `;
+        toggleChatMenu();
+    }
+}
+
 // ─── Init ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     scrollToBottom();

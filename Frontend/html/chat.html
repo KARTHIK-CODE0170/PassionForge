@@ -218,7 +218,26 @@
                     <button class="hdr-btn" title="Voice Call"><i class="fa-solid fa-phone"></i></button>
 
                     <button class="hdr-btn" title="Search in chat"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <button class="hdr-btn" title="More options"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    
+                    <!-- More Options Dropdown -->
+                    <div class="dropdown-container" style="position: relative;">
+                        <button class="hdr-btn" title="More options" onclick="toggleChatMenu()">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        
+                        <div class="chat-options-menu" id="chatOptionsMenu">
+                            <div class="menu-item" onclick="clearCurrentChat()">
+                                <i class="fa-solid fa-broom"></i> Clear Chat
+                            </div>
+                            <div class="menu-item" onclick="viewUserProfile()">
+                                <i class="fa-solid fa-user"></i> View Profile
+                            </div>
+                            <div class="menu-divider"></div>
+                            <div class="menu-item danger" onclick="deleteCurrentChat()">
+                                <i class="fa-solid fa-trash"></i> Delete Chat
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </header>
 

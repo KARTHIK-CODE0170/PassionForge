@@ -564,6 +564,76 @@ input {
     color: var(--accent);
 }
 
+/* ─── Chat Options Dropdown ─────────────────────────── */
+.chat-options-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 200px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    padding: 8px 0;
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.chat-options-menu.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.menu-item {
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background var(--transition), color var(--transition);
+}
+
+.menu-item i {
+    font-size: 15px;
+    color: var(--text-muted);
+    width: 18px;
+    text-align: center;
+}
+
+.menu-item:hover {
+    background: var(--bg-hover);
+    color: var(--accent);
+}
+
+.menu-item:hover i {
+    color: var(--accent);
+}
+
+.menu-item.danger {
+    color: #ef4444; /* red */
+}
+
+.menu-item.danger i {
+    color: #ef4444;
+}
+
+.menu-item.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.menu-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 0;
+}
+
 /* ─── Messages Area ─────────────────────────────────── */
 .messages-area {
     flex: 1;
