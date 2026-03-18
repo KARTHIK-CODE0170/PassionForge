@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Settings – Passion Forge</title>
+  <meta name="description" content="Manage your Passion Forge profile, security, preferences, and privacy settings." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/account_settings.css" />
+</head>
+<body>
+
+<!-- ═══════════════ NAVBAR ═══════════════ -->
+<header class="navbar" id="navbar">
+  <a class="nav-logo" href="index.html" title="Back to feed">
+    <img src="../../Img sources/PassionForge_logo.png" alt="Passion Forge Logo"
+         style="width:38px;height:38px;border-radius:50%;border:2px solid #F97316;object-fit:cover;" />
+    <span class="logo-text">Passion <strong>Forge</strong></span>
+  </a>
+  <div class="nav-right">
+    <a class="btn-primary" href="index.html" style="text-decoration: none; padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 6px;">&#8962; Back to Dashboard</a>
+    <div class="nav-avatar" id="settingsNavAvatar" title="Your profile">SR</div>
+  </div>
+</header>
+
+<!-- ═══════════════ MAIN WRAPPER ═══════════════ -->
+<div class="settings-wrapper">
+
+  <!-- ━━━ LEFT SIDEBAR ━━━ -->
+  <aside class="settings-sidebar">
+    <div class="sidebar-profile">
+      <div class="sidebar-avatar-wrap">
+        <div class="sidebar-avatar" id="sidebarAvatar">SR</div>
+      </div>
+      <div class="sidebar-user-info">
+        <div class="user-name" id="sidebarUserName">Siddharth R.</div>
+        <div class="user-handle" id="sidebarHandle">u/siddharth_r</div>
+      </div>
+    </div>
+
+    <nav class="settings-nav" role="navigation" aria-label="Settings sections">
+      <div class="settings-nav-item active" data-section="profile"
+           onclick="navigateSection('profile',true)" title="Profile Settings">
+        <span class="nav-item-icon">&#9881;</span> Profile
+      </div>
+      <div class="settings-nav-item" data-section="security"
+           onclick="navigateSection('security',true)" title="Security Settings">
+        <span class="nav-item-icon">&#128274;</span> Security
+      </div>
+      <div class="settings-nav-item" data-section="preferences"
+           onclick="navigateSection('preferences',true)" title="Preferences">
+        <span class="nav-item-icon">&#10000;</span> Preferences
+      </div>
+      <div class="settings-nav-item" data-section="notifications"
+           onclick="navigateSection('notifications',true)" title="Notifications">
+        <span class="nav-item-icon">&#128276;</span> Notifications
+      </div>
+      <div class="settings-nav-item" data-section="privacy"
+           onclick="navigateSection('privacy',true)" title="Privacy Settings">
+        <span class="nav-item-icon">&#9930;</span> Privacy
+      </div>
+      <div class="settings-nav-item danger" data-section="actions"
+           onclick="navigateSection('actions',true)" title="Account Actions">
+        <span class="nav-item-icon">&#9888;</span> Account
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ━━━ SETTINGS CONTENT ━━━ -->
+  <section class="settings-content">
+
+    <!-- ════════ 1. PROFILE SETTINGS ════════ -->
+    <div class="settings-panel active" id="panel-profile">
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>&#9881; Profile Settings</h2>
+          <p>Manage your public profile information and hobbies.</p>
+        </div>
+
+        <!-- Avatar -->
+        <div class="form-group">
+          <label class="form-label">Profile Picture</label>
+          <div class="avatar-upload-row">
+            <div class="avatar-preview" id="avatarPreview">
+              <span class="avatar-preview-initials" id="avatarInitials">SR</span>
+            </div>
+            <div class="avatar-upload-btns">
+              <button class="btn-upload" onclick="document.getElementById('avatarFileInput').click()">
+                &#9685; Upload Photo
+              </button>
+              <span class="avatar-upload-hint">JPG, PNG or GIF · Max 5 MB</span>
+            </div>
+          </div>
+          <input type="file" id="avatarFileInput" accept="image/*" style="display:none"
+                 onchange="handleAvatarUpload(this)" />
+        </div>
+
+        <!-- Username -->
+        <div class="form-group">
+          <label class="form-label" for="inputUsername">Username</label>
+          <input type="text" id="inputUsername" class="form-input"
+                 placeholder="Enter your username" maxlength="32"
+                 oninput="clearErrors(['inputUsername'])" />
+          <span class="field-error" id="err-inputUsername"></span>
+        </div>
+
+        <!-- Bio -->
+        <div class="form-group">
+          <label class="form-label" for="inputBio">Bio</label>
+          <textarea id="inputBio" class="form-textarea"
+                    placeholder="Tell the community about yourself and your creative journey…"
+                    rows="4" maxlength="300"></textarea>
+          <span class="form-hint">Max 300 characters</span>
+        </div>
+
+        <!-- Hobbies -->
+        <div class="form-group">
+          <label class="form-label">My Hobbies</label>
+          <div class="hobby-chips-grid" id="profileHobbies">
+            <div class="hobby-chip" data-hobby="Music"       onclick="toggleHobbyChip(this)">&#9834; Music</div>
+            <div class="hobby-chip" data-hobby="Singing"     onclick="toggleHobbyChip(this)">&#9835; Singing</div>
+            <div class="hobby-chip" data-hobby="Dance"       onclick="toggleHobbyChip(this)">&#9836; Dance</div>
+            <div class="hobby-chip" data-hobby="Painting"    onclick="toggleHobbyChip(this)">&#10000; Painting</div>
+            <div class="hobby-chip" data-hobby="Writing"     onclick="toggleHobbyChip(this)">&#9998; Writing</div>
+            <div class="hobby-chip" data-hobby="Photography" onclick="toggleHobbyChip(this)">&#9685; Photography</div>
+          </div>
+          <span class="form-hint">Select all that apply — these personalise your feed.</span>
+        </div>
+
+        <div class="form-action-row">
+          <button class="btn-primary" onclick="handleProfileSave()">&#10004; Save Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ 2. SECURITY SETTINGS ════════ -->
+    <div class="settings-panel" id="panel-security">
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>&#128274; Change Password</h2>
+          <p>Keep your account secure by using a strong, unique password.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputCurrentPassword">Current Password</label>
+          <div class="password-group">
+            <input type="password" id="inputCurrentPassword" class="form-input"
+                   placeholder="Enter current password"
+                   oninput="clearErrors(['inputCurrentPassword'])" />
+            <button class="password-toggle" type="button"
+                    onclick="togglePasswordVisibility(this,'inputCurrentPassword')">&#128065;</button>
+          </div>
+          <span class="field-error" id="err-inputCurrentPassword"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputNewPassword">New Password</label>
+          <div class="password-group">
+            <input type="password" id="inputNewPassword" class="form-input"
+                   placeholder="At least 8 characters"
+                   oninput="clearErrors(['inputNewPassword'])" />
+            <button class="password-toggle" type="button"
+                    onclick="togglePasswordVisibility(this,'inputNewPassword')">&#128065;</button>
+          </div>
+          <span class="field-error" id="err-inputNewPassword"></span>
+          <span class="form-hint">Min 8 characters · use letters, numbers &amp; symbols.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputConfirmPassword">Confirm New Password</label>
+          <div class="password-group">
+            <input type="password" id="inputConfirmPassword" class="form-input"
+                   placeholder="Repeat new password"
+                   oninput="clearErrors(['inputConfirmPassword'])" />
+            <button class="password-toggle" type="button"
+                    onclick="togglePasswordVisibility(this,'inputConfirmPassword')">&#128065;</button>
+          </div>
+          <span class="field-error" id="err-inputConfirmPassword"></span>
+        </div>
+
+        <div class="form-action-row" style="margin-bottom: 0; padding-bottom: 0;">
+          <button class="btn-primary" onclick="handleSecuritySave()">&#128272; Update Password</button>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>&#9993; Update Email</h2>
+          <p>Change the email address linked to your account.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inputEmail">Current Email</label>
+          <input type="email" id="inputEmail" class="form-input" placeholder="your@email.com" readonly
+                 style="opacity:0.6;cursor:not-allowed;" />
+          <span class="form-hint">Contact the displayed email on file.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inputSecurityEmail">New Email Address</label>
+          <input type="email" id="inputSecurityEmail" class="form-input"
+                 placeholder="new@email.com"
+                 oninput="clearErrors(['inputSecurityEmail'])" />
+          <span class="field-error" id="err-inputSecurityEmail"></span>
+        </div>
+        <div class="form-action-row">
+          <button class="btn-primary" onclick="handleSecuritySave()">&#9993; Update Email</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-panel" id="panel-preferences">
+
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>&#9670; Hobby Interests</h2>
+          <p>Update the interests that shape your personalised feed. Click a hobby to add or remove it.</p>
+        </div>
+        
+        <div class="hobby-section-label">Your Selected Hobbies</div>
+        <div class="hobby-chips-grid" id="prefSelectedHobbies">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="hobby-section-label" style="margin-top: 1.5rem;">Add More Hobbies</div>
+        <div class="hobby-chips-grid" id="prefAvailableHobbies">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="form-action-row" style="margin-top: 20px;">
+          <button class="btn-primary" onclick="savePrefHobbies()">&#10004; Save Interests</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ 4. NOTIFICATION SETTINGS ════════ -->
+    <div class="settings-panel" id="panel-notifications">
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>&#128276; Notification Preferences</h2>
+          <p>Control what you're notified about. Changes are saved immediately.</p>
+        </div>
+        <div class="toggle-list">
+          <!-- Likes -->
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label">&#9829; Likes</div>
+              <div class="toggle-desc">Get notified when someone appreciates your post.</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-likes" onchange="handleNotificationToggle('likes')" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <!-- Comments -->
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label">&#128172; Comments</div>
+              <div class="toggle-desc">Get notified when someone comments on your post.</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-comments" onchange="handleNotificationToggle('comments')" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <!-- Followers -->
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label">&#128101; New Followers</div>
+              <div class="toggle-desc">Get notified when someone starts following you.</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-followers" onchange="handleNotificationToggle('followers')" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <!-- Challenges -->
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label">&#127942; Challenge Updates</div>
+              <div class="toggle-desc">Get reminders about daily practice challenges.</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-challenges" onchange="handleNotificationToggle('challenges')" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ 5. PRIVACY SETTINGS ════════ -->
+    <div class="settings-panel" id="panel-privacy">
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>&#9930; Privacy Settings</h2>
+          <p>Control who can see your profile and interact with your content.</p>
+        </div>
+
+        <!-- Profile Visibility -->
+        <div class="privacy-row">
+          <div class="privacy-info">
+            <div class="privacy-label">&#128100; Profile Visibility</div>
+            <div class="privacy-desc">Who can see your profile, posts, and activity.</div>
+          </div>
+          <select id="privacyVisibility" class="form-select" onchange="handlePrivacyChange()">
+            <option value="Public">&#127757; Public – Everyone</option>
+            <option value="Private">&#128274; Private – Only me</option>
+          </select>
+        </div>
+
+        <!-- Who Can Comment -->
+        <div class="privacy-row">
+          <div class="privacy-info">
+            <div class="privacy-label">&#128172; Who Can Comment</div>
+            <div class="privacy-desc">Choose who can comment on your posts.</div>
+          </div>
+          <select id="privacyComments" class="form-select" onchange="handlePrivacyChange()">
+            <option value="Everyone">&#127757; Everyone</option>
+            <option value="Followers">&#128101; Followers only</option>
+            <option value="Nobody">&#128683; Nobody</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ 6. ACCOUNT ACTIONS ════════ -->
+    <div class="settings-panel" id="panel-actions">
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>&#9888; Account Actions</h2>
+          <p>Manage your session or permanently delete your account.</p>
+        </div>
+
+        <!-- Back to Dashboard -->
+        <div class="action-item" style="padding-top: 0;">
+          <div class="action-info">
+            <div class="action-title" style="color: var(--accent);">&#8962; Back to Dashboard</div>
+            <div class="action-desc">Return to the main Passion Forge dashboard and feed.</div>
+          </div>
+          <button class="btn-primary" onclick="window.location.href='index.html'">Go to Dashboard</button>
+        </div>
+
+        <!-- Logout -->
+        <div class="action-item">
+          <div class="action-info">
+            <div class="action-title">&#8592; Log Out</div>
+            <div class="action-desc">End your current session. You can log back in at any time.</div>
+          </div>
+          <button class="btn-secondary" onclick="handleSettingsLogout()">Log Out</button>
+        </div>
+
+        <!-- Delete Account -->
+        <div class="action-item">
+          <div class="action-info danger">
+            <div class="action-title">&#128465; Delete Account</div>
+            <div class="action-desc">
+              Permanently delete your account and all data. This action <strong>cannot be undone</strong>.
+            </div>
+          </div>
+          <button class="btn-danger" onclick="handleDeleteAccount()">Delete Account</button>
+        </div>
+      </div>
+    </div>
+
+  </section><!-- .settings-content -->
+</div><!-- .settings-wrapper -->
+
+<!-- ═══════════════ DELETE CONFIRM DIALOG ═══════════════ -->
+<div class="dialog-overlay" id="deleteConfirmDialog" onclick="handleOverlayClick(event)">
+  <div class="dialog-box">
+    <div class="dialog-icon">&#128465;</div>
+    <div class="dialog-title">Delete Account?</div>
+    <div class="dialog-body">
+      This will permanently erase your profile, posts, credits, and all data on Passion Forge.
+      <br/><br/>
+      <strong>This action cannot be undone.</strong>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn-secondary" onclick="closeDeleteDialog()">Cancel</button>
+      <button class="btn-danger"    onclick="confirmDeleteAccount()">Yes, Delete My Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TOAST ═══════════════ -->
+<div class="toast" id="settingsToast"></div>
+
+<script src="../javascript/account_settings.js"></script>
+<script>
+  /* ── Sidebar name / avatar sync ── */
+  var _origSave = saveUserState;
+  saveUserState = function() {
+    _origSave();
+    var el = document.getElementById('sidebarUserName');
+    if (el) el.textContent = userState.username;
+    var av = document.getElementById('sidebarAvatar');
+    if (av) {
+      if (userState.avatarUrl) {
+        av.style.backgroundImage = 'url(' + userState.avatarUrl + ')';
+        av.style.backgroundSize = 'cover';
+        av.textContent = '';
+      } else {
+        av.style.backgroundImage = '';
+        av.textContent = getInitials(userState.username);
+      }
+    }
+  };
+
+  /* ── Preferences hobbyies save ── */
+  function savePrefHobbies() {
+    var hobbies = [];
+    document.querySelectorAll('#prefSelectedHobbies .hobby-chip.selected').forEach(function(chip) {
+      hobbies.push(chip.getAttribute('data-hobby'));
+    });
+    userState.hobbies = hobbies;
+    // Sync to profile chips too
+    document.querySelectorAll('#profileHobbies .hobby-chip').forEach(function(chip) {
+      chip.classList.toggle('selected', hobbies.includes(chip.getAttribute('data-hobby')));
+    });
+    saveUserState();
+    showToast('✓ Interests updated!');
+  }
+
+  /* ── Close dialog if overlay clicked ── */
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('deleteConfirmDialog')) closeDeleteDialog();
+  }
+</script>
+</body>
+</html>

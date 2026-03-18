@@ -85,6 +85,7 @@ function toggleRewardsMenu() {
 
 function handleLogout() {
   document.getElementById('profilePopup').classList.remove('open');
+  localStorage.removeItem('pf_user');
   showToast('Logging out...');
   setTimeout(function() { window.location.href = 'landing.html'; }, 900);
 }
