@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PassionForge — Communities</title>
+    <meta name="description" content="Connect, Share & Grow Together in PassionForge Communities.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/communities.css">
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════
+         NAVIGATION BAR
+    ════════════════════════════════════════ -->
+    <nav class="navbar main-nav">
+        <div class="nav-logo">
+            <div class="logo-circle">PF</div>
+            <span class="logo-text">Passion<strong>Forge</strong></span>
+        </div>
+
+        <div class="nav-btns">
+            <div class="profile-trigger">
+                <div class="logo-circle user-avatar">J</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════
+         HERO SECTION
+    ════════════════════════════════════════ -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Communities</h1>
+            <p class="hero-subtitle">Connect, Share & Grow Together</p>
+            <button class="btn-primary" id="exploreBtn">Explore Groups</button>
+        </div>
+        <div class="hero-visual">
+            <img src="../../Img sources/hobby_hero.png" alt="Creative Hobbies" class="floating-img">
+            <div class="glow-sphere"></div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         EXPLORE CATEGORIES (Hidden by default)
+    ════════════════════════════════════════ -->
+    <section class="categories-section" id="categoriesSection" style="display: none;">
+        <h2 class="section-title">Select a Category</h2>
+        <div class="categories-grid">
+            <div class="category-card" onclick="filterGroups('Music')">
+                <i class="fa-solid fa-music"></i>
+                <span>Music</span>
+            </div>
+            <div class="category-card" onclick="filterGroups('Dance')">
+                <i class="fa-solid fa-person-rays"></i>
+                <span>Dance</span>
+            </div>
+            <div class="category-card" onclick="filterGroups('Singing')">
+                <i class="fa-solid fa-microphone-lines"></i>
+                <span>Singing</span>
+            </div>
+            <div class="category-card" onclick="filterGroups('Art')">
+                <i class="fa-solid fa-palette"></i>
+                <span>Art</span>
+            </div>
+            <div class="category-card" onclick="filterGroups('Writing')">
+                <i class="fa-solid fa-pen-nib"></i>
+                <span>Writing</span>
+            </div>
+            <div class="category-card" onclick="filterGroups('Others')">
+                <i class="fa-solid fa-icons"></i>
+                <span>Others</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         POPULAR GROUPS
+    ════════════════════════════════════════ -->
+    <section class="groups-section">
+        <h2 class="section-title">Popular Groups</h2>
+        <div class="groups-grid">
+            <!-- Music Lovers -->
+            <div class="group-card">
+                <div class="group-img-wrapper">
+                    <img src="../../Img sources/music_group.png" alt="Music Lovers">
+                </div>
+                <div class="group-info">
+                    <h3>Music Lovers</h3>
+                    <p class="member-count"><i class="fa-solid fa-users"></i> 1.2k members</p>
+                    <button class="btn-join" onclick="openJoinModal('Music Lovers')">Join Group</button>
+                </div>
+            </div>
+            <!-- Art Enthusiasts -->
+            <div class="group-card">
+                <div class="group-img-wrapper">
+                    <img src="../../Img sources/art_group.png" alt="Art Enthusiasts">
+                </div>
+                <div class="group-info">
+                    <h3>Art Enthusiasts</h3>
+                    <p class="member-count"><i class="fa-solid fa-users"></i> 856 members</p>
+                    <button class="btn-join" onclick="openJoinModal('Art Enthusiasts')">Join Group</button>
+                </div>
+            </div>
+            <!-- Writers’ Hub -->
+            <div class="group-card">
+                <div class="group-img-wrapper">
+                    <img src="../../Img sources/writers_group.png" alt="Writers’ Hub">
+                </div>
+                <div class="group-info">
+                    <h3>Writers’ Hub</h3>
+                    <p class="member-count"><i class="fa-solid fa-users"></i> 2.4k members</p>
+                    <button class="btn-join" onclick="openJoinModal('Writers’ Hub')">Join Group</button>
+                </div>
+            </div>
+            <!-- Dance Community -->
+            <div class="group-card">
+                <div class="group-img-wrapper">
+                    <img src="../../Img sources/dance_group.png" alt="Dance Community">
+                </div>
+                <div class="group-info">
+                    <h3>Dance Community</h3>
+                    <p class="member-count"><i class="fa-solid fa-users"></i> 1.1k members</p>
+                    <button class="btn-join" onclick="openJoinModal('Dance Community')">Join Group</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         CREATE GROUP SECTION
+    ════════════════════════════════════════ -->
+    <section class="create-section" id="createSection">
+        <div class="create-card">
+            <h2 class="section-title">Want to lead a community?</h2>
+            <p>Create your own group and share your passion with others.</p>
+            <button class="btn-create-toggle" id="createToggleBtn">Create Group</button>
+        </div>
+
+        <!-- Create Group Form (Initially hidden) -->
+        <div class="create-form-container" id="createFormContainer" style="display: none;">
+            <form id="createGroupForm" class="modern-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hobby</label>
+                        <input type="text" placeholder="Your Hobby" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Group Name</label>
+                        <input type="text" placeholder="Community Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Referral Code</label>
+                        <input type="text" placeholder="Optional Code">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit-create">Create Group</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         MODALS
+    ════════════════════════════════════════ -->
+    <div class="modal-overlay" id="joinModalOverlay" style="display: none;">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <h2 class="modal-title">Join <span id="modalGroupName">Group</span></h2>
+            <form id="joinGroupForm" class="modern-form">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <label>Hobby</label>
+                    <input type="text" id="joinModalHobby" placeholder="Your Hobby" required>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="gender" value="male" checked> Male</label>
+                        <label><input type="radio" name="gender" value="female"> Female</label>
+                        <label><input type="radio" name="gender" value="other"> Other</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit-join">Join</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="../javascript/communities.js"></script>
+</body>
+
+</html>

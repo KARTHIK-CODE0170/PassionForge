@@ -1,0 +1,398 @@
+/* ═══════════════════════════════════════
+     COMMUNITIES PAGE STYLES
+   ════════════════════════════════════════ */
+
+:root {
+    --bg-dark: #0f0f0f;
+    --card-bg: #1a1a1a;
+    --accent-orange: #ff7a00;
+    --accent-glow: rgba(255, 122, 0, 0.4);
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Navbar overrides for Communities page */
+.navbar.main-nav {
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 122, 0, 0.1);
+    justify-content: space-between;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--accent-orange);
+}
+
+.nav-link.active {
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ═══════════════════════════════════════
+     HERO SECTION
+   ════════════════════════════════════════ */
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 100px 10%;
+    min-height: 80vh;
+    gap: 40px;
+}
+
+.hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff 30%, var(--accent-orange));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -2px;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+}
+
+.btn-primary {
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 10px 20px rgba(255, 122, 0, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px var(--accent-glow);
+}
+
+.hero-visual {
+    position: relative;
+    width: 45%;
+}
+
+.floating-img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    z-index: 2;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    animation: float 6s ease-in-out infinite;
+}
+
+.glow-sphere {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    z-index: 1;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* ═══════════════════════════════════════
+     CATEGORIES SECTION
+   ════════════════════════════════════════ */
+
+.categories-section {
+    padding: 80px 10%;
+    background: rgba(255, 122, 0, 0.02);
+}
+
+.section-title {
+    text-align: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.category-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px 20px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.category-card i {
+    font-size: 2.5rem;
+    color: var(--accent-orange);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.category-card span {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.category-card:hover {
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 20px var(--accent-glow);
+    transform: translateY(-5px);
+}
+
+/* ═══════════════════════════════════════
+     GROUPS SECTION
+   ════════════════════════════════════════ */
+
+.groups-section {
+    padding: 80px 10%;
+}
+
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.group-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.group-img-wrapper {
+    height: 180px;
+    overflow: hidden;
+}
+
+.group-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.group-info {
+    padding: 25px;
+}
+
+.group-info h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.member-count {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.btn-join {
+    width: 100%;
+    background: transparent;
+    border: 2px solid var(--accent-orange);
+    color: var(--accent-orange);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.group-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.group-card:hover img {
+    transform: scale(1.1);
+}
+
+.btn-join:hover {
+    background: var(--accent-orange);
+    color: white;
+}
+
+/* ═══════════════════════════════════════
+     CREATE SECTION
+   ════════════════════════════════════════ */
+
+.create-section {
+    padding: 100px 10%;
+    text-align: center;
+    background: linear-gradient(0deg, var(--bg-dark) 0%, #1a1510 100%);
+}
+
+.create-card {
+    max-width: 600px;
+    margin: 0 auto 50px;
+}
+
+.btn-create-toggle {
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: var(--radius-md);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.create-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 122, 0, 0.1);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    text-align: left;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.modern-form input, .modern-form select {
+    background: #252525;
+    border: 1px solid #333;
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: white;
+    font-family: inherit;
+    outline: none;
+    transition: var(--transition);
+}
+
+.modern-form input:focus {
+    border-color: var(--accent-orange);
+    background: #2d2d2d;
+}
+
+.btn-submit-create, .btn-submit-join {
+    width: 100%;
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 30px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* ═══════════════════════════════════════
+     MODAL STYLES
+   ════════════════════════════════════════ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    border: 1px solid var(--accent-orange);
+    box-shadow: 0 0 50px var(--accent-glow);
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.modal-title {
+    margin-bottom: 25px;
+    font-family: 'Outfit', sans-serif;
+    color: var(--accent-orange);
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main);
+}
