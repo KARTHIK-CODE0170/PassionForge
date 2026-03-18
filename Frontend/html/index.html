@@ -411,8 +411,8 @@
     <div class="profile-popup-divider"></div>
 
     <!-- Account Settings -->
-    <div class="profile-popup-item" onclick="showToast('Account Settings coming soon!')">
-      <span class="popup-item-icon">⚙️</span>
+    <div class="profile-popup-item" onclick="window.location.href='account_settings.html'">
+      <span class="popup-item-icon">&#9881;</span>
       <span class="popup-item-text">Account Settings</span>
     </div>
 
@@ -530,62 +530,6 @@
 
   <script src="../javascript/script.js"></script>
   <script src="../javascript/post.js"></script>
-
-    <div class="sidebar-footer"><p>&copy; 2026 Passion Forge</p><p>Made with &#9825; for creators</p></div>
-  </aside>
-</div>
-
-<!-- Profile Popup Menu -->
-<div class="profile-popup" id="profilePopup">
-  <div class="profile-popup-header">
-    <div class="profile-popup-avatar">SR</div>
-    <div class="profile-popup-info">
-      <span class="profile-popup-name">Siddharth R.</span>
-      <span class="profile-popup-handle">u/siddharth_r</span>
-    </div>
-  </div>
-  <div class="profile-popup-divider"></div>
-
-  <!-- Rewards Section -->
-  <div class="profile-popup-section-label">&#9670; Rewards</div>
-  <div class="profile-popup-item rewards-item" onclick="toggleRewardsMenu()" id="rewardsToggle">
-    <span class="popup-item-icon">&#9733;</span>
-    <span class="popup-item-text">Rewards</span>
-    <span class="popup-item-chevron" id="rewardsChevron">&#9662;</span>
-  </div>
-  <div class="rewards-submenu" id="rewardsSubmenu">
-    <div class="profile-popup-subitem" onclick="showToast('Credits: 1,240 &#9733;')">
-      <span class="subitem-icon">&#9733;</span>
-      <span>Credits</span>
-      <span class="subitem-badge">1,240</span>
-    </div>
-    <div class="profile-popup-subitem" onclick="showToast('You have 5 badges!')">
-      <span class="subitem-icon">&#127942;</span>
-      <span>Badges</span>
-      <span class="subitem-badge">5</span>
-    </div>
-  </div>
-
-  <div class="profile-popup-divider"></div>
-
-  <!-- Account Settings -->
-  <div class="profile-popup-item" onclick="window.location.href='account_settings.html'">
-    <span class="popup-item-icon">&#9881;</span>
-    <span class="popup-item-text">Account Settings</span>
-  </div>
-
-  <div class="profile-popup-divider"></div>
-
-  <!-- Log Out -->
-  <div class="profile-popup-item logout-item" onclick="handleLogout()">
-    <span class="popup-item-icon">&#8592;</span>
-    <span class="popup-item-text">Log Out</span>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-<script src="../javascript/script.js"></script>
-<script src="../javascript/post.js"></script>
 </body>
 
-</html>
+</html>
