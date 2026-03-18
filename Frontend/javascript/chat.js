@@ -143,6 +143,13 @@ function appendBubble(type, text, timeStr, userData) {
     group.className = `msg-group ${type}`;
     group.style.animation = 'msgSlideIn 0.25s ease';
 
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'msg-checkbox';
+    
+    // Position checkbox on left visually (row for recv, row-reverse for sent)
+    if (type === 'recv') group.appendChild(checkbox);
+
     if (type === 'recv' && userData) {
         const av = document.createElement('div');
         av.className = `avatar msg-avatar ${userData.avClass}`;
@@ -164,6 +171,10 @@ function appendBubble(type, text, timeStr, userData) {
     bubblesDiv.appendChild(bubble);
     bubblesDiv.appendChild(timeSpan);
     group.appendChild(bubblesDiv);
+    
+    // For sent messages, append checkbox last so it appears on left (due to row-reverse)
+    if (type === 'sent') group.appendChild(checkbox);
+    
     messagesArea.appendChild(group);
 }
 
@@ -281,16 +292,199 @@ function viewUserProfile() {
     toggleChatMenu();
 }
 
-function deleteCurrentChat() {
-    if (confirm(`Permanently delete chat conversation with ${currentUser}?`)) {
-        messagesArea.innerHTML = `
-            <div style="text-align: center; color: var(--text-muted); margin-top: 50px; font-size: 13px;">
-                Conversation deleted.
-            </div>
-        `;
-        toggleChatMenu();
+// ─── Search in Chat ────────────────────────────────────────
+const chatSearchBar = document.getElementById('chatSearchBar');
+const chatSearchInput = document.getElementById('chatSearchInput');
+
+function toggleChatSearch() {
+    if (chatSearchBar.style.display === 'none' || chatSearchBar.style.display === '') {
+        chatSearchBar.style.display = 'flex';
+        chatSearchInput.focus();
+    } else {
+        chatSearchBar.style.display = 'none';
+        chatSearchInput.value = '';
+        chatSearchInput.dispatchEvent(new Event('input')); // Reset filter
     }
 }
+
+chatSearchInput.addEventListener('input', () => {
+    const query = chatSearchInput.value.toLowerCase().trim();
+    const words = query.split(/\s+/).filter(w => w.length > 0);
+    const groups = messagesArea.querySelectorAll('.msg-group');
+    let visibleCount = 0;
+    
+    groups.forEach(group => {
+        const bubbles = group.querySelectorAll('.bubble');
+        let match = false;
+        
+        if (words.length === 0) {
+            match = true;
+        } else {
+            bubbles.forEach(b => {
+                const text = b.textContent.toLowerCase();
+                words.forEach(word => {
+                    if (text.includes(word)) match = true;
+                });
+            });
+        }
+        
+        group.style.display = match ? 'flex' : 'none';
+        if (match) visibleCount++;
+    });
+    
+    // Handle "Cannot found" message
+    let noResultsEl = document.getElementById('noSearchResults');
+    if (!noResultsEl) {
+        noResultsEl = document.createElement('div');
+        noResultsEl.id = 'noSearchResults';
+        noResultsEl.className = 'no-results-msg';
+        noResultsEl.style.textAlign = 'center';
+        noResultsEl.style.color = 'var(--text-muted)';
+        noResultsEl.style.marginTop = '40px';
+        noResultsEl.style.fontSize = '14.5px';
+        noResultsEl.style.width = '100%';
+        messagesArea.appendChild(noResultsEl);
+    }
+    
+    if (visibleCount === 0 && words.length > 0) {
+        noResultsEl.textContent = `cannot found`;
+        noResultsEl.style.display = 'block';
+    } else {
+        noResultsEl.style.display = 'none';
+    }
+});
+
+// ─── Delete Mode Selection ─────────────────────────────────
+const deleteSelectionBar = document.getElementById('deleteSelectionBar');
+const selectedCountEl = document.getElementById('selectedCount');
+const appContainer = document.querySelector('.app-container');
+
+function enterDeleteMode() {
+    toggleChatMenu(); // Close the options menu if open
+    
+    // Auto-inject checkboxes into existing HTML messages if missing
+    document.querySelectorAll('.msg-group').forEach(group => {
+        if (!group.querySelector('.msg-checkbox')) {
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.className = 'msg-checkbox';
+            if (group.classList.contains('sent')) {
+                group.appendChild(cb); // flex-direction: row-reverse -> visually left
+            } else {
+                group.prepend(cb); // flex-direction: row -> visually left
+            }
+        }
+        // clear selected state
+        group.classList.remove('selected');
+        const checkbox = group.querySelector('.msg-checkbox');
+        if (checkbox) checkbox.checked = false;
+    });
+
+    appContainer.classList.add('in-delete-mode');
+    messagesArea.classList.add('delete-mode');
+    deleteSelectionBar.style.display = 'flex';
+    
+    if (chatSearchBar.style.display === 'flex') {
+        toggleChatSearch(); // Hide search if open
+    }
+    
+    updateSelectedCount();
+}
+
+function cancelDeleteMode() {
+    appContainer.classList.remove('in-delete-mode');
+    messagesArea.classList.remove('delete-mode');
+    deleteSelectionBar.style.display = 'none';
+    
+    document.querySelectorAll('.msg-checkbox').forEach(cb => {
+        cb.checked = false;
+    });
+    document.querySelectorAll('.msg-group.selected').forEach(group => {
+        group.classList.remove('selected');
+    });
+}
+
+function confirmDeleteSelected() {
+    const checked = messagesArea.querySelectorAll('.msg-checkbox:checked');
+    if (checked.length === 0) return;
+    
+    // Check if ALL selected messages were sent by the CURRENT user
+    let allSentByMe = true;
+    checked.forEach(cb => {
+        const group = cb.closest('.msg-group');
+        if (!group.classList.contains('sent')) {
+            allSentByMe = false;
+        }
+    });
+    
+    // Show modal
+    const modal = document.getElementById('deleteModal');
+    const title = document.getElementById('deleteModalTitle');
+    const btnEveryone = document.getElementById('btnDeleteEveryone');
+    
+    title.textContent = `Delete ${checked.length} message${checked.length > 1 ? 's' : ''}?`;
+    btnEveryone.style.display = allSentByMe ? 'block' : 'none';
+    modal.style.display = 'flex';
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+function executeDeleteForMe() {
+    const checked = messagesArea.querySelectorAll('.msg-checkbox:checked');
+    checked.forEach(cb => {
+        const group = cb.closest('.msg-group');
+        if (group) group.remove();
+    });
+    closeDeleteModal();
+    cancelDeleteMode();
+}
+
+function executeDeleteForEveryone() {
+    const checked = messagesArea.querySelectorAll('.msg-checkbox:checked');
+    checked.forEach(cb => {
+        const group = cb.closest('.msg-group');
+        if (group) {
+            // Replace bubbles with "You deleted this message"
+            const bubblesContainer = group.querySelector('.bubbles');
+            if (bubblesContainer) {
+                bubblesContainer.innerHTML = `
+                    <div class="bubble" style="background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-style: italic;">
+                        <i class="fa-solid fa-ban" style="margin-right: 6px;"></i>You deleted this message
+                    </div>
+                    <span class="msg-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                `;
+            }
+        }
+    });
+    closeDeleteModal();
+    cancelDeleteMode();
+}
+
+function updateSelectedCount() {
+    const checked = messagesArea.querySelectorAll('.msg-checkbox:checked');
+    selectedCountEl.textContent = `${checked.length} selected`;
+}
+
+// Delegate click events in messages area to handle selection toggling
+messagesArea.addEventListener('click', e => {
+    if (!messagesArea.classList.contains('delete-mode')) return;
+    
+    const group = e.target.closest('.msg-group');
+    if (!group) return;
+
+    const cb = group.querySelector('.msg-checkbox');
+    if (!cb) return;
+
+    // Prevent double toggle if the user explicitly clicked the checkbox
+    if (e.target.tagName !== 'INPUT') {
+        cb.checked = !cb.checked;
+    }
+    
+    group.classList.toggle('selected', cb.checked);
+    updateSelectedCount();
+});
 
 // ─── Init ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {

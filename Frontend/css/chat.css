@@ -886,6 +886,222 @@ input {
     transform: scale(0.96);
 }
 
+/* ─── Chat Search Bar ───────────────────────────────── */
+.chat-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 24px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    animation: searchSlideDown 0.2s ease;
+}
+
+@keyframes searchSlideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-search-bar i {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.chat-search-bar input {
+    flex: 1;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.close-search-btn {
+    color: var(--text-muted);
+    font-size: 16px;
+    transition: color var(--transition);
+}
+
+.close-search-btn:hover {
+    color: var(--accent);
+}
+
+/* ─── Delete Selection Mode ─────────────────────────── */
+.msg-checkbox {
+    display: none;
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.messages-area.delete-mode .msg-checkbox {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.messages-area.delete-mode .msg-group {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--radius-md);
+    transition: background 0.2s ease;
+    align-items: center;
+}
+
+.messages-area.delete-mode .msg-group:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.messages-area.delete-mode .msg-group.selected {
+    background: rgba(230, 81, 0, 0.15);
+}
+
+/* Hide normal input bar in delete mode */
+.app-container.in-delete-mode .input-area {
+    display: none !important;
+}
+
+/* Delete Selection Bar */
+.delete-selection-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: var(--bg-raised);
+    border-top: 1px solid var(--border);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.action-btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background var(--transition), transform 0.1s ease;
+}
+
+.action-btn i {
+    font-size: 14px;
+}
+
+.cancel-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+.cancel-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.danger-btn {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.danger-btn:hover {
+    background: #ef4444;
+    color: #fff;
+    transform: scale(1.02);
+}
+
+.selected-count {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* ─── Custom Modal ──────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease;
+    backdrop-filter: blur(2px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: var(--bg-surface);
+    width: 290px;
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border);
+    animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.modal-actions-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-size: 14.5px;
+    font-weight: 600;
+    background: var(--bg-raised);
+    color: var(--text-primary);
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.modal-btn:hover {
+    background: var(--bg-hover);
+    transform: scale(1.02);
+}
+
+.modal-btn.outline {
+    background: transparent;
+    border: 1px solid var(--text-muted);
+}
+
+.modal-btn.outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.danger-text {
+    color: #ef4444;
+}
+
 /* ═══════════════════════════════════════════════════════
    RESPONSIVE
 ════════════════════════════════════════════════════════ */
