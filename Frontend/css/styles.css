@@ -272,8 +272,11 @@ body {
   color: white;
   font-size: 10px;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 2px 0;
+  width: 60px;
+  text-align: center;
   border-radius: 20px;
+  display: inline-block;
 }
 
 .join-tag.joined {
