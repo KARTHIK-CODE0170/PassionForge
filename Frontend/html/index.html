@@ -45,7 +45,7 @@
       <!-- Profile Avatar -->
       <div class="avatar" id="profileAvatar"
         style="background: linear-gradient(135deg, #F97316, #FB923C); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; cursor: pointer;"
-        title="Profile" onclick="toggleProfileMenu(event)">SR</div>
+        title="Profile" onclick="toggleProfileMenu(event)">MP</div>
     </div>
   </header>
 
@@ -308,7 +308,10 @@
       </div>
 
       <div class="sidebar-card challenge-card">
-        <div class="s-card-title">🎯 Daily Practice Challenge</div>
+        <div class="s-card-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>🎯 Daily Practice Challenge</span>
+          <a href="rewards.html" style="font-size:10px;font-weight:700;color:#c2410c;text-decoration:none;letter-spacing:0.3px;">View Rewards →</a>
+        </div>
         <div class="challenge-body">
           <div class="challenge-icon">🎯</div>
           <p class="challenge-title">Practice for 20 minutes today</p>
@@ -381,32 +384,19 @@
   <!-- Profile Popup Menu -->
   <div class="profile-popup" id="profilePopup">
     <div class="profile-popup-header">
-      <div class="profile-popup-avatar">SR</div>
+      <div class="profile-popup-avatar">MP</div>
       <div class="profile-popup-info">
-        <span class="profile-popup-name">Siddharth R.</span>
-        <span class="profile-popup-handle">u/siddharth_r</span>
+        <span class="profile-popup-name">Modi Pagulu</span>
+        <span class="profile-popup-handle">u/modi_pagulu</span>
       </div>
     </div>
     <div class="profile-popup-divider"></div>
 
     <!-- Rewards Section -->
     <div class="profile-popup-section-label">💎 Rewards</div>
-    <div class="profile-popup-item rewards-item" onclick="toggleRewardsMenu()" id="rewardsToggle">
+    <div class="profile-popup-item rewards-item" onclick="window.location.href='rewards.html'">
       <span class="popup-item-icon">⭐</span>
-      <span class="popup-item-text">Rewards</span>
-      <span class="popup-item-chevron" id="rewardsChevron">🔽</span>
-    </div>
-    <div class="rewards-submenu" id="rewardsSubmenu">
-      <div class="profile-popup-subitem" onclick="showToast('Credits: 1,240 ⭐')">
-        <span class="subitem-icon">⭐</span>
-        <span>Credits</span>
-        <span class="subitem-badge">1,240</span>
-      </div>
-      <div class="profile-popup-subitem" onclick="showToast('You have 5 badges!')">
-        <span class="subitem-icon">🏆</span>
-        <span>Badges</span>
-        <span class="subitem-badge">5</span>
-      </div>
+      <span class="popup-item-text">My Rewards</span>
     </div>
 
     <div class="profile-popup-divider"></div>
@@ -436,7 +426,7 @@
       <div class="cp-header">
         <div class="cp-header-left">
           <div class="avatar"
-            style="background:linear-gradient(135deg,#F97316,#FB923C);width:36px;height:36px;font-size:13px;">SR</div>
+            style="background:linear-gradient(135deg,#F97316,#FB923C);width:36px;height:36px;font-size:13px;">MP</div>
           <div>
             <div class="cp-username">u/you</div>
             <div class="cp-subtext">Sharing to Passion Forge</div>
@@ -529,6 +519,7 @@
     </div>
   </div>
 
+  <script src="../javascript/rewards.js"></script>
   <script src="../javascript/script.js"></script>
   <script src="../javascript/post.js"></script>
 </body>

@@ -7,11 +7,13 @@
 function appreciatePost(id, btn) {
   var el = document.getElementById('count-' + id);
   var val = parseInt(el.textContent);
-  if (votedPosts[id] === 'up') { el.textContent = val - 1; btn.classList.remove('voted'); votedPosts[id] = null; }
-  else {
+  if (votedPosts[id] === 'up') {
+    el.textContent = val - 1; btn.classList.remove('voted'); votedPosts[id] = null;
+  } else {
     if (votedPosts[id] === 'down') { val++; clearVote(id, 'down'); }
     el.textContent = val + 1; btn.classList.add('voted'); votedPosts[id] = 'up';
-    showToast('You appreciated this post.');
+    if (window.RewardsSystem) { RewardsSystem.trackAction('LIKE_POST'); }
+    else { showToast('You appreciated this post.'); }
   }
 }
 
@@ -39,7 +41,9 @@ function toggleComment(id) {
 function submitComment(btn) {
   var input = btn.closest('.comment-box').querySelector('.comment-input');
   if (!input.value.trim()) { input.style.borderColor = '#F97316'; input.focus(); return; }
-  showToast('Comment posted.'); input.value = ''; input.style.borderColor = '';
+  if (window.RewardsSystem) { RewardsSystem.trackAction('COMMENT_POST'); }
+  else { showToast('Comment posted.'); }
+  input.value = ''; input.style.borderColor = '';
   btn.closest('.comment-box').classList.add('hidden');
 }
 
@@ -284,12 +288,16 @@ function createPost(fromPreview) {
   postsArray.unshift(post);
   insertPostIntoFeed(post);
   // Gamification
-  U.posts += 1; addPoints(10); checkBadges(); updateUI(); saveState();
+  if (window.RewardsSystem) {
+    RewardsSystem.trackAction('CREATE_POST', { hobbies: cpSelectedHobbies });
+  } else {
+    U.posts += 1; addPoints(10); checkBadges(); updateUI(); saveState();
+    showToast('🎉 Post published! +10 points earned.');
+  }
   // Close & notify
   closeCreatePost();
   var pov = document.getElementById('cpPreviewOverlay'); if (pov) pov.classList.remove('open');
   document.body.style.overflow = '';
-  showToast('🎉 Post published! +10 points earned.');
 }
 
 // ── Build Post HTML ─────────────────────────────────────────────

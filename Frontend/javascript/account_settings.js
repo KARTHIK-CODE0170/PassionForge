@@ -4,11 +4,11 @@
 
 /* ── Default user state ── */
 const DEFAULT_STATE = {
-  username: 'Siddharth R.',
-  handle: 'siddharth_r',
+  username: 'Modi Pagulu',
+  handle: 'modi_pagulu',
   bio: '',
   hobbies: ['Music', 'Painting'],
-  email: 'siddharth@example.com',
+  email: 'modi_pagulu@example.com',
   avatarUrl: '',
   preferences: {},
   notifications: { likes: true, comments: true, followers: true, challenges: true },
