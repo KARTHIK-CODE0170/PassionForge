@@ -80,4 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`Showing groups for: ${category}`);
         // In a real app, you would filter the groups-grid here
     };
+
+    // ═══════════════ DEEP LINKING ═══════════════
+    if (window.location.hash === '#create' || window.location.search.includes('action=create')) {
+        setTimeout(() => {
+            if (createFormContainer.style.display === 'none') {
+                createFormContainer.style.display = 'block';
+                createToggleBtn.textContent = 'Cancel';
+                createFormContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 300);
+    }
 });
