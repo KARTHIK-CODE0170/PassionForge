@@ -47,23 +47,34 @@ function joinCommunity(item, name) {
   var tag = item.querySelector('.join-tag');
   tag.classList.toggle('joined');
   tag.textContent = tag.classList.contains('joined') ? 'Joined \u2713' : 'Join';
-  showToast(tag.classList.contains('joined') ? 'Welcome to ' + name + '!' : 'Left ' + name + '.');
+  if (tag.classList.contains('joined')) {
+    if (window.RewardsSystem) { RewardsSystem.trackAction('JOIN_COMMUNITY'); }
+    else { showToast('Welcome to ' + name + '!'); }
+  } else {
+    showToast('Left ' + name + '.');
+  }
 }
 
 function followCreator(btn) {
   btn.classList.toggle('following');
   btn.textContent = btn.classList.contains('following') ? 'Following \u2713' : 'Follow';
-  showToast(btn.classList.contains('following') ? 'Now following.' : 'Unfollowed.');
+  if (btn.classList.contains('following')) {
+    if (window.RewardsSystem) { RewardsSystem.trackAction('FOLLOW'); }
+    else { showToast('Now following.'); }
+  } else {
+    showToast('Unfollowed.');
+  }
 }
 
 function completeChallenge() {
   if (challengeDone) return;
   challengeDone = true;
   var btn = document.querySelector('.btn-challenge');
-  btn.textContent = '\u2713 Completed!'; btn.classList.add('done');
+  if (btn) { btn.textContent = '\u2713 Completed!'; btn.classList.add('done'); }
   document.getElementById('streakFill').style.width = '100%';
   document.querySelector('.streak-label').textContent = '\u2605 7-day streak \u2014 amazing!';
-  showToast('+50 credits earned! Streak extended.');
+  if (window.RewardsSystem) { RewardsSystem.trackAction('COMPLETE_CHALLENGE'); }
+  else { showToast('+20 credits earned! Streak extended.'); }
 }
 
 function handleLogin()  { window.location.href = 'landing.html'; }
@@ -102,7 +113,42 @@ document.addEventListener('click', function(e) {
 
 function showToast(msg) {
   var t = document.getElementById('toast');
+  if (!t) return;
   t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2800);
 }
+
+/* ── Achievements Modal ─────────────────────────── */
+function openAchievementsModal() {
+  document.getElementById('achBackdrop').classList.add('open');
+  document.getElementById('achModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (window.RewardsSystem) {
+    RewardsSystem.renderModal('all');
+    var s = RewardsSystem.getState();
+    var total = RewardsSystem.getAchievements().length;
+    var statsEl = document.getElementById('ach-stats');
+    if (statsEl) statsEl.textContent = s.unlocked.length + ' / ' + total + ' unlocked';
+  }
+  // reset filter chips
+  document.querySelectorAll('#ach-filters .ach-chip').forEach(function(c) { c.classList.remove('active'); });
+  var first = document.querySelector('#ach-filters .ach-chip');
+  if (first) first.classList.add('active');
+}
+
+function closeAchievementsModal() {
+  document.getElementById('achBackdrop').classList.remove('open');
+  document.getElementById('achModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function achFilter(cat, chip) {
+  document.querySelectorAll('#ach-filters .ach-chip').forEach(function(c) { c.classList.remove('active'); });
+  chip.classList.add('active');
+  if (window.RewardsSystem) RewardsSystem.renderModal(cat);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeAchievementsModal(); }
+});

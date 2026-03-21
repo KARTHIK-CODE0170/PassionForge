@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/post.css" />
+  <link rel="stylesheet" href="../css/rewards.css" />
 </head>
 
 <body>
@@ -88,6 +89,21 @@
       <div class="sidebar-card create-card">
         <p>Start your own creative community!</p>
         <button class="btn-create" onclick="showToast('Coming soon!')">+ Create Community</button>
+      </div>
+
+      <!-- ── REWARDS WIDGET ── -->
+      <div class="rewards-widget">
+        <div class="rw-header">
+          <span class="rw-points-display"><span id="rw-points">0</span> <span>⭐</span></span>
+          <span class="rw-level-pill" id="rw-level">Level 1</span>
+        </div>
+        <div class="rw-bar-track">
+          <div class="rw-bar-fill" id="rw-bar" style="width:0%"></div>
+        </div>
+        <div class="rw-next-label" id="rw-next-label">0 pts to Level 2</div>
+        <button class="btn-open-achievements" onclick="window.location.href='rewards.html'">
+          <span>🏆</span> My Achievements
+        </button>
       </div>
     </aside>
 
@@ -396,15 +412,15 @@
       <span class="popup-item-chevron" id="rewardsChevron">🔽</span>
     </div>
     <div class="rewards-submenu" id="rewardsSubmenu">
-      <div class="profile-popup-subitem" onclick="showToast('Credits: 1,240 ⭐')">
+      <div class="profile-popup-subitem" onclick="window.location.href='rewards.html'">
         <span class="subitem-icon">⭐</span>
         <span>Credits</span>
-        <span class="subitem-badge">1,240</span>
+        <span class="subitem-badge" id="rw-credit-count">0</span>
       </div>
-      <div class="profile-popup-subitem" onclick="showToast('You have 5 badges!')">
+      <div class="profile-popup-subitem" onclick="window.location.href='rewards.html'">
         <span class="subitem-icon">🏆</span>
-        <span>Badges</span>
-        <span class="subitem-badge">5</span>
+        <span>Achievements</span>
+        <span class="subitem-badge" id="rw-badge-count">0</span>
       </div>
     </div>
 
@@ -528,6 +544,34 @@
     </div>
   </div>
 
+  <!-- ═══════════ ACHIEVEMENTS MODAL ═══════════ -->
+  <div class="ach-backdrop" id="achBackdrop" onclick="closeAchievementsModal()"></div>
+  <div class="ach-modal" id="achModal" role="dialog" aria-modal="true" aria-label="Achievements">
+    <div class="ach-modal-header">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <h2 class="ach-modal-title">🏆 My Achievements</h2>
+        <span class="ach-modal-stats" id="ach-stats"></span>
+      </div>
+      <button class="ach-modal-close" onclick="closeAchievementsModal()" title="Close">&times;</button>
+    </div>
+
+    <div class="ach-filters" id="ach-filters">
+      <span class="ach-chip active" onclick="achFilter('all',this)">All</span>
+      <span class="ach-chip" onclick="achFilter('onboarding',this)">🚀 Onboarding</span>
+      <span class="ach-chip" onclick="achFilter('activity',this)">🔥 Activity</span>
+      <span class="ach-chip" onclick="achFilter('engagement',this)">👏 Engagement</span>
+      <span class="ach-chip" onclick="achFilter('popularity',this)">📈 Popularity</span>
+      <span class="ach-chip" onclick="achFilter('skill',this)">🎨 Skill</span>
+      <span class="ach-chip" onclick="achFilter('milestones',this)">🏅 Milestones</span>
+      <span class="ach-chip" onclick="achFilter('challenges',this)">🎯 Challenges</span>
+      <span class="ach-chip" onclick="achFilter('streaks',this)">🔥 Streaks</span>
+      <span class="ach-chip" onclick="achFilter('advanced',this)">🌍 Advanced</span>
+    </div>
+
+    <div class="ach-grid" id="ach-grid"></div>
+  </div>
+
+  <script src="../javascript/rewards.js"></script>
   <script src="../javascript/script.js"></script>
   <script src="../javascript/post.js"></script>
 </body>

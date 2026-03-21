@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rewards – Passion Forge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/rewards.css" />
+  <link rel="stylesheet" href="../css/rewards_dashboard.css" />
+</head>
+
+<body class="rd-body">
+
+  <!-- ── NAVBAR ── -->
+  <header class="navbar" id="navbar">
+    <div class="nav-logo" style="cursor:pointer;" onclick="window.location.href='index.html'">
+      <img src="../../Img sources/PassionForge_logo.png" alt="Passion Forge Logo"
+        style="width:38px;height:38px;border-radius:50%;border:2px solid #F97316;object-fit:cover;" />
+      <span class="logo-text" style="color:#f3f4f6;">Passion <strong style="color:#F97316;">Forge</strong></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="rd-back-btn" onclick="window.location.href='index.html'">&#8592; Back to Dashboard</button>
+    </div>
+    <div class="nav-btns" style="display:flex;align-items:center;gap:15px;">
+      <div style="cursor:pointer;position:relative;width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:50%;display:flex;align-items:center;justify-content:center;" title="Notifications">
+        <span style="font-size:18px;color:#F97316;">🔔</span>
+        <span style="position:absolute;top:8px;right:8px;background:#fbbf24;width:8px;height:8px;border-radius:50%;border:1.5px solid rgb(28,28,36);"></span>
+      </div>
+      <div onclick="window.location.href='chat.html'" style="cursor:pointer;width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:50%;display:flex;align-items:center;justify-content:center;" title="Messages">
+        <span style="font-size:18px;color:#F97316;">💬</span>
+      </div>
+      <div class="avatar" style="background:linear-gradient(135deg,#F97316,#FB923C);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;cursor:pointer;" title="Profile">SR</div>
+    </div>
+  </header>
+
+  <!-- ── MAIN LAYOUT ── -->
+  <div class="rd-layout">
+
+    <!-- ════════ LEFT PANEL ════════ -->
+    <aside class="rd-left">
+
+      <!-- Profile Card -->
+      <div class="rd-card rd-profile-card">
+        <div class="rd-avatar-wrap">
+          <div class="rd-avatar-circle">SR</div>
+          <div class="rd-avatar-info">
+            <div class="rd-name" id="rd-name">Surya R.</div>
+            <div class="rd-handle" id="rd-handle">@surya_creates</div>
+            <div class="rd-level-tag" id="rd-level-tag">⭐ Level 1 – Newcomer</div>
+          </div>
+        </div>
+
+        <div class="rd-points-row">
+          <span class="rd-star-icon">⭐</span>
+          <span class="rd-big-points" id="rd-total-points">0</span>
+          <span class="rd-points-label">total points</span>
+        </div>
+
+        <div class="rd-level-bar-label">
+          <span id="rd-level-text">Level 1</span>
+          <span id="rd-level-pct">0%</span>
+        </div>
+        <div class="rd-bar-track">
+          <div class="rd-bar-fill" id="rd-bar-fill" style="width:0%"></div>
+        </div>
+        <div class="rd-pts-to-next" id="rd-pts-to-next">100 pts to Level 2</div>
+
+        <div class="rd-stats-row">
+          <div class="rd-stat">
+            <div class="rd-stat-val" id="rd-stat-posts">0</div>
+            <div class="rd-stat-name">Posts</div>
+          </div>
+          <div class="rd-stat">
+            <div class="rd-stat-val" id="rd-stat-badges">0</div>
+            <div class="rd-stat-name">Badges</div>
+          </div>
+          <div class="rd-stat">
+            <div class="rd-stat-val" id="rd-stat-challenges">0</div>
+            <div class="rd-stat-name">Challenges</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Streak Card -->
+      <div class="rd-card rd-streak-card">
+        <div class="rd-streak-header">
+          <span class="rd-streak-title">🔥 Daily Streak</span>
+          <span class="rd-streak-days"><span id="rd-streak-count">0</span> days</span>
+        </div>
+        <div class="rd-day-row" id="rd-day-row">
+          <!-- filled by JS -->
+        </div>
+        <div class="rd-streak-sub" id="rd-streak-sub">Keep logging in daily to build your streak!</div>
+      </div>
+
+    </aside>
+
+    <!-- ════════ CENTER PANEL ════════ -->
+    <main class="rd-center">
+
+      <!-- Tabs -->
+      <div class="rd-tabs">
+        <button class="rd-tab" onclick="switchRdTab('overview',this)" id="tab-overview">🌟 Overview</button>
+        <button class="rd-tab active" onclick="switchRdTab('badges',this)" id="tab-badges">🏅 Badges</button>
+        <button class="rd-tab" onclick="switchRdTab('achievements',this)" id="tab-achievements">🏆 Achievements</button>
+        <button class="rd-tab" onclick="switchRdTab('challenges',this)" id="tab-challenges">🎯 Challenges</button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div class="rd-tab-content" id="rdtab-overview" style="display:none;">
+        <div class="rd-section-title">📊 Your Stats Overview</div>
+        <div class="rd-overview-grid">
+          <div class="rd-ov-card">
+            <div class="rd-ov-icon">⭐</div>
+            <div class="rd-ov-val" id="ov-points">0</div>
+            <div class="rd-ov-name">Total Points</div>
+          </div>
+          <div class="rd-ov-card">
+            <div class="rd-ov-icon">🔥</div>
+            <div class="rd-ov-val" id="ov-streak">0</div>
+            <div class="rd-ov-name">Day Streak</div>
+          </div>
+          <div class="rd-ov-card">
+            <div class="rd-ov-icon">🏅</div>
+            <div class="rd-ov-val" id="ov-badges">0</div>
+            <div class="rd-ov-name">Badges Earned</div>
+          </div>
+          <div class="rd-ov-card">
+            <div class="rd-ov-icon">📝</div>
+            <div class="rd-ov-val" id="ov-posts">0</div>
+            <div class="rd-ov-name">Posts Created</div>
+          </div>
+          <div class="rd-ov-card">
+            <div class="rd-ov-icon">❤️</div>
+            <div class="rd-ov-val" id="ov-likes">0</div>
+            <div class="rd-ov-name">Likes Given</div>
+          </div>
+          <div class="rd-ov-card">
+            <div class="rd-ov-icon">🎯</div>
+            <div class="rd-ov-val" id="ov-challenges">0</div>
+            <div class="rd-ov-name">Challenges</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges Tab -->
+      <div class="rd-tab-content" id="rdtab-badges">
+        <div class="rd-section-header">
+          <span class="rd-section-title">🏅 Your Badges</span>
+          <span class="rd-earned-count" id="rd-earned-count">0 earned</span>
+        </div>
+        <!-- Category filter chips -->
+        <div class="rd-filter-row">
+          <span class="rd-chip active" onclick="filterBadges('all',this)">All</span>
+          <span class="rd-chip" onclick="filterBadges('onboarding',this)">🚀 Onboarding</span>
+          <span class="rd-chip" onclick="filterBadges('activity',this)">🔥 Activity</span>
+          <span class="rd-chip" onclick="filterBadges('engagement',this)">👏 Engagement</span>
+          <span class="rd-chip" onclick="filterBadges('popularity',this)">📈 Popularity</span>
+          <span class="rd-chip" onclick="filterBadges('skill',this)">🎨 Skill</span>
+          <span class="rd-chip" onclick="filterBadges('milestones',this)">🏅 Milestones</span>
+          <span class="rd-chip" onclick="filterBadges('challenges',this)">🎯 Challenges</span>
+          <span class="rd-chip" onclick="filterBadges('streaks',this)">🔥 Streaks</span>
+          <span class="rd-chip" onclick="filterBadges('advanced',this)">🌍 Advanced</span>
+        </div>
+        <div class="rd-badges-grid" id="rd-badges-grid">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+      <!-- Achievements Tab -->
+      <div class="rd-tab-content" id="rdtab-achievements" style="display:none;">
+        <div class="rd-section-title">🏆 Achievements Progress</div>
+        <div class="rd-ach-list" id="rd-ach-list">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+      <!-- Challenges Tab -->
+      <div class="rd-tab-content" id="rdtab-challenges" style="display:none;">
+        <div class="rd-section-title">🎯 Active Challenges</div>
+        <div class="rd-challenge-list">
+          <div class="rd-challenge-item active-ch">
+            <div class="rd-ch-icon">🎯</div>
+            <div class="rd-ch-info">
+              <div class="rd-ch-name">Practice for 20 minutes</div>
+              <div class="rd-ch-desc">Complete today's daily challenge</div>
+            </div>
+            <div class="rd-ch-reward">+20 pts</div>
+            <button class="rd-ch-btn" onclick="completeDashChallenge(this)">Complete</button>
+          </div>
+          <div class="rd-challenge-item">
+            <div class="rd-ch-icon">🎵</div>
+            <div class="rd-ch-info">
+              <div class="rd-ch-name">Post a Music Update</div>
+              <div class="rd-ch-desc">Share your music progress today</div>
+            </div>
+            <div class="rd-ch-reward">+10 pts</div>
+            <button class="rd-ch-btn" onclick="completeDashChallenge(this)">Complete</button>
+          </div>
+          <div class="rd-challenge-item">
+            <div class="rd-ch-icon">💬</div>
+            <div class="rd-ch-info">
+              <div class="rd-ch-name">Engage with 3 creators</div>
+              <div class="rd-ch-desc">Comment on 3 different posts</div>
+            </div>
+            <div class="rd-ch-reward">+6 pts</div>
+            <button class="rd-ch-btn" onclick="completeDashChallenge(this)">Complete</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ════════ RIGHT PANEL ════════ -->
+    <aside class="rd-right">
+
+      <!-- Weekly Login Bonus -->
+      <div class="rd-card rd-bonus-card">
+        <div class="rd-bonus-icon">🎉</div>
+        <div class="rd-bonus-title">Weekly Login Bonus!</div>
+        <div class="rd-bonus-desc" id="rd-bonus-desc">Log in 7 days this week to earn your bonus.</div>
+        <button class="rd-bonus-btn" id="rd-bonus-btn" onclick="claimBonus(this)">Claim +50 pts ⭐</button>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="rd-card rd-leaderboard-card">
+        <div class="rd-lb-header">
+          <span class="rd-lb-title">🏆 Leaderboard</span>
+          <span class="rd-lb-period">This Week</span>
+        </div>
+        <div class="rd-lb-list" id="rd-lb-list">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="rd-card rd-activity-card">
+        <div class="rd-lb-title">⚡ Recent Activity</div>
+        <div class="rd-activity-list" id="rd-activity-list">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="../javascript/rewards.js"></script>
+  <script src="../javascript/rewards_dashboard.js"></script>
+
+</body>
+
+</html>
