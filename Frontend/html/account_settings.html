@@ -19,7 +19,7 @@
   </a>
   <div class="nav-right">
     <a class="btn-primary" href="index.html" style="text-decoration: none; padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 6px;">&#8962; Back to Dashboard</a>
-    <div class="nav-avatar" id="settingsNavAvatar" title="Your profile">MP</div>
+    <div class="nav-avatar" id="settingsNavAvatar" title="Your profile" onclick="toggleProfileMenu(event)" style="cursor: pointer;">MP</div>
   </div>
 </header>
 
@@ -383,6 +383,55 @@
 
 <!-- ═══════════════ TOAST ═══════════════ -->
 <div class="toast" id="settingsToast"></div>
+
+  <!-- Profile Popup Menu -->
+  <div class="profile-popup" id="profilePopup">
+    <div class="profile-popup-header">
+      <div class="profile-popup-avatar">MP</div>
+      <div class="profile-popup-info">
+        <span class="profile-popup-name">Modi Pagulu</span>
+        <span class="profile-popup-handle">u/modi_pagulu</span>
+      </div>
+    </div>
+    <div class="profile-popup-divider"></div>
+    <div class="profile-popup-section-label">💎 Rewards</div>
+    <div class="profile-popup-item rewards-item" onclick="window.location.href='rewards.html'">
+      <span class="popup-item-icon">⭐</span>
+      <span class="popup-item-text">My Rewards</span>
+    </div>
+    <div class="profile-popup-divider"></div>
+    <div class="profile-popup-item" onclick="window.location.href='account_settings.html'">
+      <span class="popup-item-icon">&#9881;</span>
+      <span class="popup-item-text">Account Settings</span>
+    </div>
+    <div class="profile-popup-divider"></div>
+    <div class="profile-popup-item logout-item" onclick="handleLogout()">
+      <span class="popup-item-icon">&#8592;</span>
+      <span class="popup-item-text">Log Out</span>
+    </div>
+  </div>
+
+  <script>
+    function toggleProfileMenu(e) {
+      e.stopPropagation();
+      var popup = document.getElementById('profilePopup');
+      if (popup) popup.classList.toggle('open');
+    }
+    function handleLogout() {
+      var popup = document.getElementById('profilePopup');
+      if (popup) popup.classList.remove('open');
+      localStorage.removeItem('pf_user');
+      setTimeout(function() { window.location.href = 'landing.html'; }, 900);
+    }
+    document.addEventListener('click', function(e) {
+      var popup = document.getElementById('profilePopup');
+      if (popup && popup.classList.contains('open')) {
+        if (!popup.contains(e.target) && !e.target.closest('#settingsNavAvatar')) {
+          popup.classList.remove('open');
+        }
+      }
+    });
+  </script>
 
 <script src="../javascript/account_settings.js"></script>
 <script>

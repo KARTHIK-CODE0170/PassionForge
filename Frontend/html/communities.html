@@ -41,8 +41,8 @@
                  onmouseout="this.style.background='rgba(255, 255, 255, 0.08)'">
                 <i class="fa-solid fa-house" style="font-size: 16px; color: #F97316;"></i>
             </div>
-            <div class="profile-trigger">
-                <div class="logo-circle user-avatar">J</div>
+            <div class="profile-trigger" id="profileAvatar" onclick="toggleProfileMenu(event)">
+                <div class="logo-circle user-avatar" style="background:linear-gradient(135deg,#F97316,#FB923C); font-weight:700; color:white; display:flex; align-items:center; justify-content:center;">MP</div>
             </div>
         </div>
     </nav>
@@ -228,6 +228,55 @@
             </form>
         </div>
     </div>
+
+  <!-- Profile Popup Menu -->
+  <div class="profile-popup" id="profilePopup">
+    <div class="profile-popup-header">
+      <div class="profile-popup-avatar">MP</div>
+      <div class="profile-popup-info">
+        <span class="profile-popup-name">Modi Pagulu</span>
+        <span class="profile-popup-handle">u/modi_pagulu</span>
+      </div>
+    </div>
+    <div class="profile-popup-divider"></div>
+    <div class="profile-popup-section-label">💎 Rewards</div>
+    <div class="profile-popup-item rewards-item" onclick="window.location.href='rewards.html'">
+      <span class="popup-item-icon">⭐</span>
+      <span class="popup-item-text">My Rewards</span>
+    </div>
+    <div class="profile-popup-divider"></div>
+    <div class="profile-popup-item" onclick="window.location.href='account_settings.html'">
+      <span class="popup-item-icon">&#9881;</span>
+      <span class="popup-item-text">Account Settings</span>
+    </div>
+    <div class="profile-popup-divider"></div>
+    <div class="profile-popup-item logout-item" onclick="handleLogout()">
+      <span class="popup-item-icon">&#8592;</span>
+      <span class="popup-item-text">Log Out</span>
+    </div>
+  </div>
+
+  <script>
+    function toggleProfileMenu(e) {
+      e.stopPropagation();
+      var popup = document.getElementById('profilePopup');
+      if (popup) popup.classList.toggle('open');
+    }
+    function handleLogout() {
+      var popup = document.getElementById('profilePopup');
+      if (popup) popup.classList.remove('open');
+      localStorage.removeItem('pf_user');
+      setTimeout(function() { window.location.href = 'landing.html'; }, 900);
+    }
+    document.addEventListener('click', function(e) {
+      var popup = document.getElementById('profilePopup');
+      if (popup && popup.classList.contains('open')) {
+        if (!popup.contains(e.target) && !e.target.closest('#profileAvatar')) {
+          popup.classList.remove('open');
+        }
+      }
+    });
+  </script>
 
     <!-- External JavaScript -->
     <script src="../javascript/communities.js"></script>
