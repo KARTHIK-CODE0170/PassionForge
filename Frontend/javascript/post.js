@@ -294,6 +294,10 @@ function createPost(fromPreview) {
     U.posts += 1; addPoints(10); checkBadges(); updateUI(); saveState();
     showToast('🎉 Post published! +10 points earned.');
   }
+  // Auto-refresh My Posts panel if it's open, and always update badge
+  var mpOv = document.getElementById('mpOverlay');
+  if (mpOv && mpOv.classList.contains('open')) renderMyPosts();
+  else updateMyPostsBadge();
   // Close & notify
   closeCreatePost();
   var pov = document.getElementById('cpPreviewOverlay'); if (pov) pov.classList.remove('open');
@@ -373,4 +377,262 @@ document.addEventListener('keydown', function(e) {
   var pov = document.getElementById('cpPreviewOverlay');
   if (pov && pov.classList.contains('open')) pov.classList.remove('open');
   else closeCreatePost();
+});
+
+/* ============================================================
+   MY POSTS PANEL
+   ============================================================ */
+
+// Current filter state for the panel
+var _mpCurrentFilter = 'all';
+
+/* ── Open / Close ─────────────────────────────────────────── */
+function openMyPostsPanel() {
+  // Close profile popup first
+  var popup = document.getElementById('profilePopup');
+  if (popup) popup.classList.remove('open');
+
+  _mpCurrentFilter = 'all';
+  // Reset filter buttons
+  document.querySelectorAll('.mp-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  var allBtn = document.getElementById('mpFilterAll');
+  if (allBtn) allBtn.classList.add('active');
+
+  // Populate profile info from user state
+  _mpRefreshProfileBar();
+
+  // Render posts
+  renderMyPosts();
+
+  var ov = document.getElementById('mpOverlay');
+  if (ov) {
+    ov.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeMyPostsPanel() {
+  var ov = document.getElementById('mpOverlay');
+  if (ov) ov.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function mpOverlayClose(event) {
+  if (event.target === event.currentTarget) closeMyPostsPanel();
+}
+
+/* ── Profile Bar Refresh ──────────────────────────────────── */
+function _mpRefreshProfileBar() {
+  var myPosts = postsArray.filter(function(p) { return p.userId === U.id; });
+  var totalLikes = myPosts.reduce(function(acc, p) { return acc + (p.likes || 0); }, 0);
+
+  var el = function(id) { return document.getElementById(id); };
+  if (el('mpAvatar'))      el('mpAvatar').textContent      = U.initials || 'SR';
+  if (el('mpProfileName')) el('mpProfileName').textContent = (U.name || 'u/you').replace('u/', '').replace(/_/g, ' ');
+  if (el('mpProfileHandle')) el('mpProfileHandle').textContent = U.name || 'u/you';
+  if (el('mpStatPosts'))   el('mpStatPosts').textContent   = myPosts.length;
+  if (el('mpStatLikes'))   el('mpStatLikes').textContent   = totalLikes;
+  if (el('mpStatPoints'))  el('mpStatPoints').textContent  = U.points || 0;
+}
+
+/* ── Render All My Posts ──────────────────────────────────── */
+function renderMyPosts() {
+  var grid  = document.getElementById('myPostsGrid');
+  var empty = document.getElementById('mpEmpty');
+  if (!grid) return;
+
+  // Filter by user
+  var myPosts = postsArray.filter(function(p) { return p.userId === U.id; });
+
+  // Apply type filter
+  var filtered = (_mpCurrentFilter === 'all')
+    ? myPosts
+    : myPosts.filter(function(p) { return p.type === _mpCurrentFilter; });
+
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    if (empty) empty.style.display = 'flex';
+    // Update empty CTA text if filter is active
+    var desc = empty ? empty.querySelector('.mp-empty-desc') : null;
+    if (desc) {
+      desc.textContent = _mpCurrentFilter === 'all'
+        ? 'Start sharing your passion with the world!'
+        : 'No ' + _mpCurrentFilter + ' posts yet. Create one now!';
+    }
+  } else {
+    grid.style.display = 'grid';
+    if (empty) empty.style.display = 'none';
+    filtered.forEach(function(post, idx) {
+      var card = document.createElement('div');
+      card.innerHTML = buildMyPostCard(post);
+      var cardEl = card.firstElementChild;
+      // Staggered fade-in
+      cardEl.style.opacity = '0';
+      cardEl.style.transform = 'translateY(16px)';
+      cardEl.style.transition = 'opacity 0.3s ease ' + (idx * 0.05) + 's, transform 0.3s ease ' + (idx * 0.05) + 's';
+      grid.appendChild(cardEl);
+      // Trigger reflow for animation
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          cardEl.style.opacity = '1';
+          cardEl.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  }
+
+  // Update profile stats and badge
+  _mpRefreshProfileBar();
+  updateMyPostsBadge();
+}
+
+/* ── Build Card HTML ──────────────────────────────────────── */
+function buildMyPostCard(post) {
+  var typeIcons = { text: '✒️', image: '🖼️', video: '🎬', reel: '🎦' };
+
+  // Media section
+  var mediaHTML = '';
+  if (post.mediaUrl && post.mediaUrl.length > 0) {
+    if (post.mediaIsVideo) {
+      mediaHTML = '<div class="mp-card-media">'
+        + '<span class="mp-video-badge">▶ Video</span>'
+        + '<video src="' + post.mediaUrl + '" muted preload="metadata" style="pointer-events:none;"></video>'
+        + '</div>';
+    } else {
+      mediaHTML = '<div class="mp-card-media">'
+        + '<img src="' + post.mediaUrl + '" alt="Post media" loading="lazy">'
+        + '</div>';
+    }
+  } else {
+    // Placeholder with type icon
+    var icon  = typeIcons[post.type] || '📝';
+    var label = post.type ? (post.type.charAt(0).toUpperCase() + post.type.slice(1)) : 'Post';
+    mediaHTML = '<div class="mp-card-media-placeholder">'
+      + '<span class="mp-type-icon">' + icon + '</span>'
+      + '<span class="mp-type-label">' + label + '</span>'
+      + '</div>';
+  }
+
+  // Caption
+  var captionClass = post.caption ? 'mp-card-caption' : 'mp-card-caption no-caption';
+  var captionText  = post.caption ? escapeHTML(post.caption) : 'No caption';
+
+  // Tags
+  var tagsHTML = '';
+  if (post.hobbies && post.hobbies.length) {
+    tagsHTML = '<div class="mp-card-tags">'
+      + post.hobbies.slice(0, 2).map(function(h) {
+          return '<span class="mp-card-tag">' + h + '</span>';
+        }).join('')
+      + (post.hobbies.length > 2 ? '<span class="mp-card-tag">+' + (post.hobbies.length - 2) + '</span>' : '')
+      + '</div>';
+  }
+
+  // Date
+  var dateStr = mpFormatDate(post.timestamp);
+
+  // Stats
+  var likes    = post.likes    || 0;
+  var comments = (post.comments && post.comments.length) ? post.comments.length : 0;
+
+  return '<div class="mp-card" data-post-id="' + post.id + '">'
+    + mediaHTML
+    + '<div class="mp-card-body">'
+    +   '<div class="' + captionClass + '">' + captionText + '</div>'
+    +   tagsHTML
+    +   '<div class="mp-card-date">🕐 ' + dateStr + '</div>'
+    + '</div>'
+    + '<div class="mp-card-actions">'
+    +   '<button class="mp-action-btn" onclick="likeMyPost(this,\'' + post.id + '\')" title="Like">❤ ' + likes + '</button>'
+    +   '<button class="mp-action-btn" onclick="commentMyPost(\'' + post.id + '\')" title="Comment">💬 ' + comments + '</button>'
+    +   '<button class="mp-action-btn" onclick="saveMyPost(this)" title="Save">⭐ Save</button>'
+    +   '<span class="mp-action-spacer"></span>'
+    +   '<button class="mp-card-delete-btn" onclick="deleteMyPost(\'' + post.id + '\')" title="Delete post">🗑</button>'
+    + '</div>'
+    + '</div>';
+}
+
+/* ── Card Interactions ────────────────────────────────────── */
+function likeMyPost(btn, postId) {
+  var post = postsArray.find(function(p) { return p.id === postId; });
+  if (!post) return;
+  var isLiked = btn.classList.toggle('liked');
+  post.likes = (post.likes || 0) + (isLiked ? 1 : -1);
+  if (post.likes < 0) post.likes = 0;
+  btn.innerHTML = '❤ ' + post.likes;
+  saveState();
+  _mpRefreshProfileBar();
+  showToast(isLiked ? 'Liked! ❤️' : 'Like removed.');
+}
+
+function commentMyPost(postId) {
+  closeMyPostsPanel();
+  // Scroll to the post in feed and open its comment box
+  var postEl = document.getElementById(postId);
+  if (postEl) {
+    postEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(function() { toggleComment(postId); }, 400);
+  } else {
+    showToast('Open the main feed to comment.');
+  }
+}
+
+function saveMyPost(btn) {
+  btn.classList.toggle('saved');
+  showToast(btn.classList.contains('saved') ? 'Post saved ⭐' : 'Removed from saved.');
+}
+
+function deleteMyPost(postId) {
+  if (!confirm('Delete this post? This cannot be undone.')) return;
+  // Remove from postsArray
+  var idx = postsArray.findIndex(function(p) { return p.id === postId; });
+  if (idx !== -1) postsArray.splice(idx, 1);
+  // Remove from feed DOM
+  var feedEl = document.getElementById(postId);
+  if (feedEl) feedEl.remove();
+  // Save and re-render
+  saveState();
+  renderMyPosts();
+  showToast('Post deleted.');
+}
+
+/* ── Filter Tabs ──────────────────────────────────────────── */
+function filterMyPosts(type, btn) {
+  _mpCurrentFilter = type;
+  document.querySelectorAll('.mp-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderMyPosts();
+}
+
+/* ── Badge Count in Profile Popup ────────────────────────── */
+function updateMyPostsBadge() {
+  var badge = document.getElementById('myPostsCountBadge');
+  if (!badge) return;
+  var count = postsArray.filter(function(p) { return p.userId === U.id; }).length;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+/* ── Date Formatter ───────────────────────────────────────── */
+function mpFormatDate(isoStr) {
+  if (!isoStr) return 'Just now';
+  var d = new Date(isoStr);
+  var now = new Date();
+  var diff = Math.floor((now - d) / 1000);
+  if (diff < 60)  return 'Just now';
+  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+  if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+/* ── Init badge on page load ──────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  updateMyPostsBadge();
 });

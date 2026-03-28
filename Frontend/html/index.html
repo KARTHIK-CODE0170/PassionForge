@@ -401,6 +401,16 @@
 
     <div class="profile-popup-divider"></div>
 
+    <!-- My Posts -->
+    <div class="profile-popup-section-label">📝 Content</div>
+    <div class="profile-popup-item" onclick="openMyPostsPanel()" id="myPostsBtn">
+      <span class="popup-item-icon">📄</span>
+      <span class="popup-item-text">My Posts</span>
+      <span class="mp-post-count-badge" id="myPostsCountBadge" style="display:none"></span>
+    </div>
+
+    <div class="profile-popup-divider"></div>
+
     <!-- Account Settings -->
     <div class="profile-popup-item" onclick="window.location.href='account_settings.html'">
       <span class="popup-item-icon">&#9881;</span>
@@ -516,6 +526,70 @@
         </button>
         <button class="cp-btn-post" onclick="closePreview();createPost(true)">🚀 Publish Now</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ===== MY POSTS PANEL ===== -->
+  <div class="mp-overlay" id="mpOverlay" onclick="mpOverlayClose(event)">
+    <div class="mp-panel" id="mpPanel" role="dialog" aria-modal="true" aria-label="My Posts">
+
+      <!-- Panel Header -->
+      <div class="mp-header">
+        <div class="mp-header-left">
+          <div class="mp-header-icon">📄</div>
+          <div>
+            <div class="mp-header-title">My Posts</div>
+            <div class="mp-header-sub">Your creative journey</div>
+          </div>
+        </div>
+        <button class="mp-close" onclick="closeMyPostsPanel()" title="Close">&#10005;</button>
+      </div>
+
+      <!-- Profile Summary Bar -->
+      <div class="mp-profile-bar">
+        <div class="mp-profile-avatar" id="mpAvatar">SR</div>
+        <div class="mp-profile-info">
+          <div class="mp-profile-name" id="mpProfileName">Siddharth R.</div>
+          <div class="mp-profile-handle" id="mpProfileHandle">u/siddharth_r</div>
+        </div>
+        <div class="mp-stats">
+          <div class="mp-stat">
+            <span class="mp-stat-num" id="mpStatPosts">0</span>
+            <span class="mp-stat-label">Posts</span>
+          </div>
+          <div class="mp-stat">
+            <span class="mp-stat-num" id="mpStatLikes">0</span>
+            <span class="mp-stat-label">Total Likes</span>
+          </div>
+          <div class="mp-stat">
+            <span class="mp-stat-num" id="mpStatPoints">0</span>
+            <span class="mp-stat-label">Points</span>
+          </div>
+        </div>
+        <button class="mp-create-btn" onclick="closeMyPostsPanel(); openCreatePost();">
+          + New Post
+        </button>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="mp-filter-row">
+        <button class="mp-filter-btn active" onclick="filterMyPosts('all', this)" id="mpFilterAll">All</button>
+        <button class="mp-filter-btn" onclick="filterMyPosts('image', this)">🖼 Image</button>
+        <button class="mp-filter-btn" onclick="filterMyPosts('video', this)">🎬 Video</button>
+        <button class="mp-filter-btn" onclick="filterMyPosts('text', this)">✒ Text</button>
+      </div>
+
+      <!-- Posts Grid -->
+      <div class="mp-grid" id="myPostsGrid"></div>
+
+      <!-- Empty State -->
+      <div class="mp-empty" id="mpEmpty" style="display:none">
+        <div class="mp-empty-icon">🎨</div>
+        <div class="mp-empty-title">No posts yet</div>
+        <div class="mp-empty-desc">Start sharing your passion with the world!</div>
+        <button class="mp-empty-cta" onclick="closeMyPostsPanel(); openCreatePost();">🚀 Create Your First Post</button>
+      </div>
+
     </div>
   </div>
 
