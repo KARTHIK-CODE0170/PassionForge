@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opportunities | Passion Forge</title>
+  <meta name="description" content="Explore auditions, workshops, and competitions on Passion Forge. Apply before the deadline!" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/opportunities.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="nav-logo" style="cursor: pointer;" onclick="window.location.href='index.html'">
+    <img src="../../Img sources/PassionForge_logo.png" alt="Passion Forge Logo" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #F97316; object-fit: cover;" />
+    <span class="logo-text" style="color: #f3f4f6;">Passion <strong style="color:#F97316;">Forge</strong></span>
+  </div>
+  <div class="search-wrapper">
+    <span class="search-icon" style="display: flex;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
+    <input type="text" id="oppSearchInput" class="search-bar" placeholder="Search opportunities..." autocomplete="off" oninput="filterOpportunities()" />
+    <span class="search-clear" id="searchClear" title="Clear" onclick="clearSearch()">&#x2715;</span>
+  </div>
+  <div class="nav-btns" style="display: flex; align-items: center; gap: 15px;">
+    <div class="notification-icon" style="cursor: pointer; position: relative; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center;" title="Notifications">
+      <span style="font-size: 18px; color: #F97316;">🔔</span>
+      <span style="position: absolute; top: 8px; right: 8px; background: #fbbf24; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid rgb(28, 28, 36);"></span>
+    </div>
+    <div class="avatar" id="profileAvatar" style="background: linear-gradient(135deg, #F97316, #FB923C); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; cursor: pointer;" title="Profile">SR</div>
+  </div>
+</header>
+
+<!-- PAGE WRAPPER -->
+<div class="opp-page-wrapper">
+
+  <!-- LEFT FILTER SIDEBAR -->
+  <aside class="opp-sidebar">
+    <div class="opp-sidebar-header">
+      <span>🚀 Opportunities</span>
+    </div>
+
+    <a href="index.html" class="opp-back-link">&#8592; Back to Dashboard</a>
+
+    <div class="opp-filter-group">
+      <div class="opp-filter-label">Category</div>
+      <button class="opp-filter-btn active" id="filter-all" onclick="setFilter('all', this)">&#9702; All</button>
+      <button class="opp-filter-btn" id="filter-audition" onclick="setFilter('audition', this)">🎤 Auditions</button>
+      <button class="opp-filter-btn" id="filter-workshop" onclick="setFilter('workshop', this)">🎨 Workshops</button>
+      <button class="opp-filter-btn" id="filter-competition" onclick="setFilter('competition', this)">🏆 Competitions</button>
+    </div>
+
+    <div class="opp-filter-group">
+      <div class="opp-filter-label">Status</div>
+      <button class="opp-filter-btn active-status" id="status-all" onclick="setStatusFilter('all', this)">&#9702; All</button>
+      <button class="opp-filter-btn" id="status-active" onclick="setStatusFilter('active', this)">&#9679; Active</button>
+      <button class="opp-filter-btn" id="status-closed" onclick="setStatusFilter('closed', this)">&#10005; Closed</button>
+    </div>
+
+    <div class="opp-sidebar-stats">
+      <div class="opp-stat">
+        <span class="opp-stat-num" id="stat-total">0</span>
+        <span class="opp-stat-label">Total</span>
+      </div>
+      <div class="opp-stat">
+        <span class="opp-stat-num" id="stat-active" style="color: #10B981;">0</span>
+        <span class="opp-stat-label">Active</span>
+      </div>
+      <div class="opp-stat">
+        <span class="opp-stat-num" id="stat-closed" style="color: #EF4444;">0</span>
+        <span class="opp-stat-label">Closed</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="opp-main" id="oppMain">
+
+    <!-- Page Hero -->
+    <div class="opp-hero">
+      <div class="opp-hero-text">
+        <h1 class="opp-hero-title">Explore Opportunities <span class="opp-hero-rocket">🚀</span></h1>
+        <p class="opp-hero-sub">Discover auditions, workshops, and competitions tailored for passionate creators like you.</p>
+      </div>
+      <div class="opp-hero-badge">
+        <span id="opp-count-badge">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="opp-grid" id="opportunitiesContainer">
+      <!-- Cards injected here by JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div class="opp-empty" id="oppEmpty" style="display: none;">
+      <span class="opp-empty-icon">🔍</span>
+      <p>No opportunities match your filters.</p>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="../javascript/opportunities.js"></script>
+</body>
+</html>
