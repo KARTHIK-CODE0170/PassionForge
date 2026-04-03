@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ═══════════════ ELEMENTS ═══════════════
-    const exploreBtn = document.getElementById('exploreBtn');
-    const categoriesSection = document.getElementById('categoriesSection');
+
     const createToggleBtn = document.getElementById('createToggleBtn');
     const createFormContainer = document.getElementById('createFormContainer');
     
@@ -13,17 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const joinGroupForm = document.getElementById('joinGroupForm');
     const createGroupForm = document.getElementById('createGroupForm');
 
-    // ═══════════════ EXPLORE GROUPS ═══════════════
-    exploreBtn.addEventListener('click', () => {
-        if (categoriesSection.style.display === 'none') {
-            categoriesSection.style.display = 'block';
-            categoriesSection.scrollIntoView({ behavior: 'smooth' });
-            exploreBtn.textContent = 'Hide Categories';
-        } else {
-            categoriesSection.style.display = 'none';
-            exploreBtn.textContent = 'Explore Groups';
-        }
+    // ═══════════════ SIDEBAR NAVIGATION ═══════════════
+    const navIcons = document.querySelectorAll('.nav-icon');
+    
+    navIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            const parent = this.closest('.sidebar-nav');
+            if (parent) {
+                parent.querySelectorAll('.nav-icon').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            }
+        });
     });
+
+    window.goToDashboard = () => {
+        window.location.href = 'index.html';
+    };
 
     // ═══════════════ JOIN MODAL ═══════════════
     window.openJoinModal = (name) => {
@@ -76,10 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ═══════════════ CATEGORY FILTER (MOCK) ═══════════════
-    window.filterGroups = (category) => {
-        alert(`Showing groups for: ${category}`);
-        // In a real app, you would filter the groups-grid here
-    };
+
 
     // ═══════════════ DEEP LINKING ═══════════════
     if (window.location.hash === '#create' || window.location.search.includes('action=create')) {
