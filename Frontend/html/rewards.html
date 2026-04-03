@@ -104,7 +104,6 @@
       <div class="rd-tabs">
         <button class="rd-tab" onclick="switchRdTab('overview',this)" id="tab-overview">🌟 Overview</button>
         <button class="rd-tab active" onclick="switchRdTab('badges',this)" id="tab-badges">🏅 Badges</button>
-        <button class="rd-tab" onclick="switchRdTab('achievements',this)" id="tab-achievements">🏆 Achievements</button>
         <button class="rd-tab" onclick="switchRdTab('challenges',this)" id="tab-challenges">🎯 Challenges</button>
       </div>
 
@@ -133,11 +132,6 @@
             <div class="rd-ov-name">Posts Created</div>
           </div>
           <div class="rd-ov-card">
-            <div class="rd-ov-icon">❤️</div>
-            <div class="rd-ov-val" id="ov-likes">0</div>
-            <div class="rd-ov-name">Likes Given</div>
-          </div>
-          <div class="rd-ov-card">
             <div class="rd-ov-icon">🎯</div>
             <div class="rd-ov-val" id="ov-challenges">0</div>
             <div class="rd-ov-name">Challenges</div>
@@ -149,30 +143,16 @@
       <div class="rd-tab-content" id="rdtab-badges">
         <div class="rd-section-header">
           <span class="rd-section-title">🏅 Your Badges</span>
-          <span class="rd-earned-count" id="rd-earned-count">0 earned</span>
         </div>
-        <!-- Category filter chips -->
+        <!-- Simplified filter chips -->
         <div class="rd-filter-row">
           <span class="rd-chip active" onclick="filterBadges('all',this)">All</span>
           <span class="rd-chip" onclick="filterBadges('onboarding',this)">🚀 Onboarding</span>
           <span class="rd-chip" onclick="filterBadges('activity',this)">🔥 Activity</span>
           <span class="rd-chip" onclick="filterBadges('engagement',this)">👏 Engagement</span>
-          <span class="rd-chip" onclick="filterBadges('popularity',this)">📈 Popularity</span>
-          <span class="rd-chip" onclick="filterBadges('skill',this)">🎨 Skill</span>
-          <span class="rd-chip" onclick="filterBadges('milestones',this)">🏅 Milestones</span>
           <span class="rd-chip" onclick="filterBadges('challenges',this)">🎯 Challenges</span>
-          <span class="rd-chip" onclick="filterBadges('streaks',this)">🔥 Streaks</span>
-          <span class="rd-chip" onclick="filterBadges('advanced',this)">🌍 Advanced</span>
         </div>
         <div class="rd-badges-grid" id="rd-badges-grid">
-          <!-- filled by JS -->
-        </div>
-      </div>
-
-      <!-- Achievements Tab -->
-      <div class="rd-tab-content" id="rdtab-achievements" style="display:none;">
-        <div class="rd-section-title">🏆 Achievements Progress</div>
-        <div class="rd-ach-list" id="rd-ach-list">
           <!-- filled by JS -->
         </div>
       </div>
@@ -190,24 +170,6 @@
             <div class="rd-ch-reward">+20 pts</div>
             <button class="rd-ch-btn" onclick="completeDashChallenge(this)">Complete</button>
           </div>
-          <div class="rd-challenge-item">
-            <div class="rd-ch-icon">🎵</div>
-            <div class="rd-ch-info">
-              <div class="rd-ch-name">Post a Music Update</div>
-              <div class="rd-ch-desc">Share your music progress today</div>
-            </div>
-            <div class="rd-ch-reward">+10 pts</div>
-            <button class="rd-ch-btn" onclick="completeDashChallenge(this)">Complete</button>
-          </div>
-          <div class="rd-challenge-item">
-            <div class="rd-ch-icon">💬</div>
-            <div class="rd-ch-info">
-              <div class="rd-ch-name">Engage with 3 creators</div>
-              <div class="rd-ch-desc">Comment on 3 different posts</div>
-            </div>
-            <div class="rd-ch-reward">+6 pts</div>
-            <button class="rd-ch-btn" onclick="completeDashChallenge(this)">Complete</button>
-          </div>
         </div>
       </div>
 
@@ -215,35 +177,18 @@
 
     <!-- ════════ RIGHT PANEL ════════ -->
     <aside class="rd-right">
-
-      <!-- Weekly Login Bonus -->
-      <div class="rd-card rd-bonus-card">
-        <div class="rd-bonus-icon">🎉</div>
-        <div class="rd-bonus-title">Weekly Login Bonus!</div>
-        <div class="rd-bonus-desc" id="rd-bonus-desc">Log in 7 days this week to earn your bonus.</div>
-        <button class="rd-bonus-btn" id="rd-bonus-btn" onclick="claimBonus(this)">Claim +50 pts ⭐</button>
+      <div class="rd-card">
+        <div class="rd-section-title">✨ Reward Info</div>
+        <p style="color:#9ca3af; font-size:14px; line-height:1.6;">
+          Earn points by sharing your passion! 
+          <br><br>
+          • 10 pts for a post<br>
+          • 2 pts for a like/comment<br>
+          • 20 pts for challenges
+        </p>
       </div>
-
-      <!-- Leaderboard -->
-      <div class="rd-card rd-leaderboard-card">
-        <div class="rd-lb-header">
-          <span class="rd-lb-title">🏆 Leaderboard</span>
-          <span class="rd-lb-period">This Week</span>
-        </div>
-        <div class="rd-lb-list" id="rd-lb-list">
-          <!-- filled by JS -->
-        </div>
-      </div>
-
-      <!-- Recent Activity -->
-      <div class="rd-card rd-activity-card">
-        <div class="rd-lb-title">⚡ Recent Activity</div>
-        <div class="rd-activity-list" id="rd-activity-list">
-          <!-- filled by JS -->
-        </div>
-      </div>
-
     </aside>
+
   </div>
 
   <!-- toast -->
