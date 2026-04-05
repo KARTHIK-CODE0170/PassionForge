@@ -4,14 +4,36 @@
    ============================================================ */
 
 // ── Backend URL ─────────────────────────────────────────────
-// Change this if you run the backend on a different port
-// Use relative paths since app.py serves the frontend too
 var API = '';
+
+/* ── Global Getters ─────────────────────────────────────────── */
+function getPFUser() {
+  var saved = null;
+  try { 
+    saved = JSON.parse(localStorage.getItem('pf_user')); 
+  } catch (e) {
+    console.warn('LocalStorage parse failed:', e);
+  }
+  return saved || { id: null, name: 'u/guest', username: 'guest', initials: 'GU', posts: 0, points: 0, badges: [] };
+}
+
+// Current local cache (refreshed often)
+var U = getPFUser();
 
 /* ── Vote tracking (local, resets on page refresh) ─────────── */
 var votedPosts  = {};
 var extraLoaded = false;
 var toastTimer  = null;
+
+// Category tag styling (global)
+var tagMap = {
+  music:       '<span class="cat-tag music-tag">🎵 Music</span>',
+  singing:     '<span class="cat-tag singing-tag">🎤 Singing</span>',
+  dance:       '<span class="cat-tag dance-tag">💃 Dance</span>',
+  painting:    '<span class="cat-tag painting-tag">🎨 Painting</span>',
+  writing:     '<span class="cat-tag writing-tag">✍️ Writing</span>',
+  photography: '<span class="cat-tag photography-tag">📷 Photography</span>'
+};
 
 /* ============================================================
    VOTE / LIKE SYSTEM
@@ -512,6 +534,13 @@ async function createPost(fromPreview) {
   }
   hideCpError();
 
+  // Step 0 — Refresh user identity
+  U = getPFUser();
+  if (!U.id) {
+    showCpError('You must be logged in to post. Please refresh and log in.');
+    return;
+  }
+
   // Step 1 — Upload media to backend if there's a file
   var finalMediaUrl = cpMediaUrl;
   if (cpMediaFile) {
@@ -588,23 +617,23 @@ async function createPost(fromPreview) {
 /* ── Build Post HTML (for the feed) ── */
 
 function buildPostHTML(p) {
-  // Category tag styling
-  var tagMap = {
-    music:       '<span class="cat-tag music-tag">🎵 Music</span>',
-    singing:     '<span class="cat-tag singing-tag">🎤 Singing</span>',
-    dance:       '<span class="cat-tag dance-tag">💃 Dance</span>',
-    painting:    '<span class="cat-tag painting-tag">🎨 Painting</span>',
-    writing:     '<span class="cat-tag writing-tag">✍️ Writing</span>',
-    photography: '<span class="cat-tag photography-tag">📷 Photography</span>'
-  };
+  // Hobby tags (Safe check)
+  var hobbyTags = '';
+  if (Array.isArray(p.hobbies) && p.hobbies.length) {
+    hobbyTags = p.hobbies.map(function (h) {
+      if (!h) return '';
+      return tagMap[h.toLowerCase()] || '<span class="cat-tag generic-tag">' + escapeHTML(h) + '</span>';
+    }).join('');
+  }
 
-  var primary = p.hobbies && p.hobbies.length ? p.hobbies[0].toLowerCase() : null;
+  var primary = (Array.isArray(p.hobbies) && p.hobbies.length) ? p.hobbies[0].toLowerCase() : null;
   var catTag  = (primary && tagMap[primary]) ? tagMap[primary]
     : '<span class="cat-tag" style="background:#3d3d4a;color:#d1d5db;border:none;">'
       + (p.type ? p.type.charAt(0).toUpperCase() + p.type.slice(1) : 'Post') + '</span>';
 
-  var extraTags = (p.hobbies && p.hobbies.length > 1)
+  var extraTags = (Array.isArray(p.hobbies) && p.hobbies.length > 1)
     ? '<span class="dot">&middot;</span>' + p.hobbies.slice(1).map(function (h) {
+        if (!h) return '';
         return tagMap[h.toLowerCase()] || '';
       }).join('')
     : '';
@@ -620,11 +649,12 @@ function buildPostHTML(p) {
         + '</div>';
   }
 
-  var hashHTML = (p.hashtags && p.hashtags.length)
-    ? '<div style="margin-top:8px;font-size:12px;color:#F97316;">'
-      + p.hashtags.map(function (h) { return '#' + h; }).join(' ')
-      + '</div>'
-    : '';
+  var finalHashHTML = '';
+  if (Array.isArray(p.hashtags) && p.hashtags.length) {
+    finalHashHTML = '<div style="margin-top:8px;font-size:12px;color:#F97316;">'
+      + p.hashtags.map(function (h) { return '#' + escapeHTML(h); }).join(' ')
+      + '</div>';
+  }
 
   var displayInitials = p.userInitials || '??';
   var displayName     = p.userName     || 'u/someone';
@@ -644,7 +674,7 @@ function buildPostHTML(p) {
   if (p.isPreview) {
     return '<div class="post-body" style="padding:0;">' + metaHTML
       + (p.caption ? '<p class="post-preview" style="-webkit-line-clamp:unset;">' + escapeHTML(p.caption) + '</p>' : '')
-      + mediaHTML + hashHTML + '</div>';
+      + mediaHTML + finalHashHTML + '</div>';
   }
 
   // Full post card (shown in the main feed)
@@ -664,7 +694,7 @@ function buildPostHTML(p) {
     + '</div>'
     + '<div class="post-body">' + metaHTML
     + (p.caption ? '<h2 class="post-title">' + escapeHTML(p.caption) + '</h2>' : '')
-    + mediaHTML + hashHTML
+    + mediaHTML + finalHashHTML
     + '<div class="post-actions">'
     + '<button class="action-btn" onclick="toggleComment(\'' + p.id + '\')">▶ '
     + (p.comments ? p.comments.length : 0) + ' Comments</button>'
@@ -715,22 +745,27 @@ function insertPostIntoFeed(post, skipScroll) {
 
 /* ── Load all posts from backend ── */
 
-async function loadPostsFromBackend() {
+async function loadPostsFromBackend(category = 'all', sort = 'new') {
   try {
-    var response = await fetch(API + '/posts');
+    var response = await fetch(API + '/posts?category=' + category + '&sort=' + sort);
     if (!response.ok) throw new Error('Server error');
     var posts = await response.json();
 
     if (Array.isArray(posts)) {
       postsArray = posts;
 
-      // Remove any dynamically inserted posts before re-inserting
+      // Remove any existing posts from the feed area
+      // (Except the "No posts" message if present)
       document.querySelectorAll('.post-card').forEach(function (el) {
-        // Only remove posts with numeric IDs (database posts) — keep the HTML sample posts
-        if (!isNaN(el.id)) el.remove();
+        el.remove();
       });
 
-      // Show newest posts first (backend returns newest-first already)
+      // Show results
+      if (posts.length === 0) {
+        showToast('No ' + category + ' posts yet.');
+      }
+
+      // Re-insert each post from the list
       posts.forEach(function (p) { insertPostIntoFeed(p, true); });
 
       // Update the My Posts badge count
@@ -796,6 +831,8 @@ function renderMyPosts() {
   var empty = document.getElementById('mpEmpty');
   if (!grid) return;
 
+  // Refresh user identity
+  U = getPFUser();
   var myPosts  = postsArray.filter(function (p) { return String(p.user_id) === String(U.id); });
   var filtered = (_mpCurrentFilter === 'all')
     ? myPosts
@@ -945,5 +982,5 @@ document.addEventListener('keydown', function (e) {
 /* ── Load posts when the page finishes loading ── */
 
 document.addEventListener('DOMContentLoaded', function () {
-  loadPostsFromBackend();
+  loadPostsFromBackend('all', 'new');
 });

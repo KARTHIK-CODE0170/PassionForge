@@ -64,8 +64,25 @@
     return Object.assign({}, defaultState);
   }
 
+  var API = '';
+  var U   = JSON.parse(localStorage.getItem('pf_user') || '{}');
+
   function saveState() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+    try { 
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
+      syncToBackend();
+    } catch (e) { /* ignore */ }
+  }
+
+  async function syncToBackend() {
+    if (!U.id) return;
+    try {
+      await fetch(API + '/users/rewards', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: U.id, points: state.points, badges: state.unlocked })
+      });
+    } catch (e) { console.warn('Rewards sync failed', e); }
   }
 
   /* ─────────────────── LOGIC ─────────────────── */

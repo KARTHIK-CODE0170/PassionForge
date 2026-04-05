@@ -40,7 +40,7 @@ def init_db():
     # ── users table ─────────────────────────────────────────────
     # Stores all registered accounts.
     # 'hobbies' = JSON string like: '["Music", "Dance"]'
-    # 'bio'     = short description (optional)
+    # 'badges'  = JSON string like: '["First Step", "Post Master"]'
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id         INTEGER  PRIMARY KEY AUTOINCREMENT,
@@ -49,14 +49,48 @@ def init_db():
             password   TEXT     NOT NULL,
             bio        TEXT     DEFAULT '',
             hobbies    TEXT     DEFAULT '[]',
+            points     INTEGER  DEFAULT 0,
+            badges     TEXT     DEFAULT '[]',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     """)
 
+    # ── communities table ───────────────────────────────────────
+    # Groups that users can create and join.
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS communities (
+            id          INTEGER  PRIMARY KEY AUTOINCREMENT,
+            name        TEXT     NOT NULL UNIQUE,
+            description TEXT     DEFAULT '',
+            category    TEXT     DEFAULT 'General',
+            created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    # ── user_communities table (Junction) ───────────────────────
+    # Tracks which users follow which communities.
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS user_communities (
+            user_id      INTEGER NOT NULL,
+            community_id INTEGER NOT NULL,
+            PRIMARY KEY (user_id, community_id)
+        )
+    """)
+
+    # ── messages table ──────────────────────────────────────────
+    # Simple message store for chat.
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS messages (
+            id           INTEGER  PRIMARY KEY AUTOINCREMENT,
+            sender_id    INTEGER  NOT NULL,
+            recipient    TEXT     NOT NULL,
+            content      TEXT     NOT NULL,
+            timestamp    DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
     # ── posts table ─────────────────────────────────────────────
-    # Stores all posts created by users.
-    # 'hobbies', 'hashtags', 'comments' are stored as JSON strings.
-    # 'media_url' is the path to an uploaded file, or empty string.
+    # ... (existing posts table)
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS posts (
             id             INTEGER  PRIMARY KEY AUTOINCREMENT,
@@ -76,8 +110,9 @@ def init_db():
     """)
 
     # ── Add any missing columns safely (for existing databases) ──
-    # This handles the case where someone already has an older DB
     safe_add_column(cursor, "users", "bio",           "TEXT DEFAULT ''")
+    safe_add_column(cursor, "users", "points",        "INTEGER DEFAULT 0")
+    safe_add_column(cursor, "users", "badges",        "TEXT DEFAULT '[]'")
     safe_add_column(cursor, "posts", "user_initials", "TEXT DEFAULT '??'")
     safe_add_column(cursor, "posts", "comments",      "TEXT DEFAULT '[]'")
     safe_add_column(cursor, "posts", "likes",         "INTEGER DEFAULT 0")

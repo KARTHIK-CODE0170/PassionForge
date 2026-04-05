@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
       input.focus();
     });
     input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && input.value.trim()) showToast('Searching for "' + input.value.trim() + '"...');
+      if (e.key === 'Enter' && input.value.trim()) {
+        performGlobalSearch();
+      }
     });
   }
   
@@ -61,30 +63,74 @@ function loadPFUser() {
 function toggleSection(id, header) {
   var menu = document.getElementById(id);
   var chevron = header.querySelector('.chevron');
-  menu.classList.toggle('collapsed');
-  chevron.classList.toggle('rotated');
+  if (menu) menu.classList.toggle('collapsed');
+  if (chevron) chevron.classList.toggle('rotated');
 }
 
 function switchTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(function(t) { t.classList.remove('active'); });
   btn.classList.add('active');
+  const cat = document.querySelector('.s-item.active[id^="filter-"]')?.getAttribute('onclick').match(/'([^']+)'/)[1] || 'all';
+  if (window.loadPostsFromBackend) {
+    loadPostsFromBackend(cat, name.toLowerCase());
+  }
   showToast('Sorted by ' + name.charAt(0).toUpperCase() + name.slice(1));
 }
 
 function filterFeed(category, clicked) {
   document.querySelectorAll('.s-item[id^="filter-"]').forEach(function(i) { i.classList.remove('active'); });
   clicked.classList.add('active');
-  document.querySelectorAll('.post-card').forEach(function(post) {
-    post.classList.toggle('hidden', category !== 'all' && post.getAttribute('data-category') !== category);
-  });
+  const sort = document.querySelector('.tab-btn.active')?.textContent.toLowerCase() || 'new';
+  if (window.loadPostsFromBackend) {
+    loadPostsFromBackend(category, sort);
+  }
   showToast('Filtered by ' + category);
+}
+
+async function performGlobalSearch() {
+  const input = document.getElementById('searchInput');
+  const q     = input ? input.value.trim() : '';
+  if (!q) return;
+
+  showToast('Searching for "' + q + '"...');
+  try {
+    const res = await fetch('/search?q=' + encodeURIComponent(q));
+    const data = await res.json();
+    
+    // Render posts results
+    if (window.postsArray !== undefined) {
+       postsArray = data.posts;
+       document.querySelectorAll('.post-card').forEach(el => el.remove());
+       if (window.insertPostIntoFeed) {
+         postsArray.forEach(p => insertPostIntoFeed(p, true));
+       }
+    }
+    
+    if (data.users && data.users.length > 0) {
+      showToast('Found ' + data.users.length + ' matching users');
+    }
+  } catch (e) { 
+    console.error('Search failed', e);
+    showToast('Search failed.'); 
+  }
 }
 
 function joinCommunity(item, name) {
   var tag = item.querySelector('.join-tag');
   tag.classList.toggle('joined');
   tag.textContent = tag.classList.contains('joined') ? 'Joined \u2713' : 'Join';
+  
   if (tag.classList.contains('joined')) {
+    // Send to backend
+    const U = JSON.parse(localStorage.getItem('pf_user') || '{}');
+    if (U.id) {
+        fetch('/communities/join', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ user_id: U.id, community_name: name })
+        }).catch(e => console.error('Join failed', e));
+    }
+
     if (window.RewardsSystem) { RewardsSystem.trackAction('JOIN_COMMUNITY'); }
     else { showToast('Welcome to ' + name + '!'); }
   } else {
@@ -108,8 +154,13 @@ function completeChallenge() {
   challengeDone = true;
   var btn = document.querySelector('.btn-challenge');
   if (btn) { btn.textContent = '\u2713 Completed!'; btn.classList.add('done'); }
-  document.getElementById('streakFill').style.width = '100%';
-  document.querySelector('.streak-label').textContent = '\u2605 7-day streak \u2014 amazing!';
+  
+  const streak = document.getElementById('streakFill');
+  if (streak) streak.style.width = '100%';
+  
+  const label = document.querySelector('.streak-label');
+  if (label) label.textContent = '\u2605 7-day streak \u2014 amazing!';
+  
   if (window.RewardsSystem) { RewardsSystem.trackAction('COMPLETE_CHALLENGE'); }
   else { showToast('+20 credits earned! Streak extended.'); }
 }
@@ -119,15 +170,14 @@ function handleSignup() { window.location.href = 'landing.html'; }
 
 /* PROFILE POPUP */
 function toggleProfileMenu(e) {
-  e.stopPropagation();
+  if (e) e.stopPropagation();
   var popup = document.getElementById('profilePopup');
-  popup.classList.toggle('open');
+  if (popup) popup.classList.toggle('open');
 }
 
-
-
 function handleLogout() {
-  document.getElementById('profilePopup').classList.remove('open');
+  const popup = document.getElementById('profilePopup');
+  if (popup) popup.classList.remove('open');
   localStorage.removeItem('pf_user');
   showToast('Logging out...');
   setTimeout(function() { window.location.href = 'landing.html'; }, 900);
@@ -150,5 +200,3 @@ function showToast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2800);
 }
-
-

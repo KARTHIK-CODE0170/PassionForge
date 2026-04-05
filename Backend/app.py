@@ -82,6 +82,11 @@ def home():
     """Landing page — login/signup."""
     return send_from_directory(os.path.join(FRONTEND_DIR, "html"), "landing.html")
 
+@app.route("/Img sources/<path:filename>")
+def serve_img_sources(filename):
+    """Serve original project images (logo, etc.) from the Img sources folder."""
+    return send_from_directory(IMG_DIR, filename)
+
 @app.route("/<path:filename>")
 def serve_frontend(filename):
     """
@@ -367,10 +372,25 @@ def change_password(user_id):
 
 @app.route("/posts", methods=["GET"])
 def get_posts():
-    conn   = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM posts ORDER BY created_at DESC")
-    rows = cursor.fetchall()
+    """Retrieve posts with optional filtering and sorting."""
+    cat  = request.args.get("category", "all")
+    sort = request.args.get("sort", "new") # new or hot
+
+    conn = get_db_connection()
+    query = "SELECT * FROM posts"
+    params = []
+
+    if cat != "all":
+        # Search for category within the JSON string/list stored in 'hobbies' or content
+        query += " WHERE LOWER(hobbies) LIKE ? OR LOWER(caption) LIKE ?"
+        params.append(f'%{cat}%'); params.append(f'%{cat}%')
+
+    if sort == "hot":
+        query += " ORDER BY likes DESC, created_at DESC"
+    else:
+        query += " ORDER BY created_at DESC"
+
+    rows = conn.execute(query, params).fetchall()
     conn.close()
 
     posts = []
@@ -612,6 +632,175 @@ def delete_user(user_id):
     conn.commit()
     conn.close()
     return jsonify({"message": "Account deleted."}), 200
+
+
+# ── SEARCH ──────────────────────────────────────────────────────────────────
+
+@app.route("/search")
+def global_search():
+    """Simple search across posts and usernames."""
+    q = request.args.get("q", "").lower()
+    if not q: return jsonify({"posts": [], "users": []})
+
+    conn = get_db_connection()
+    # Search posts caption AND users username
+    posts = conn.execute("""
+        SELECT * FROM posts WHERE LOWER(caption) LIKE ? OR LOWER(username) LIKE ?
+        ORDER BY created_at DESC LIMIT 20
+    """, (f'%{q}%', f'%{q}%')).fetchall()
+    
+    # Process results to match the expected frontend structure
+    posts_list = []
+    for r in posts:
+        try: hobbies  = json.loads(r["hobbies"]) if r["hobbies"] else []
+        except: hobbies = []
+        try: hashtags = json.loads(r["hashtags"]) if r["hashtags"] else []
+        except: hashtags = []
+        try: comments = json.loads(r["comments"]) if r["comments"] else []
+        except: comments = []
+
+        posts_list.append({
+            "id": r["id"],
+            "user_id": r["user_id"],
+            "userName": r["username"],
+            "userInitials": r.get("user_initials", "??"),
+            "type": r["type"],
+            "caption": r["caption"],
+            "mediaUrl": r["media_url"] or "",
+            "mediaIsVideo": bool(r["media_is_video"]),
+            "hobbies": hobbies,
+            "hashtags": hashtags,
+            "comments": comments,
+            "likes": r["likes"] or 0,
+            "timestamp": r["created_at"]
+        })
+
+    return jsonify({
+        "posts": posts_list,
+        "users": [dict(u) for u in users]
+    })
+
+
+# ── COMMUNITIES ──────────────────────────────────────────────────────────────
+
+@app.route("/communities", methods=["GET"])
+def list_communities():
+    """List all available communities."""
+    conn = get_db_connection()
+    comms = conn.execute("SELECT * FROM communities ORDER BY name ASC").fetchall()
+    conn.close()
+    return jsonify([dict(c) for c in comms])
+
+@app.route("/communities", methods=["POST"])
+def create_community():
+    """Create a new community."""
+    data = request.get_json()
+    name = data.get("name")
+    desc = data.get("description", "")
+    cat  = data.get("category", "General")
+
+    if not name: return jsonify({"error": "Name is required"}), 400
+
+    conn = get_db_connection()
+    try:
+        conn.execute("INSERT INTO communities (name, description, category) VALUES (?, ?, ?)",
+                     (name, desc, cat))
+        conn.commit()
+        return jsonify({"message": "Community created!"}), 201
+    except:
+        return jsonify({"error": "Name already exists"}), 400
+    finally:
+        conn.close()
+
+@app.route("/communities/join", methods=["POST"])
+def join_community():
+    """Join a community."""
+    data = request.get_json()
+    u_id = data.get("user_id")
+    c_n  = data.get("community_name")
+
+    if not u_id or not c_n: return jsonify({"error": "Missing info"}), 400
+
+    conn = get_db_connection()
+    try:
+        # Get community ID by name first
+        c = conn.execute("SELECT id FROM communities WHERE name = ?", (c_n,)).fetchone()
+        if not c:
+            # If it doesn't exist, create it (simple behavior for student project)
+            cursor = conn.execute("INSERT INTO communities (name) VALUES (?)", (c_n,))
+            c_id = cursor.lastrowid
+        else:
+            c_id = c["id"]
+
+        conn.execute("INSERT OR IGNORE INTO user_communities (user_id, community_id) VALUES (?, ?)", (u_id, c_id))
+        conn.commit()
+        return jsonify({"message": "Joined!"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+    finally:
+        conn.close()
+
+
+# ── MESSAGING ───────────────────────────────────────────────────────────────
+
+@app.route("/messages", methods=["GET"])
+def get_messages():
+    """Get message history between current user and another user."""
+    u_id = request.args.get("user_id")
+    peer = request.args.get("peer") # peer username
+
+    if not u_id or not peer: return jsonify([])
+
+    conn = get_db_connection()
+    # Get current user's username
+    u = conn.execute("SELECT username FROM users WHERE id = ?", (u_id,)).fetchone()
+    if not u: return jsonify([])
+    u_name = u["username"]
+
+    msgs = conn.execute("""
+        SELECT * FROM messages 
+        WHERE (sender_id = ? AND recipient = ?) 
+           OR (recipient = ? AND sender_id = (SELECT id FROM users WHERE username = ?))
+        ORDER BY timestamp ASC
+    """, (u_id, peer, u_name, peer)).fetchall()
+    conn.close()
+    return jsonify([dict(m) for m in msgs])
+
+@app.route("/messages", methods=["POST"])
+def send_message():
+    """Save a new chat message."""
+    data = request.get_json()
+    s_id = data.get("sender_id")
+    rcpt = data.get("recipient")
+    cont = data.get("content")
+
+    if not s_id or not rcpt or not cont: return jsonify({"error": "Incomplete"}), 400
+
+    conn = get_db_connection()
+    conn.execute("INSERT INTO messages (sender_id, recipient, content) VALUES (?, ?, ?)",
+                 (s_id, rcpt, cont))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Sent"}), 201
+
+
+# ── REWARDS SYNC ────────────────────────────────────────────────────────────
+
+@app.route("/users/rewards", methods=["PUT"])
+def sync_rewards():
+    """Persist user points and badges."""
+    data = request.get_json()
+    u_id = data.get("user_id")
+    pts  = data.get("points")
+    bdgs = json.dumps(data.get("badges", []))
+
+    if not u_id: return jsonify({"error": "No user ID"}), 400
+
+    conn = get_db_connection()
+    conn.execute("UPDATE users SET points = ?, badges = ? WHERE id = ?", (pts, bdgs, u_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Rewards synced"})
 
 
 # ============================================================

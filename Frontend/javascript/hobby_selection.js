@@ -65,7 +65,11 @@ async function goToDashboard() {
               body: JSON.stringify({ hobbies: selected })
           });
 
-          if (!response.ok) {
+          if (response.ok) {
+              // Update local state so it's consistent
+              user.hobbies = selected;
+              localStorage.setItem('pf_user', JSON.stringify(user));
+          } else {
               console.error('Failed to save hobbies to backend');
           }
       } catch (error) {
