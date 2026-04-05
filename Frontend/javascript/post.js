@@ -68,6 +68,15 @@ async function appreciatePost(id, btn) {
     } else {
       showToast('You appreciated this post!');
     }
+
+    // Connect Notification System
+    if (window.NotificationSystem) {
+      // Get the post author if available
+      var postEl = document.getElementById(id);
+      var authorEl = postEl && postEl.querySelector('.username');
+      var author = authorEl ? authorEl.textContent.trim() : 'a creator';
+      NotificationSystem.create('like', '❤️ You appreciated ' + author + '\'s post. Spread the love!');
+    }
   }
 }
 
@@ -158,6 +167,17 @@ async function submitComment(btn) {
   input.value = '';
   commentEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
+  // Notifications & Rewards
+  if (window.RewardsSystem) {
+    RewardsSystem.trackAction('COMMENT_POST');
+  } else {
+    showToast('Comment posted!');
+  }
+
+  if (window.NotificationSystem) {
+    NotificationSystem.create('comment', '💬 You commented on a post. Keep the conversation going!');
+  }
+
   // Save comment to backend
   try {
     await fetch(API + '/posts/' + postId + '/comment', {
@@ -168,9 +188,7 @@ async function submitComment(btn) {
         username: U.name || ('u/' + U.username) || 'u/you'
       })
     });
-    showToast('Comment posted!');
   } catch (e) {
-    console.warn('Comment not saved to backend:', e);
   }
 }
 
@@ -592,7 +610,7 @@ async function createPost(fromPreview) {
     // Step 4 — Refresh the feed so the new post appears
     await loadPostsFromBackend();
 
-    // Step 5 — Gamification
+    // Step 5 — Gamification & Notifications
     if (window.RewardsSystem) {
       RewardsSystem.trackAction('CREATE_POST', { hobbies: cpSelectedHobbies });
     } else {
@@ -601,6 +619,34 @@ async function createPost(fromPreview) {
       checkBadges();
       saveUserState();
       showToast('🎉 Post published! +10 points earned.');
+    }
+
+    if (window.NotificationSystem) {
+      NotificationSystem.create('system', '🚀 Your post was published! It\'s now live on the Passion Forge feed.');
+      
+      // Check for badge milestones
+      var postCount = postsArray.filter(function(p) { return p.userId === U.id; }).length;
+      if (postCount === 1) {
+        setTimeout(function() {
+          NotificationSystem.create('achievement', '🏆 Badge unlocked: "First Post!" You\'ve started your creative journey!');
+        }, 1500);
+      } else if (postCount === 5) {
+        setTimeout(function() {
+          NotificationSystem.create('achievement', '🔥 Badge unlocked: "5 Posts!" You are on fire!');
+        }, 1500);
+      } else if (postCount === 10) {
+        setTimeout(function() {
+          NotificationSystem.create('achievement', '⭐ Badge unlocked: "10 Posts Legend!" You are a true creator!');
+        }, 1500);
+      }
+    }
+
+    // Auto-refresh My Posts panel if it's open
+    var mpOv = document.getElementById('mpOverlay');
+    if (mpOv && mpOv.classList.contains('open')) {
+      if (typeof renderMyPosts === 'function') renderMyPosts();
+    } else {
+      if (typeof updateMyPostsBadge === 'function') updateMyPostsBadge();
     }
 
     // Step 6 — Close the create post modal
