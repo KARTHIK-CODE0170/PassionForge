@@ -1,5 +1,5 @@
-// Backend URL — must match where app.py is running
-var API = 'http://localhost:5000';
+// Backend URL — using empty string for relative paths since app.py serves everything
+var API = '';
 
 var selected = [];
 

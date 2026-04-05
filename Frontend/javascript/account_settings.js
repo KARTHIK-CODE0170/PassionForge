@@ -2,8 +2,8 @@
    account_settings.js – Passion Forge Account Settings
    ======================================================== */
 
-// Backend URL — must match where app.py is running
-var API = 'http://localhost:5000';
+// Backend URL — using empty string for relative paths since app.py serves everything
+var API = '';
 
 /* ── Default user state ── */
 const DEFAULT_STATE = {

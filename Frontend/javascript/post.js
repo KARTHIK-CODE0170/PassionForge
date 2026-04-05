@@ -5,7 +5,8 @@
 
 // ── Backend URL ─────────────────────────────────────────────
 // Change this if you run the backend on a different port
-var API = 'http://localhost:5000';
+// Use relative paths since app.py serves the frontend too
+var API = '';
 
 /* ── Vote tracking (local, resets on page refresh) ─────────── */
 var votedPosts  = {};
@@ -521,7 +522,9 @@ async function createPost(fromPreview) {
       var uploadRes  = await fetch(API + '/upload', { method: 'POST', body: formData });
       var uploadData = await uploadRes.json();
       if (!uploadRes.ok) throw new Error(uploadData.error || 'Upload failed');
-      finalMediaUrl = API + uploadData.url; // e.g. http://localhost:5000/uploads/123_photo.jpg
+      
+      // Ensure the path is exactly what the backend returned
+      finalMediaUrl = uploadData.url; 
     } catch (err) {
       showCpError('Media upload failed: ' + err.message);
       return;
@@ -541,6 +544,8 @@ async function createPost(fromPreview) {
     hobbies:      cpSelectedHobbies.slice(),
     hashtags:     tags
   };
+
+  console.log('--- DEBUG: Pre-Post Payload ---', JSON.stringify(post, null, 2));
 
   // Step 3 — Send to backend
   try {
