@@ -1,0 +1,17 @@
+{
+  "name": "passion-forge",
+  "version": "1.0.0",
+  "description": "A creative social platform for hobby enthusiasts",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.7"
+  },
+  "devDependencies": {
+    "vite": "^5.1.4"
+  }
+}
