@@ -2,6 +2,9 @@
    account_settings.js – Passion Forge Account Settings
    ======================================================== */
 
+// Backend URL — must match where app.py is running
+var API = 'http://localhost:5000';
+
 /* ── Default user state ── */
 const DEFAULT_STATE = {
   username: 'Modi Pagulu',
@@ -157,52 +160,101 @@ function updateNavbarAvatar() {
 }
 
 /* ── Profile Save ── */
-function handleProfileSave() {
+async function handleProfileSave() {
   clearErrors(['inputUsername', 'inputBio', 'inputEmail']);
 
   var username = document.getElementById('inputUsername').value.trim();
-  var bio = document.getElementById('inputBio').value.trim();
+  var bio      = document.getElementById('inputBio').value.trim();
 
   if (!username) { showFieldError('inputUsername', 'Username cannot be empty.'); return; }
   if (username.length < 3) { showFieldError('inputUsername', 'Username must be at least 3 characters.'); return; }
 
   // Collect hobbies from profile checkboxes
   var hobbies = [];
-  document.querySelectorAll('#profileHobbies .hobby-chip.selected').forEach(function (chip) {
+  document.querySelectorAll('#profileHobbies .hobby-chip.selected').forEach(function(chip) {
     hobbies.push(chip.getAttribute('data-hobby'));
   });
 
+  // Update local state
   userState.username = username;
-  userState.bio = bio;
-  userState.hobbies = hobbies;
+  userState.bio      = bio;
+  userState.hobbies  = hobbies;
+  userState.name     = 'u/' + username;
+  userState.initials = username.substring(0, 2).toUpperCase();
 
-  // Sync hobbies to preferences panel too
-  document.querySelectorAll('#prefHobbies .hobby-chip').forEach(function (chip) {
-    chip.classList.toggle('selected', hobbies.includes(chip.getAttribute('data-hobby')));
-  });
-
+  // Save to localStorage first (instant update)
   saveUserState();
   setAvatarPreviewFromUrl(userState.avatarUrl);
   updateNavbarAvatar();
+
+  // Also save to backend so it persists across devices/accounts
+  try {
+    var userId = userState.id;
+    if (userId) {
+      var response = await fetch(API + '/users/' + userId + '/profile', {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ username: username, bio: bio })
+      });
+      var result = await response.json();
+      if (!response.ok) {
+        // If backend rejected (e.g. username taken), show the error
+        showFieldError('inputUsername', result.error || 'Could not save to server.');
+        return;
+      }
+      // Update stored name/initials from backend response
+      userState.name     = result.name;
+      userState.initials = result.initials;
+      saveUserState();
+    }
+  } catch (e) {
+    // Backend unreachable – still saved locally, so just warn
+    console.warn('Backend not reachable; profile saved locally only.');
+  }
+
+  // Sync hobbies to preferences panel
+  document.querySelectorAll('#prefHobbies .hobby-chip').forEach(function(chip) {
+    chip.classList.toggle('selected', hobbies.includes(chip.getAttribute('data-hobby')));
+  });
+
   showToast('&#10004; Profile updated successfully!');
 }
 
 /* ── Security Save ── */
-function handleSecuritySave() {
+async function handleSecuritySave() {
   clearErrors(['inputCurrentPassword', 'inputNewPassword', 'inputConfirmPassword', 'inputSecurityEmail']);
 
-  var currentPw = document.getElementById('inputCurrentPassword').value;
-  var newPw = document.getElementById('inputNewPassword').value;
-  var confirmPw = document.getElementById('inputConfirmPassword').value;
-  var secEmail = document.getElementById('inputSecurityEmail').value.trim();
+  var currentPw  = document.getElementById('inputCurrentPassword').value;
+  var newPw      = document.getElementById('inputNewPassword').value;
+  var confirmPw  = document.getElementById('inputConfirmPassword').value;
+  var secEmail   = document.getElementById('inputSecurityEmail').value.trim();
 
   var hasPasswordChange = currentPw || newPw || confirmPw;
 
   if (hasPasswordChange) {
     if (!currentPw) { showFieldError('inputCurrentPassword', 'Please enter your current password.'); return; }
-    if (!newPw) { showFieldError('inputNewPassword', 'Please enter a new password.'); return; }
+    if (!newPw)     { showFieldError('inputNewPassword', 'Please enter a new password.'); return; }
     if (newPw.length < 8) { showFieldError('inputNewPassword', 'Password must be at least 8 characters.'); return; }
     if (newPw !== confirmPw) { showFieldError('inputConfirmPassword', 'Passwords do not match.'); return; }
+
+    // Call the backend to actually change the password in the database
+    try {
+      var userId = userState.id;
+      if (userId) {
+        var res = await fetch(API + '/users/' + userId + '/password', {
+          method:  'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ current_password: currentPw, new_password: newPw })
+        });
+        var result = await res.json();
+        if (!res.ok) {
+          showFieldError('inputCurrentPassword', result.error || 'Password change failed.');
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Backend not available; password not changed on server.');
+    }
   }
 
   if (secEmail) {
@@ -214,7 +266,7 @@ function handleSecuritySave() {
   saveUserState();
 
   // Clear password fields after save
-  ['inputCurrentPassword', 'inputNewPassword', 'inputConfirmPassword'].forEach(function (id) {
+  ['inputCurrentPassword', 'inputNewPassword', 'inputConfirmPassword'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.value = '';
   });

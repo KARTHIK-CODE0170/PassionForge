@@ -19,7 +19,44 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e.key === 'Enter' && input.value.trim()) showToast('Searching for "' + input.value.trim() + '"...');
     });
   }
+  
+  // Initialize user profile data from session
+  loadPFUser();
 });
+
+/* SESSION & PROFILE LOGIC */
+function loadPFUser() {
+  const userStr = localStorage.getItem('pf_user');
+  if (!userStr) return;
+  
+  try {
+    const user = JSON.parse(userStr);
+    const initials = user.username ? user.username.substring(0, 2).toUpperCase() : '??';
+    
+    // Update Navbar Avatar
+    const navAvatar = document.getElementById('profileAvatar');
+    if (navAvatar) navAvatar.textContent = initials;
+
+    // Update Profile Popup Header
+    const popupAvatar = document.querySelector('.profile-popup-avatar');
+    if (popupAvatar) popupAvatar.textContent = initials;
+
+    const popupName = document.querySelector('.profile-popup-name');
+    if (popupName) popupName.textContent = user.username || 'Guest';
+
+    const popupHandle = document.querySelector('.profile-popup-handle');
+    if (popupHandle) {
+      const handle = (user.username || 'guest').toLowerCase().replace(/\s+/g, '_');
+      popupHandle.textContent = 'u/' + handle;
+    }
+    
+    // Update "My Posts" panel avatar if exists in index.html
+    const mpAvatar = document.getElementById('mpAvatar');
+    if (mpAvatar) mpAvatar.textContent = initials;
+  } catch (err) {
+    console.error('Error loading session user:', err);
+  }
+}
 
 function toggleSection(id, header) {
   var menu = document.getElementById(id);

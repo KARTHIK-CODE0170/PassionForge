@@ -1,0 +1,24 @@
+# ============================================================
+# .gitignore for PassionForge Backend
+# Files listed here will NOT be uploaded to GitHub.
+# ============================================================
+
+# The SQLite database file — this contains real user data
+# Never push database files to GitHub!
+*.db
+*.sqlite
+*.sqlite3
+
+# Python cache files — auto-generated, not needed in the repo
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment folder (if you use one)
+venv/
+env/
+.venv/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
