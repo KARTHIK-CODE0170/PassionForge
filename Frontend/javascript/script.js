@@ -71,16 +71,24 @@ function switchTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(function(t) { t.classList.remove('active'); });
   btn.classList.add('active');
   const cat = document.querySelector('.s-item.active[id^="filter-"]')?.getAttribute('onclick').match(/'([^']+)'/)[1] || 'all';
+  
+  // CLEAN SORT: Ensure we send just the name (hot, new, etc.) without emojis
+  const sortName = name.toLowerCase().replace(/[^\w]/g, ''); 
+  
   if (window.loadPostsFromBackend) {
-    loadPostsFromBackend(cat, name.toLowerCase());
+    loadPostsFromBackend(cat, sortName);
   }
-  showToast('Sorted by ' + name.charAt(0).toUpperCase() + name.slice(1));
+  showToast('Sorted by ' + name.charAt(0).toUpperCase() + name.slice(1).replace(/[^\w]/g, ''));
 }
 
 function filterFeed(category, clicked) {
   document.querySelectorAll('.s-item[id^="filter-"]').forEach(function(i) { i.classList.remove('active'); });
   clicked.classList.add('active');
-  const sort = document.querySelector('.tab-btn.active')?.textContent.toLowerCase() || 'new';
+  
+  // CLEAN SORT: Extract active sort from tab buttons
+  const activeTab = document.querySelector('.tab-btn.active');
+  const sort = activeTab ? activeTab.textContent.toLowerCase().replace(/[^\w]/g, '') : 'new';
+  
   if (window.loadPostsFromBackend) {
     loadPostsFromBackend(category, sort);
   }

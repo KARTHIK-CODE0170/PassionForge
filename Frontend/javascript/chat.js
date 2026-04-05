@@ -9,6 +9,8 @@
  *  • XSS-safe HTML escaping
  *  • Navigation to dashboard
  */
+function goToDashboard() { window.location.href = 'index.html'; }
+
 
 'use strict';
 

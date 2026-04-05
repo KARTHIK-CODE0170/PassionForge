@@ -336,7 +336,13 @@
           } else {
             // Login success: save to localStorage and redirect
             localStorage.setItem('pf_user', JSON.stringify(data.user));
-            window.location.href = 'hobby_selection.html';
+            
+            // REDIRECTION FIX: Check if user already has hobbies selected
+            if (data.user.hobbies && data.user.hobbies.length > 0) {
+              window.location.href = 'index.html';
+            } else {
+              window.location.href = 'hobby_selection.html';
+            }
           }
         } else {
           err.style.display = 'block';
