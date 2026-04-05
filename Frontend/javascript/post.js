@@ -14,6 +14,13 @@ function appreciatePost(id, btn) {
     el.textContent = val + 1; btn.classList.add('voted'); votedPosts[id] = 'up';
     if (window.RewardsSystem) { RewardsSystem.trackAction('LIKE_POST'); }
     else { showToast('You appreciated this post.'); }
+    // Get the post author if available
+    var postEl = document.getElementById(id);
+    var authorEl = postEl && postEl.querySelector('.username');
+    var author = authorEl ? authorEl.textContent.trim() : 'a creator';
+    if (window.NotificationSystem) {
+      NotificationSystem.create('like', '\u2764\uFE0F You appreciated ' + author + '\'s post. Spread the love!');
+    }
   }
 }
 
@@ -43,6 +50,9 @@ function submitComment(btn) {
   if (!input.value.trim()) { input.style.borderColor = '#F97316'; input.focus(); return; }
   if (window.RewardsSystem) { RewardsSystem.trackAction('COMMENT_POST'); }
   else { showToast('Comment posted.'); }
+  if (window.NotificationSystem) {
+    NotificationSystem.create('comment', '\uD83D\uDCAC You commented on a post. Keep the conversation going!');
+  }
   input.value = ''; input.style.borderColor = '';
   btn.closest('.comment-box').classList.add('hidden');
 }
@@ -293,6 +303,24 @@ function createPost(fromPreview) {
   } else {
     U.posts += 1; addPoints(10); checkBadges(); updateUI(); saveState();
     showToast('🎉 Post published! +10 points earned.');
+  }
+  if (window.NotificationSystem) {
+    NotificationSystem.create('system', '🚀 Your post was published! It\'s now live on the Passion Forge feed.');
+    // Check for badge milestones
+    var postCount = postsArray.filter(function(p) { return p.userId === U.id; }).length;
+    if (postCount === 1) {
+      setTimeout(function() {
+        NotificationSystem.create('achievement', '🏆 Badge unlocked: "First Post!" You\'ve started your creative journey!');
+      }, 1500);
+    } else if (postCount === 5) {
+      setTimeout(function() {
+        NotificationSystem.create('achievement', '🔥 Badge unlocked: "5 Posts!" You are on fire!');
+      }, 1500);
+    } else if (postCount === 10) {
+      setTimeout(function() {
+        NotificationSystem.create('achievement', '⭐ Badge unlocked: "10 Posts Legend!" You are a true creator!');
+      }, 1500);
+    }
   }
   // Auto-refresh My Posts panel if it's open, and always update badge
   var mpOv = document.getElementById('mpOverlay');

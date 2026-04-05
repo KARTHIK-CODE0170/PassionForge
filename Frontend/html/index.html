@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/post.css" />
+  <link rel="stylesheet" href="../css/notifications.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 
@@ -30,13 +31,12 @@
       <span class="search-clear" id="searchClear" title="Clear">&#x2715;</span>
     </div>
     <div class="nav-btns" style="display: flex; align-items: center; gap: 15px;">
-      <!-- Notification Symbol -->
-      <div class="notification-icon"
-        style="cursor: pointer; position: relative; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+      <!-- Notification Bell -->
+      <div class="notification-icon" id="notifBell"
+        onclick="NotificationSystem.toggle(event)"
         title="Notifications">
-        <span style="font-size: 18px; color: #F97316;">🔔</span>
-        <span
-          style="position: absolute; top: 8px; right: 8px; background: #fbbf24; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid rgb(28, 28, 36);"></span>
+        <span class="notif-bell-emoji">🔔</span>
+        <span id="notifBadge"></span>
       </div>
       <!-- Messages Icon -->
       <div onclick="window.location.href='chat.html'" style="cursor: pointer; position: relative; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center;" title="Messages">
@@ -597,7 +597,41 @@
     </div>
   </div>
 
+  <!-- ===== NOTIFICATION PANEL ===== -->
+  <div id="notifPanel" role="dialog" aria-modal="true" aria-label="Notifications">
+
+    <!-- Header -->
+    <div class="notif-panel-header">
+      <div class="notif-header-left">
+        <span class="notif-header-icon">🔔</span>
+        <span class="notif-header-title">Notifications</span>
+        <span class="notif-unread-chip" id="notifUnreadChip"></span>
+      </div>
+      <div class="notif-header-actions">
+        <button id="notifMarkAllBtn" onclick="NotificationSystem.markAllAsRead()" title="Mark all as read">✓ Mark all read</button>
+        <button class="notif-panel-close" onclick="NotificationSystem.toggle()" title="Close">&#10005;</button>
+      </div>
+    </div>
+
+    <!-- Notification List -->
+    <div id="notifList"></div>
+
+    <!-- Empty State -->
+    <div id="notifEmpty">
+      <div class="notif-empty-icon">🔕</div>
+      <div class="notif-empty-text">You're all caught up!</div>
+      <div class="notif-empty-sub">New notifications will appear here when there's activity on your account.</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="notif-panel-footer">
+      <span class="notif-footer-text"><span id="notifFooterCount">0</span> total notifications stored</span>
+    </div>
+
+  </div>
+
   <script src="../javascript/rewards.js"></script>
+  <script src="../javascript/notifications.js"></script>
   <script src="../javascript/script.js"></script>
   <script src="../javascript/post.js"></script>
 </body>

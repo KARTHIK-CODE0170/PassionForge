@@ -50,6 +50,9 @@ function joinCommunity(item, name) {
   if (tag.classList.contains('joined')) {
     if (window.RewardsSystem) { RewardsSystem.trackAction('JOIN_COMMUNITY'); }
     else { showToast('Welcome to ' + name + '!'); }
+    if (window.NotificationSystem) {
+      NotificationSystem.create('system', '\uD83C\uDF1F You joined ' + name + '! Explore and connect with fellow creators.');
+    }
   } else {
     showToast('Left ' + name + '.');
   }
@@ -61,6 +64,11 @@ function followCreator(btn) {
   if (btn.classList.contains('following')) {
     if (window.RewardsSystem) { RewardsSystem.trackAction('FOLLOW'); }
     else { showToast('Now following.'); }
+    var creatorName = btn.closest('.creator-item') && btn.closest('.creator-item').querySelector('.creator-name');
+    var name = creatorName ? creatorName.textContent.trim() : 'a creator';
+    if (window.NotificationSystem) {
+      NotificationSystem.create('system', '\uD83D\uDC65 You\'re now following ' + name + '. Check out their latest posts!');
+    }
   } else {
     showToast('Unfollowed.');
   }
@@ -75,6 +83,9 @@ function completeChallenge() {
   document.querySelector('.streak-label').textContent = '\u2605 7-day streak \u2014 amazing!';
   if (window.RewardsSystem) { RewardsSystem.trackAction('COMPLETE_CHALLENGE'); }
   else { showToast('+20 credits earned! Streak extended.'); }
+  if (window.NotificationSystem) {
+    NotificationSystem.create('challenge', '\uD83C\uDFAF Challenge completed! You\'ve extended your streak to 7 days. +50 credits earned!');
+  }
 }
 
 function handleLogin()  { window.location.href = 'landing.html'; }
