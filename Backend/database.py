@@ -118,8 +118,44 @@ def init_db():
     safe_add_column(cursor, "posts", "likes",         "INTEGER DEFAULT 0")
 
     conn.commit()
+    seed_test_data(conn) # Seed initial posts if empty
     conn.close()
-    print("✅ Database ready.")
+    print("[OK] Database ready.")
+
+
+def seed_test_data(conn):
+    """Seed the database with sample posts if none exist."""
+    cursor = conn.cursor()
+    count  = cursor.execute("SELECT COUNT(*) FROM posts").fetchone()[0]
+    if count >= 8: return # Already well-seeded or populated
+
+    print("[SEED] Seeding sample posts for feed...")
+    import json
+    
+    # Check if we have a user to assign these posts to, otherwise create a 'System' user
+    cursor.execute("SELECT id FROM users LIMIT 1")
+    user = cursor.fetchone()
+    if not user:
+        cursor.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", 
+                       ("PassionForge", "admin@pf.com", "system_locked"))
+        u_id = cursor.lastrowid
+    else:
+        u_id = user[0]
+
+    # Sample Posts
+    samples = [
+        (u_id, "u/PassionForge", "PF", "text",  "Welcome to PassionForge! This is your space to share and grow in your creative journey.", json.dumps(["all"]), json.dumps(["#welcome"])),
+        (u_id, "u/PassionForge", "PF", "image", "Just finished this abstract piece. The colors are inspired by a late night rainfall.", json.dumps(["painting"]), json.dumps(["#art", "#abstract"])),
+        (u_id, "u/PassionForge", "PF", "text",  "Today's music practice was intense. I finally nailed that complex riff!", json.dumps(["music"]), json.dumps(["#guitar", "#practice"])),
+        (u_id, "u/PassionForge", "PF", "image", "Street photography in old town is always magical. The lighting here is perfect.", json.dumps(["photography"]), json.dumps(["#street", "#bw"])),
+        (u_id, "u/PassionForge", "PF", "text",  "Dancing has changed my life. Every step is a celebration of movement.", json.dumps(["dance"]), json.dumps(["#joy", "#fitness"])),
+    ]
+
+    cursor.executemany("""
+        INSERT INTO posts (user_id, username, user_initials, type, caption, hobbies, hashtags)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, samples)
+    conn.commit()
 
 
 def safe_add_column(cursor, table, column, column_def):

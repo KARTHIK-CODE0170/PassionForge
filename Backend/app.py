@@ -62,9 +62,9 @@ def fix_old_posts():
             WHERE username = 'u/you' OR username = 'you' OR username IS NULL
         """)
         conn.commit()
-        print("✅ Post identities verified.")
+        print("[OK] Post identities verified.")
     except Exception as e:
-        print(f"⚠  Post fix skipped: {e}")
+        print(f"[WARN] Post fix skipped: {e}")
     finally:
         conn.close()
 
@@ -221,7 +221,8 @@ def login():
 
     conn   = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+    # Check both email and username (so we don't break the UI functionality)
+    cursor.execute("SELECT * FROM users WHERE email = ? OR username = ?", (email, email))
     user = cursor.fetchone()
     conn.close()
 
@@ -643,11 +644,14 @@ def global_search():
     if not q: return jsonify({"posts": [], "users": []})
 
     conn = get_db_connection()
-    # Search posts caption AND users username
+    # 1. Search posts
     posts = conn.execute("""
         SELECT * FROM posts WHERE LOWER(caption) LIKE ? OR LOWER(username) LIKE ?
         ORDER BY created_at DESC LIMIT 20
     """, (f'%{q}%', f'%{q}%')).fetchall()
+    
+    # 2. Search users (minimal fix to prevent undefined users error)
+    users = conn.execute("SELECT id, username, bio, hobbies FROM users WHERE LOWER(username) LIKE ? LIMIT 10", (f'%{q}%',)).fetchall()
     
     # Process results to match the expected frontend structure
     posts_list = []
@@ -663,7 +667,7 @@ def global_search():
             "id": r["id"],
             "user_id": r["user_id"],
             "userName": r["username"],
-            "userInitials": r.get("user_initials", "??"),
+            "userInitials": r["user_initials"] if "user_initials" in r.keys() else "??",
             "type": r["type"],
             "caption": r["caption"],
             "mediaUrl": r["media_url"] or "",
@@ -810,6 +814,6 @@ def sync_rewards():
 # ============================================================
 
 if __name__ == "__main__":
-    print("\n🚀 PassionForge backend starting...")
-    print("📖 Open in browser: http://localhost:5000\n")
+    print("\n[START] PassionForge backend starting...")
+    print("Open in browser: http://localhost:5000\n")
     app.run(host="0.0.0.0", debug=True, port=5000)
