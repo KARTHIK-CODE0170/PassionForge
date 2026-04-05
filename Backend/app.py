@@ -62,7 +62,7 @@ def fix_old_posts():
             WHERE username = 'u/you' OR username = 'you' OR username IS NULL
         """)
         conn.commit()
-        print("✅ Post identities verified.")
+        print("Post identities verified.")
     except Exception as e:
         print(f"⚠  Post fix skipped: {e}")
     finally:
@@ -213,20 +213,21 @@ def login():
     if not data:
         return jsonify({"error": "No data received"}), 400
 
-    email    = data.get("email",    "").strip().lower()
+    login_id = data.get("email",    "").strip().lower()
     password = data.get("password", "").strip()
 
-    if not email or not password:
-        return jsonify({"error": "Email and password are required"}), 400
+    if not login_id or not password:
+        return jsonify({"error": "Email/Username and password are required"}), 400
 
     conn   = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+    # Support login with either email or username
+    cursor.execute("SELECT * FROM users WHERE email = ? OR username = ?", (login_id, login_id))
     user = cursor.fetchone()
     conn.close()
 
     if not user:
-        return jsonify({"error": "No account found with that email."}), 401
+        return jsonify({"error": "No account found with that email or username."}), 401
 
     if not check_password_hash(user["password"], password):
         return jsonify({"error": "Incorrect password. Please try again."}), 401
@@ -675,9 +676,15 @@ def global_search():
             "timestamp": r["created_at"]
         })
 
+    users_rows = conn.execute("""
+        SELECT id, username, bio FROM users WHERE LOWER(username) LIKE ?
+        LIMIT 10
+    """, (f'%{q}%',)).fetchall()
+    conn.close()
+
     return jsonify({
         "posts": posts_list,
-        "users": [dict(u) for u in users]
+        "users": [dict(u) for u in users_rows]
     })
 
 
@@ -810,6 +817,6 @@ def sync_rewards():
 # ============================================================
 
 if __name__ == "__main__":
-    print("\n🚀 PassionForge backend starting...")
-    print("📖 Open in browser: http://localhost:5000\n")
+    print("PassionForge backend starting...")
+    print("Open in browser: http://localhost:5000\n")
     app.run(host="0.0.0.0", debug=True, port=5000)

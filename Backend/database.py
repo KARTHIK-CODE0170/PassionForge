@@ -119,7 +119,7 @@ def init_db():
 
     conn.commit()
     conn.close()
-    print("✅ Database ready.")
+    print("Database ready.")
 
 
 def safe_add_column(cursor, table, column, column_def):
