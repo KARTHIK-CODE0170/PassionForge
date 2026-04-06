@@ -811,8 +811,8 @@ async function loadPostsFromBackend(category = 'all', sort = 'new') {
         showToast('No ' + category + ' posts yet.');
       }
 
-      // Re-insert each post from the list
-      posts.forEach(function (p) { insertPostIntoFeed(p, true); });
+      // Re-insert each post from the list (reverse to keep newest at top since we insert at top)
+      posts.slice().reverse().forEach(function (p) { insertPostIntoFeed(p, true); });
 
       // Update the My Posts badge count
       updateMyPostsBadge();

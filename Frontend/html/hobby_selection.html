@@ -10,18 +10,26 @@
   </style>
   <script>
     (function() {
-      const userStr = localStorage.getItem('pf_user');
+      var userStr = localStorage.getItem('pf_user');
       if (!userStr) {
-        window.location.href = 'landing.html';
+        window.location.replace('landing.html');
         return;
       }
-      const user = JSON.parse(userStr);
-      if (!user.is_new_user) {
-        window.location.href = 'index.html';
+      var user;
+      try { user = JSON.parse(userStr); } catch(e) {
+        localStorage.removeItem('pf_user');
+        window.location.replace('landing.html');
         return;
       }
-      document.addEventListener('DOMContentLoaded', () => {
-        document.body.style.display = '';
+      var hasHobbies = Array.isArray(user.hobbies) && user.hobbies.length > 0;
+      // Only allow access if user is flagged as new AND has no hobbies yet
+      if (!user.is_new_user || hasHobbies) {
+        window.location.replace('index.html');
+        return;
+      }
+      // Show the page
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.display = 'flex';
       });
     })();
   </script>

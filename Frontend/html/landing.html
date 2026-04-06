@@ -5,25 +5,17 @@
   <meta charset="UTF-8">
   <title>Passion Forge Login</title>
   
-  <!-- Session check: redirect to index if already logged in -->
+  <!-- Removed automatic session redirect at user's request. Always shows login page on start. -->
   <script>
     (function() {
+      // Still clear bad sessions if they exist
       const userStr = localStorage.getItem('pf_user');
       if (userStr) {
-        try {
-          const user = JSON.parse(userStr);
-          if (user.is_new_user) {
-            window.location.href = 'hobby_selection.html';
-          } else {
-            window.location.href = 'index.html';
-          }
-        } catch(e) {
-          localStorage.removeItem('pf_user');
-          document.documentElement.classList.add('not-logged-in');
-        }
-      } else {
-        document.documentElement.classList.add('not-logged-in');
+        try { JSON.parse(userStr); } 
+        catch(e) { localStorage.removeItem('pf_user'); }
       }
+      // Always show page content
+      document.documentElement.classList.add('not-logged-in');
     })();
   </script>
   <style>
@@ -356,23 +348,24 @@
         if (response.ok) {
           err.style.display = 'none';
           if (isSignUpMode) {
-            // After successful signup, maybe switch to login or auto-login
-            alert('Registration successful! Please login.');
-            toggleAuth();
+            // Auto-login after signup: save the returned user and route correctly
+            localStorage.setItem('pf_user', JSON.stringify(data.user));
+            // New user always goes to hobby selection
+            window.location.replace('hobby_selection.html');
           } else {
             // Login success: save to localStorage and redirect
-            localStorage.setItem('pf_user', JSON.stringify(data.user));
-            
-            // REDIRECTION FIX: Check if user already has hobbies selected
-            if (data.user.hobbies && data.user.hobbies.length > 0) {
-              window.location.href = 'index.html';
+            var u = data.user;
+            var hasHobbies = Array.isArray(u.hobbies) && u.hobbies.length > 0;
+            localStorage.setItem('pf_user', JSON.stringify(u));
+            if (u.is_new_user === true && !hasHobbies) {
+              window.location.replace('hobby_selection.html');
             } else {
-              window.location.href = 'hobby_selection.html';
+              window.location.replace('index.html');
             }
           }
         } else {
           err.style.display = 'block';
-          err.textContent = data.error || 'Something went wrong.';
+          err.textContent = data.detail || data.error || 'Something went wrong.';
         }
       } catch (e) {
         err.style.display = 'block';

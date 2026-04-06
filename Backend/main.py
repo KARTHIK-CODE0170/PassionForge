@@ -265,9 +265,25 @@ async def update_hobbies(user_id: int, data: HobbyUpdate):
         conn.close()
 
 @app.get("/posts")
-async def get_posts():
+async def get_posts(category: str = "all", sort: str = "new"):
     conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM posts ORDER BY created_at DESC").fetchall()
+    query = "SELECT * FROM posts"
+    params = []
+    
+    if category != "all":
+        # Check if the category exists in the JSON hobbies list
+        query += " WHERE hobbies LIKE ?"
+        params.append(f'%"{category}"%')
+    
+    if sort == "top":
+        query += " ORDER BY likes DESC, created_at DESC"
+    elif sort == "hot":
+        # Hot can be simple likes for now, or likes / hours_since_creation
+        query += " ORDER BY likes DESC, id DESC"
+    else: # Default is "new"
+        query += " ORDER BY created_at DESC"
+        
+    rows = conn.execute(query, params).fetchall()
     conn.close()
     
     posts = []

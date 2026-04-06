@@ -15,13 +15,21 @@
   </style>
   <script>
     (function() {
-      const userStr = localStorage.getItem('pf_user');
+      var userStr = localStorage.getItem('pf_user');
       if (!userStr) {
-        window.location.href = 'landing.html';
+        window.location.replace('landing.html');
         return;
       }
-      document.addEventListener('DOMContentLoaded', () => {
-        document.body.style.display = '';
+      try {
+        var user = JSON.parse(userStr);
+        if (!user || !user.id || !user.username) throw new Error('Bad session');
+      } catch(e) {
+        localStorage.removeItem('pf_user');
+        window.location.replace('landing.html');
+        return;
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.display = 'block';
       });
     })();
   </script>
@@ -119,175 +127,15 @@
         <button class="btn-create-post" onclick="openCreatePost()">+ Create Post</button>
       </div>
 
-      <!-- Post 1 -->
-      <article class="post-card" data-category="music" id="post-1">
-        <div class="post-vote">
-          <button class="vote-btn up" onclick="appreciatePost('post-1',this)">&#9650;</button>
-          <span class="vote-count" id="count-post-1">0</span>
-          <button class="vote-btn down" onclick="downPost('post-1',this)">&#9660;</button>
-        </div>
-        <div class="post-body">
-          <div class="post-meta">
-            <div class="avatar" style="background:linear-gradient(135deg,#f97316,#fb923c)">AM</div>
-            <span class="username">u/aria_melody</span>
-            <span class="dot">&middot;</span>
-            <span class="cat-tag music-tag"><i class="fa-solid fa-music"></i> Music</span>
-            <span class="dot">&middot;</span>
-            <span class="post-time">2 hours ago</span>
-            <span class="credits">⭐ 320 credits</span>
-          </div>
-          <h2 class="post-title">Finally nailed the F chord after 3 weeks of practice</h2>
-          <p class="post-preview">It's been a painful journey — my fingertips are calloused and my neighbors probably
-            hate me — but I finally played a full G–C–F–G progression cleanly. If you're struggling with the F chord,
-            here's the tip that changed everything for me...</p>
-          <div class="post-actions">
-            <button class="action-btn" onclick="toggleComment('post-1')">&#9656; 84 Comments</button>
-            <button class="action-btn" onclick="sharePost('F chord breakthrough')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
-          </div>
-          <div class="comment-box hidden" id="comment-post-1">
-            <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
-            <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
-          </div>
-        </div>
-      </article>
+      <!-- Posts are loaded dynamically from the backend -->
+      <div id="noPostsMessage" style="display:none; text-align:center; padding:40px; color:#6b7280;">
+        <p>No posts in this category yet. Be the first to share something!</p>
+      </div>
 
-      <!-- Post 2 -->
-      <article class="post-card" data-category="painting" id="post-2">
-        <div class="post-vote">
-          <button class="vote-btn up" onclick="appreciatePost('post-2',this)">&#9650;</button>
-          <span class="vote-count" id="count-post-2">0</span>
-          <button class="vote-btn down" onclick="downPost('post-2',this)">&#9660;</button>
-        </div>
-        <div class="post-body">
-          <div class="post-meta">
-            <div class="avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">LS</div>
-            <span class="username">u/luna_sketches</span>
-            <span class="dot">&middot;</span>
-            <span class="cat-tag painting-tag"><i class="fa-solid fa-palette"></i> Painting</span>
-            <span class="dot">&middot;</span>
-            <span class="post-time">5 hours ago</span>
-            <span class="credits">⭐ 210 credits</span>
-          </div>
-          <h2 class="post-title">My first watercolor landscape – 30-day challenge complete</h2>
-          <p class="post-preview">Started the 30-day watercolor challenge knowing absolutely nothing about wet-on-wet
-            technique. Today I finished my final piece: a misty mountain landscape. The progress from day 1 to day 30 is
-            unreal. Sharing my journey here for anyone who needs motivation...</p>
-          <div class="post-actions">
-            <button class="action-btn" onclick="toggleComment('post-2')">&#9656; 62 Comments</button>
-            <button class="action-btn" onclick="sharePost('Watercolor Challenge')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
-          </div>
-          <div class="comment-box hidden" id="comment-post-2">
-            <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
-            <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Post 3 -->
-      <article class="post-card" data-category="writing" id="post-3">
-        <div class="post-vote">
-          <button class="vote-btn up" onclick="appreciatePost('post-3',this)">&#9650;</button>
-          <span class="vote-count" id="count-post-3">0</span>
-          <button class="vote-btn down" onclick="downPost('post-3',this)">&#9660;</button>
-        </div>
-        <div class="post-body">
-          <div class="post-meta">
-            <div class="avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">RW</div>
-            <span class="username">u/ravi_writes</span>
-            <span class="dot">&middot;</span>
-            <span class="cat-tag writing-tag"><i class="fa-solid fa-pen-nib"></i> Writing</span>
-            <span class="dot">&middot;</span>
-            <span class="post-time">1 day ago</span>
-            <span class="credits">⭐ 450 credits</span>
-          </div>
-          <h2 class="post-title">I wrote 1,000 words every day for 60 days — here's what changed</h2>
-          <p class="post-preview">Before this challenge, I'd write a few sentences and quit. After 60 days of consistent
-            daily writing, I've finished two short stories and started a novella. The biggest lesson? Quantity before
-            quality. You can't edit a blank page. Here's how I structured each session...</p>
-          <div class="post-actions">
-            <button class="action-btn" onclick="toggleComment('post-3')">&#9656; 128 Comments</button>
-            <button class="action-btn" onclick="sharePost('60-day Writing Challenge')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
-          </div>
-          <div class="comment-box hidden" id="comment-post-3">
-            <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
-            <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Post 4 -->
-      <article class="post-card" data-category="dance" id="post-4">
-        <div class="post-vote">
-          <button class="vote-btn up" onclick="appreciatePost('post-4',this)">&#9650;</button>
-          <span class="vote-count" id="count-post-4">0</span>
-          <button class="vote-btn down" onclick="downPost('post-4',this)">&#9660;</button>
-        </div>
-        <div class="post-body">
-          <div class="post-meta">
-            <div class="avatar" style="background:linear-gradient(135deg,#ec4899,#f472b6)">DQ</div>
-            <span class="username">u/dance_queen_priya</span>
-            <span class="dot">&middot;</span>
-            <span class="cat-tag dance-tag"><i class="fa-solid fa-person-rays"></i> Dance</span>
-            <span class="dot">&middot;</span>
-            <span class="post-time">3 hours ago</span>
-            <span class="credits">⭐ 185 credits</span>
-          </div>
-          <h2 class="post-title">Learnt my first Bharatanatyam piece in 3 months – video inside</h2>
-          <p class="post-preview">Three months ago I couldn't even hold the Araimandi posture for 10 seconds. Today I
-            performed a full Alarippu piece at my academy recital. My knees hurt, my ankles complained, but my heart is
-            full. For anyone starting classical dance late — it is never too late.</p>
-          <div class="post-actions">
-            <button class="action-btn" onclick="toggleComment('post-4')">&#9656; 47 Comments</button>
-            <button class="action-btn" onclick="sharePost('Bharatanatyam Journey')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
-          </div>
-          <div class="comment-box hidden" id="comment-post-4">
-            <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
-            <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Post 5 -->
-      <article class="post-card" data-category="photography" id="post-5">
-        <div class="post-vote">
-          <button class="vote-btn up" onclick="appreciatePost('post-5',this)">&#9650;</button>
-          <span class="vote-count" id="count-post-5">0</span>
-          <button class="vote-btn down" onclick="downPost('post-5',this)">&#9660;</button>
-        </div>
-        <div class="post-body">
-          <div class="post-meta">
-            <div class="avatar" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)">KL</div>
-            <span class="username">u/kiran_lens</span>
-            <span class="dot">&middot;</span>
-            <span class="cat-tag photography-tag"><i class="fa-solid fa-camera"></i> Photography</span>
-            <span class="dot">&middot;</span>
-            <span class="post-time">6 hours ago</span>
-            <span class="credits">⭐ 390 credits</span>
-          </div>
-          <h2 class="post-title">Mastering the golden hour: my tips after 200+ sunrise shoots</h2>
-          <p class="post-preview">Waking up at 4:30 AM is never glamorous, but catching that golden wash of light across
-            misty fields makes it worth every yawn. After over 200 sunrise shoots across Tamil Nadu, I've developed a
-            workflow that lets me nail the shot every single time. Here's my full guide...</p>
-          <div class="post-actions">
-            <button class="action-btn" onclick="toggleComment('post-5')">&#9656; 93 Comments</button>
-            <button class="action-btn" onclick="sharePost('Golden Hour Guide')">&#8599; Share</button>
-            <button class="action-btn save-btn" onclick="savePost(this)">⭐ Save</button>
-          </div>
-          <div class="comment-box hidden" id="comment-post-5">
-            <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
-            <button class="btn-comment-submit" onclick="submitComment(this)">Post Comment</button>
-          </div>
-        </div>
-      </article>
-
-    <div class="load-more-wrap">
-      <button class="btn-load-more" onclick="loadMore()">Load More Posts</button>
-    </div>
-  </main>
+      <div class="load-more-wrap">
+        <button class="btn-load-more" onclick="loadMore()">Load More Posts</button>
+      </div>
+    </main>
 
 
     <!-- RIGHT SIDEBAR -->

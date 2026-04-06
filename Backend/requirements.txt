@@ -1,22 +1,11 @@
 # ============================================================
-# PassionForge Backend - Python Dependencies
+# PassionForge Backend - Python Dependencies (FastAPI)
 # ============================================================
 # Install all packages by running:
 #   pip install -r requirements.txt
 # ============================================================
 
-# Flask - the main web framework
-flask==3.0.3
-
-# flask-cors - allows the frontend to talk to this backend
-flask-cors==4.0.1
-
-# ============================================================
-# NOTE: No extra packages needed for SQLite!
-# SQLite (sqlite3) is built into Python already.
-# werkzeug (for password hashing) is also bundled with Flask.
-# ============================================================
-
-# If you ever switch from SQLite to another database, add here:
-# For MySQL    : mysql-connector-python==8.3.0
-# For PostgreSQL: psycopg2-binary==2.9.9
+fastapi
+uvicorn
+werkzeug
+pydantic

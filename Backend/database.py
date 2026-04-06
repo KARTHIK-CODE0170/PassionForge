@@ -63,6 +63,10 @@ def init_db():
         # Column already exists
         pass
 
+    # Ensure existing users with hobbies are not treated as new users
+    cursor.execute("UPDATE users SET is_new_user = 0 WHERE hobbies IS NOT NULL AND hobbies != '[]'")
+    conn.commit()
+
     # ── communities table ───────────────────────────────────────
     # Groups that users can create and join.
     cursor.execute("""
