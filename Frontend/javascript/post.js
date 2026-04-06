@@ -773,14 +773,23 @@ function insertPostIntoFeed(post, skipScroll) {
   article.setAttribute('data-category', (post.hobbies && post.hobbies.length) ? post.hobbies[0].toLowerCase() : post.type);
   article.innerHTML = buildPostHTML(post);
 
-  // Insert right after the feed header
-  var header = feed.querySelector('.feed-header');
-  if (header && header.nextSibling) {
-    feed.insertBefore(article, header.nextSibling);
+  var loadMore = feed.querySelector('.load-more-wrap');
+
+  if (skipScroll) {
+    // Regular initial load - append to maintain newest-first order from the array
+    if (loadMore) {
+      feed.insertBefore(article, loadMore);
+    } else {
+      feed.appendChild(article);
+    }
   } else {
-    var w = feed.querySelector('.load-more-wrap');
-    if (w) feed.insertBefore(article, w);
-    else   feed.appendChild(article);
+    // New post created by user - insert at the very top after the header
+    var header = feed.querySelector('.feed-header');
+    if (header && header.nextSibling) {
+      feed.insertBefore(article, header.nextSibling);
+    } else {
+      feed.prepend(article); // fallback
+    }
   }
 
   if (!skipScroll) {

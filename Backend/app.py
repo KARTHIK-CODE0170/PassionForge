@@ -29,6 +29,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ── Flask App Setup ──────────────────────────────────────────────────────────
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024 # Limit: 100 MB
 
 # Allow all origins (needed because frontend and backend share the same port via Flask)
 @app.after_request
