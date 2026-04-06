@@ -5,6 +5,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Passion Forge - Select Hobbies</title>
+  <style>
+    body { display: none; } /* Hide until check */
+  </style>
+  <script>
+    (function() {
+      const userStr = localStorage.getItem('pf_user');
+      if (!userStr) {
+        window.location.href = 'landing.html';
+        return;
+      }
+      const user = JSON.parse(userStr);
+      if (!user.is_new_user) {
+        window.location.href = 'index.html';
+        return;
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.style.display = '';
+      });
+    })();
+  </script>
   <link rel="stylesheet" href="../css/hobby_selection.css" />
 </head>
 

@@ -51,9 +51,17 @@ def init_db():
             hobbies    TEXT     DEFAULT '[]',
             points     INTEGER  DEFAULT 0,
             badges     TEXT     DEFAULT '[]',
+            is_new_user INTEGER DEFAULT 1,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     """)
+
+    # Migration: Add is_new_user column if it doesn't exist (for existing DBs)
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN is_new_user INTEGER DEFAULT 1")
+    except sqlite3.OperationalError:
+        # Column already exists
+        pass
 
     # ── communities table ───────────────────────────────────────
     # Groups that users can create and join.
@@ -119,7 +127,7 @@ def init_db():
 
     conn.commit()
     conn.close()
-    print("✅ Database ready.")
+    print("Database ready.")
 
 
 def safe_add_column(cursor, table, column, column_def):

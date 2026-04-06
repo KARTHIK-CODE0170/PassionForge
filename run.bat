@@ -5,11 +5,11 @@ taskkill /F /IM python.exe 2>nul
 timeout /t 1 /nobreak >nul
 
 echo [2/3] Opening PassionForge in your browser...
-start http://localhost:5000
+start http://localhost:8000
 
-echo [3/3] Starting PassionForge Backend...
+echo [3/3] Starting PassionForge FastAPI Backend...
 echo ------------------------------------------
 echo.
-python Backend/app.py
+python Backend/main.py
 echo.
 pause

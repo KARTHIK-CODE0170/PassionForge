@@ -10,6 +10,21 @@
   <link rel="stylesheet" href="../css/post.css" />
   <link rel="stylesheet" href="../css/notifications.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body { display: none; } /* Hide until check */
+  </style>
+  <script>
+    (function() {
+      const userStr = localStorage.getItem('pf_user');
+      if (!userStr) {
+        window.location.href = 'landing.html';
+        return;
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.style.display = '';
+      });
+    })();
+  </script>
 </head>
 
 <body>

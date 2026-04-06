@@ -4,6 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Passion Forge Login</title>
+  
+  <!-- Session check: redirect to index if already logged in -->
+  <script>
+    (function() {
+      const userStr = localStorage.getItem('pf_user');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          if (user.is_new_user) {
+            window.location.href = 'hobby_selection.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        } catch(e) {
+          localStorage.removeItem('pf_user');
+          document.documentElement.classList.add('not-logged-in');
+        }
+      } else {
+        document.documentElement.classList.add('not-logged-in');
+      }
+    })();
+  </script>
   <style>
     * {
       margin: 0;
@@ -13,9 +35,13 @@
     }
 
     body {
+      display: none;
       height: 100vh;
-      display: flex;
       color: white;
+    }
+
+    html.not-logged-in body {
+      display: flex;
     }
 
     /* LEFT SIDE */
